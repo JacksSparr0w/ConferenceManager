@@ -1,0 +1,6 @@
+$ cat .gitignore
+.idea/*
+target/*
+*.log
+*bin/*
+*.iml
