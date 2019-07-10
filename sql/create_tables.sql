@@ -5,7 +5,7 @@ CREATE TABLE `user`
   `id`         INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `login`      VARCHAR(255) UNIQUE NOT NULL,
   `password`   VARCHAR(32)         NOT NULL,
-  `permission` ENUM ('administrator', 'user')
+  `permission` ENUM ('administrator', 'user') DEFAULT 'user'
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -20,7 +20,7 @@ CREATE TABLE `user_info`
   `email`                VARCHAR(255),
   `date_of_birth`        DATE                NOT NULL,
   `date_of_registration` DATETIME            NOT NULL,
-  `gender`               ENUM ('male', 'female', 'no matter') DEFAULT 'no matter'
+  `gender`               ENUM ('no matter', 'male', 'female') DEFAULT 'no matter'
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -31,7 +31,6 @@ CREATE TABLE `event_info`
   `name`         VARCHAR(255)        NOT NULL,
   `description`  TEXT,
   `date`         DATETIME            NOT NULL,
-  `country_code` CHAR(2),
   `status`       ENUM ('created', 'running', 'done', 'failure'),
   `capacity`     INTEGER
 ) ENGINE = INNODB
@@ -41,7 +40,7 @@ CREATE TABLE `filling`
 (
   `event_id`  INTEGER PRIMARY KEY,
   `user_id`   INTEGER,
-  `user_role` ENUM ('listener', 'teller')
+  `user_role` ENUM ('listener', 'teller') DEFAULT 'listener'
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 

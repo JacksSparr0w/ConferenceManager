@@ -34,8 +34,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.valueOf(resultSet.getString("permission")));
-                //todo create normal enum
+                user.setPermission(Permission.getPermission(resultSet.getInt("permission")));
             }
             return user;
         } catch (SQLException e) {
@@ -67,8 +66,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.valueOf(resultSet.getString("permission")));
-                //todo create normal enum
+                user.setPermission(Permission.getPermission(resultSet.getInt("permission")));
                 users.add(user);
             }
             return users;
@@ -95,7 +93,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
-            statement.setString(3, entity.getPermission().toString());
+            statement.setInt(3, entity.getPermission().getFieldCode());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -134,8 +132,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(id);
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.valueOf(resultSet.getString("permission")));
-                //todo create normal enum
+                user.setPermission(Permission.getPermission(resultSet.getInt("permission")));
             }
             return user;
         } catch (SQLException e) {
@@ -160,7 +157,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             statement = connection.prepareStatement(sql);
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
-            statement.setString(3, entity.getPermission().toString());
+            statement.setInt(3, entity.getPermission().getFieldCode());
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
