@@ -27,12 +27,14 @@ CREATE TABLE `user_info`
 
 CREATE TABLE `event_info`
 (
-  `id`           INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `name`         VARCHAR(255)        NOT NULL,
-  `description`  TEXT,
-  `date`         DATETIME            NOT NULL,
-  `status`       ENUM ('created', 'running', 'done', 'failure'),
-  `capacity`     INTEGER
+  `id`          INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `name`        VARCHAR(255)        NOT NULL,
+  `description` TEXT,
+  `theme`       ENUM ('business', 'advertising', 'science', 'design') DEFAULT NULL,
+  `date`        DATETIME            NOT NULL,
+  `address`     VARCHAR(255),
+  `status`      ENUM ('created', 'running', 'done', 'failure'),
+  `capacity`    INTEGER
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -47,7 +49,7 @@ CREATE TABLE `filling`
 ALTER TABLE `user_info`
   ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
     ON UPDATE CASCADE
-    ON DELETE RESTRICT;
+    ON DELETE CASCADE ;
 
 ALTER TABLE `filling`
   ADD FOREIGN KEY (`event_id`) REFERENCES `event_info` (`id`)

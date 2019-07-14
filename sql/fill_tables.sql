@@ -6,7 +6,7 @@ INSERT INTO `user` (
 	`permission`
 ) VALUES (
 
-	"root2",
+	"root",
 	"1234", /* MD5 хэш пароля "user" */
 	1
 ), (
