@@ -4,3 +4,4 @@ target/*
 *.log
 *bin/*
 *.iml
+out/*

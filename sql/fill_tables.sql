@@ -5,17 +5,15 @@ INSERT INTO `user` (
 	`password`,
 	`permission`
 ) VALUES (
-
 	"root",
-	"1234", /* MD5 хэш пароля "user" */
+	"EE11CBB19052E40B07AAC0CA060C23EE", /* MD5 хэш пароля "user" */
 	1
 ), (
-
-	"user5",
+	"user",
 	"EE11CBB19052E40B07AAC0CA060C23EE", /* MD5 хэш пароля "user" */
 	2
 ), (
-	"user6",
+	"user1",
 	"EE11CBB19052E40B07AAC0CA060C23EE", /* MD5 хэш пароля "user" */
 	2
 );

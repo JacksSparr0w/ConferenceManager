@@ -44,9 +44,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                //user.setPermission(Permission.getPermission(resultSet.getInt("permission")));
                 String string = resultSet.getString("permission");
-                Integer perm = resultSet.getInt("permission");
                 Permission permission = Permission.valueOf(string.toUpperCase());
                 user.setPermission(permission);
             }
