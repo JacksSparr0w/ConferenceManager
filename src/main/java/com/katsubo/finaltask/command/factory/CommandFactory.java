@@ -1,0 +1,60 @@
+package com.katsubo.finaltask.command.factory;
+
+import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.action.HomeCommand;
+import com.katsubo.finaltask.command.action.LoginCommand;
+import com.katsubo.finaltask.command.action.LogoutCommand;
+
+public class CommandFactory {
+
+    public static ActionCommand create(String command){
+        CommandType commandType = CommandType.valueOf(command.toUpperCase());
+
+        ActionCommand result = null;
+        switch (commandType){
+            case LOGIN:
+                result = new LoginCommand();
+                break;
+            case LOGOUT:
+                result = new LogoutCommand();
+                break;
+            case REGISTER:
+                //
+                break;
+            case ADD_EVENT:
+                //
+                break;
+            case REMOVE_EVENT:
+                //
+                break;
+            case EDIT_EVENT:
+                //
+                break;
+            case PROFILE:
+                //
+                break;
+            case EDIT_PROFILE:
+                //
+                break;
+            case SIGN_UP_FOR_EVENT:
+                //
+                break;
+            case SIGN_OUT_FOR_EVENT:
+                //
+                break;
+            case GET_EVENTS:
+                //
+                break;
+            case GET_USERS_ON_EVENT:
+                //
+                break;
+            case HOME_PAGE:
+                result = new HomeCommand();
+                break;
+                default:
+                    throw new IllegalArgumentException("Invalid command " + command);
+        }
+        return result;
+    }
+}
+

@@ -99,16 +99,16 @@ public class ConnectionPool {
         freeConnections.offer(connection);
     }
 
-    public void destroy() throws PoolException {
+    public void destroy() {
         freeConnections.addAll(takenConnections);
         takenConnections.clear();
         for (int i = 0; i < freeConnections.size(); i++) {
             try {
-                Connection connection = freeConnections.take();
-                connection.close();
-            } catch (SQLException | InterruptedException e) {
+                PoolConnection connection = (PoolConnection) freeConnections.take();
+                connection.realClose();
+            } catch (InterruptedException e) {
                 logger.log(Level.ERROR, "Connection close exception", e);
-                throw new PoolException(e + "Connection close exception");
+                //throw new PoolException(e + "Connection close exception");
             }
         }
         //todo destroy all connections

@@ -1,11 +1,17 @@
 package com.katsubo.finaltask.controller;
 
-import com.katsubo.finaltask.command.ActionCommand;
-import com.katsubo.finaltask.command.ActionFactory;
-import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.MessageManager;
+import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.factory.CommandFactory;
+import com.katsubo.finaltask.connection.ConnectionPool;
+import com.katsubo.finaltask.service.ServiceException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +21,14 @@ import java.io.IOException;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
+    private static final String COMMAND = "command";
+    private static final Logger logger = LogManager.getLogger(Controller.class);
+
+    @Override
+    public void destroy() {
+        ConnectionPool.getInstance().destroy();
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
@@ -28,27 +42,33 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response)
             throws ServletException, IOException {
-        String page = null;
-// определение команды, пришедшей из JSP
-        ActionFactory client = new ActionFactory();
-        ActionCommand command = client.defineCommand(request);
-        /*
-         * вызов реализованного метода execute() и передача параметров
-         * классу-обработчику конкретной команды
-         */
-        page = command.execute(request);
-// метод возвращает страницу ответа
-// page = null; // поэксперементировать!
-        if (page != null) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-// вызов страницы ответа на запрос
-            dispatcher.forward(request, response);
-        } else {
-// установка страницы c cообщением об ошибке
-            page = ConfigurationManager.getProperty("path.page.index");
-            request.getSession().setAttribute("nullPage",
-                    MessageManager.getProperty("message.nullpage"));
-            response.sendRedirect(request.getContextPath() + page);
+        String command = request.getParameter(COMMAND);
+        ActionCommand action = CommandFactory.create(command);
+
+        CommandResult result;
+        try {
+            result = action.execute(request, response);
+        } catch (ServiceException e) {
+            logger.log(Level.ERROR, e.getMessage(), e);
+            request.setAttribute(MessageManager.getProperty("error"), e.getMessage());
+            result = new CommandResult("error", false);
         }
+
+        String page = result.getPage();
+        if (result.isRedirect()) {
+            redirect(response, page);
+        } else {
+            dispatch(request, response, page);
+        }
+    }
+
+    private void dispatch(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+        ServletContext context = getServletContext();
+        RequestDispatcher dispatcher = context.getRequestDispatcher(page);
+        dispatcher.forward(request, response);
+    }
+
+    private void redirect(HttpServletResponse response, String page) throws IOException {
+        response.sendRedirect(page);
     }
 }

@@ -9,5 +9,5 @@ To change this template use File | Settings | File Templates.
 <html>
 <head><title>Index</title></head>
 <body>
-<jsp:forward page="/jsp/login.jsp"/>
+<jsp:forward page="login.jsp"/>
 </body></html>
