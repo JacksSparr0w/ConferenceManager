@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface UserDao extends Dao<User>{
     User read(String login, String password) throws DaoException;
+    Integer find(String login) throws DaoException;
     List<User> read() throws DaoException;
 
     Map<Integer, Role> readAllUserEvents(Integer userId) throws DaoException;

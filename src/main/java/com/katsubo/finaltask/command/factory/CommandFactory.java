@@ -1,9 +1,6 @@
 package com.katsubo.finaltask.command.factory;
 
-import com.katsubo.finaltask.command.action.ActionCommand;
-import com.katsubo.finaltask.command.action.HomeCommand;
-import com.katsubo.finaltask.command.action.LoginCommand;
-import com.katsubo.finaltask.command.action.LogoutCommand;
+import com.katsubo.finaltask.command.action.*;
 
 public class CommandFactory {
 
@@ -19,7 +16,7 @@ public class CommandFactory {
                 result = new LogoutCommand();
                 break;
             case REGISTER:
-                //
+                result = new RegisterCommand();
                 break;
             case ADD_EVENT:
                 //

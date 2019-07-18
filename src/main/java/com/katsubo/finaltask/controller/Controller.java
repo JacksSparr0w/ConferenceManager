@@ -29,19 +29,15 @@ public class Controller extends HttpServlet {
         ConnectionPool.getInstance().destroy();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request,
-                                HttpServletResponse response)
-            throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String command = request.getParameter(COMMAND);
         ActionCommand action = CommandFactory.create(command);
 

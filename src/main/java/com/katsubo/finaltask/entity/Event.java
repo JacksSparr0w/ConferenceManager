@@ -4,6 +4,7 @@ import com.katsubo.finaltask.entity.enums.Status;
 import com.katsubo.finaltask.entity.enums.Theme;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Event extends Entity {
     private String name;
@@ -77,5 +78,40 @@ public class Event extends Entity {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Event event = (Event) o;
+        return Objects.equals(name, event.name) &&
+                Objects.equals(description, event.description) &&
+                theme == event.theme &&
+                Objects.equals(date, event.date) &&
+                Objects.equals(address, event.address) &&
+                Objects.equals(countryCode, event.countryCode) &&
+                status == event.status &&
+                Objects.equals(capacity, event.capacity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, description, theme, date, address, countryCode, status, capacity);
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", theme=" + theme +
+                ", date=" + date +
+                ", address=" + address +
+                ", countryCode='" + countryCode + '\'' +
+                ", status=" + status +
+                ", capacity=" + capacity +
+                '}';
     }
 }

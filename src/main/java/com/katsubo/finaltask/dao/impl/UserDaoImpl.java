@@ -26,6 +26,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String READ = "SELECT `login`, `password`, `permission` FROM `user` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `user` SET `login` = ?, `password` = ?, `permission` = ? WHERE `id` = ?";
     private static final String DELETE = "DELETE FROM `user` WHERE `id` = ?";
+    public static final String FIND_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
 
     private static Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
@@ -52,6 +53,40 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't read user by this login = " + login + "and password = " + password);
             throw new DaoException(e + "Can't read user by this login = " + login + "and password = " + password);
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+            try {
+                if (statement == null) {
+                    throw new DaoException();
+                }
+                statement.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    @Override
+    public Integer find(String login) throws DaoException {
+        Integer id = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(FIND_BY_LOGIN);
+            statement.setString(1, login);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                id = resultSet.getInt("id");
+            }
+            return id;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't read user by this login = " + login);
+            throw new DaoException(e + "Can't read user by this login = " + login);
         } finally {
             try {
                 if (resultSet == null) {

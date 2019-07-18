@@ -18,7 +18,7 @@ public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService 
     public UserInfo findByUser(User user) throws ServiceException {
         if (user != null) {
             UserInfo info = null;
-            UserInfoDao dao = new UserInfoDaoImpl();
+            UserInfoDao dao = transaction.getUserInfoDao();
             try {
                 info = dao.read(user);
             } catch (DaoException e) {

@@ -52,6 +52,24 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isExist(String login) throws ServiceException {
+        Integer id;
+        if (login != null){
+            UserDao dao = transaction.getUserDao();
+            try{
+                id = dao.find(login);
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+            return id != null;
+        }
+    else {
+        logger.log(Level.ERROR, "Parameter - LOGIN is inalid");
+        throw new ServiceException("Parameter - LOGIN is invalid");
+    }
+    }
+
+    @Override
     public Map<Event, Role> findUserEvents(Integer id) throws ServiceException {
         if (id >= 0) {
             Map<Event, Role> events = new HashMap<>();
@@ -97,19 +115,22 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
 
     @Override
-    public void save(User user) throws ServiceException {
+    public Integer save(User user) throws ServiceException {
+        Integer id;
         if (user != null) {
             UserDao dao = transaction.getUserDao();
             user.setPassword(DigestUtils.md5Hex(user.getPassword()));
             try {
                 if (user.getId() != null) {
+                    id = user.getId();
                     dao.update(user);
                 } else {
-                    dao.create(user);
+                    id = dao.create(user);
                 }
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
+            return id;
         } else {
             logger.log(Level.ERROR, "Parameter - USER is invalid");
             throw new ServiceException("Parameter - USER is invalid");

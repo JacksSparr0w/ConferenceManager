@@ -12,11 +12,13 @@ public interface UserService extends Service {
 
     User findById(Integer id) throws ServiceException;
 
+    boolean isExist(String login) throws ServiceException;
+
     Map<Event, Role> findUserEvents(Integer id) throws ServiceException;
 
     User findByLoginAndPassword(String login, String password) throws ServiceException;
 
-    void save(User user) throws ServiceException;
+    Integer save(User user) throws ServiceException;
 
     void delete(Integer id) throws ServiceException;
 }

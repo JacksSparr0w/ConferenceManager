@@ -1,8 +1,6 @@
 package com.katsubo.finaltask.service.impl;
 
-import com.katsubo.finaltask.connection.PoolException;
 import com.katsubo.finaltask.connection.PoolService;
-import com.katsubo.finaltask.connection.PoolServiceImpl;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.TransactionFactory;
 import com.katsubo.finaltask.dao.impl.TransactionFactoryImpl;
@@ -10,9 +8,8 @@ import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.enums.Permission;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class UserServiceImplTest {
@@ -57,21 +54,45 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void findById2() throws DaoException {
+    public void findById2() throws DaoException, ServiceException {
         String login = "user1";
         String password = "user";
 
         User user = null;
-        try {
-            UserService service = new UserServiceImpl();
-            TransactionFactory factory = new TransactionFactoryImpl();
-            ((UserServiceImpl) service).setTransaction(factory.getTransaction());
-            user = service.findByLoginAndPassword(login, password);
+        UserService service = new UserServiceImpl();
+        TransactionFactory factory = new TransactionFactoryImpl();
+        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
+        user = service.findByLoginAndPassword(login, password);
 
-        } catch (DaoException | ServiceException e) {
+        Assert.assertNotNull(user.getId());
 
+    }
+
+    @Test
+    public void createUser() throws DaoException, ServiceException{
+        User user = new User();
+        user.setLogin("TestUser");
+        user.setPassword("pass");
+        user.setPermission(Permission.USER);
+
+        UserService service = new UserServiceImpl();
+        TransactionFactory factory = new TransactionFactoryImpl();
+        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
+        Integer id = service.save(user);
+
+        Assert.assertNotNull(id);
+
+    }
+
+    @After
+    public void clean() throws DaoException, ServiceException {
+        UserService service = new UserServiceImpl();
+        TransactionFactory factory = new TransactionFactoryImpl();
+        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
+        User user = service.findByLoginAndPassword("TestUser", "pass");
+        if (user != null) {
+            service.delete(user.getId());
         }
-        Assert.assertEquals(user.getId(), new Integer(3));
 
     }
 }

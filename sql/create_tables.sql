@@ -17,10 +17,10 @@ CREATE TABLE `user_info`
   `surname`              VARCHAR(255)        NOT NULL,
   `about`                TEXT,
   `picture_link`         VARCHAR(255)                         DEFAULT NULL,
-  `email`                VARCHAR(255),
-  `date_of_birth`        DATE                NOT NULL,
+  `email`                VARCHAR(255)        NOT NULL,
+  `date_of_birth`        DATE,
   `date_of_registration` DATETIME            NOT NULL,
-  `gender`               ENUM ('no matter', 'male', 'female') DEFAULT 'no matter'
+  `gender`               ENUM ('no_matter', 'male', 'female') DEFAULT 'no_matter'
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -49,7 +49,7 @@ CREATE TABLE `filling`
 ALTER TABLE `user_info`
   ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
     ON UPDATE CASCADE
-    ON DELETE CASCADE ;
+    ON DELETE CASCADE;
 
 ALTER TABLE `filling`
   ADD FOREIGN KEY (`event_id`) REFERENCES `event_info` (`id`)

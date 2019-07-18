@@ -3,6 +3,7 @@ package com.katsubo.finaltask.entity;
 import com.katsubo.finaltask.entity.enums.Gender;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class UserInfo extends Entity {
     private User user;
@@ -13,7 +14,7 @@ public class UserInfo extends Entity {
     private String email;
     private Date dateOfBirth;
     private Date dateOfRegistration;
-    private Gender gender;
+    private Gender gender = Gender.NO_MATTER;
 
     public User getUser() {
         return user;
@@ -85,5 +86,42 @@ public class UserInfo extends Entity {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        UserInfo userInfo = (UserInfo) o;
+        return Objects.equals(user, userInfo.user) &&
+                Objects.equals(name, userInfo.name) &&
+                Objects.equals(surname, userInfo.surname) &&
+                Objects.equals(about, userInfo.about) &&
+                Objects.equals(pictureLink, userInfo.pictureLink) &&
+                Objects.equals(email, userInfo.email) &&
+                Objects.equals(dateOfBirth, userInfo.dateOfBirth) &&
+                Objects.equals(dateOfRegistration, userInfo.dateOfRegistration) &&
+                gender == userInfo.gender;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), user, name, surname, about, pictureLink, email, dateOfBirth, dateOfRegistration, gender);
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "user=" + user +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", about='" + about + '\'' +
+                ", pictureLink='" + pictureLink + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", dateOfRegistration=" + dateOfRegistration +
+                ", gender=" + gender +
+                '}';
     }
 }

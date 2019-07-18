@@ -17,22 +17,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import static com.katsubo.finaltask.command.Constances.*;
+
 public class LoginCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException{
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
         if (login == null || login.isEmpty()) {
             logger.log(Level.INFO, "invalid login was received");
-            return goBackWithError(request, "error login");//todo
+            return goBackWithError(request, "error_login");//todo
         }
         if (password == null || password.isEmpty()) {
             logger.log(Level.INFO, "invalid password was received");
-            return goBackWithError(request, "error password");//todo
+            return goBackWithError(request, "error_password");//todo
         }
         boolean userExist = false;
         try {
@@ -45,7 +47,7 @@ public class LoginCommand implements ActionCommand {
             return new CommandResult("controller?command=home_page", true);
         } else {
             logger.log(Level.INFO, "user with such login and password doesn't exist");
-            return goBackWithError(request, "error authentication");
+            return goBackWithError(request, "error_authentification");
         }
 
 
@@ -68,12 +70,13 @@ public class LoginCommand implements ActionCommand {
 
     private void setAtributesToSession(User user, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute("id", user.getId());
-        session.setAttribute("role", user.getClass().getSimpleName().toLowerCase());
+        session.setAttribute(ID.getFieldName(), user.getId());
+        session.setAttribute(ROLE.getFieldName(), user.getClass().getSimpleName().toLowerCase());
+        session.setAttribute(USER.getFieldName(), user.getLogin());
     }
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {
-        request.setAttribute(error, false);
+        request.setAttribute(error, true);
         return new CommandResult(ConfigurationManager.getProperty("path.page.login"), false);
     }
 }
