@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
+    public static final String READ_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
     private static final String READ_BY_LOGIN_AND_PASSWORD = "SELECT `id`, `login`, `password`, `permission` FROM `user` WHERE `login` = ? AND `password` = ?";
     private static final String READ_ALL = "SELECT `login`, `password`, `permission` FROM `user` ORDER BY `login`";
     private static final String READ_USER_EVENTS = "SELECT `event_id`, `user_role` FROM `filling` WHERE `user_id` = ?";
@@ -26,16 +27,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String READ = "SELECT `login`, `password`, `permission` FROM `user` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `user` SET `login` = ?, `password` = ?, `permission` = ? WHERE `id` = ?";
     private static final String DELETE = "DELETE FROM `user` WHERE `id` = ?";
-    public static final String FIND_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
-
     private static Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
     @Override
     public User read(String login, String password) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_BY_LOGIN_AND_PASSWORD);
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN_AND_PASSWORD)) {
             statement.setString(1, login);
             statement.setString(2, password);
             resultSet = statement.executeQuery();
@@ -61,23 +58,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public Integer find(String login) throws DaoException {
         Integer id = null;
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(FIND_BY_LOGIN);
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN)) {
             statement.setString(1, login);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -95,22 +83,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public List<User> read() throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_ALL);
+        try (PreparedStatement statement = connection.prepareStatement(READ_ALL)) {
             resultSet = statement.executeQuery();
             List<User> users = new ArrayList<>();
             User user = null;
@@ -134,22 +113,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public Map<Integer, Role> readAllUserEvents(Integer userId) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_USER_EVENTS);
+        try (PreparedStatement statement = connection.prepareStatement(READ_USER_EVENTS)) {
             statement.setInt(1, userId);
             resultSet = statement.executeQuery();
             Map<Integer, Role> eventsIdAndRole = new HashMap<>();
@@ -170,22 +140,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public Integer create(User entity) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
             statement.setInt(3, entity.getPermission().getFieldCode());
@@ -207,22 +168,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
+
         }
     }
 
     @Override
     public User read(Integer id) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ);
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             User user = null;
@@ -231,7 +184,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(id);
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.getPermission(resultSet.getInt("permission")));
+                user.setPermission(Permission.valueOf(resultSet.getString("permission").toUpperCase()));
             }
             return user;
         } catch (SQLException e) {
@@ -245,21 +198,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public void update(User entity) throws DaoException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(UPDATE);
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
             statement.setInt(3, entity.getPermission().getFieldCode());
@@ -267,35 +211,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update user");
             throw new DaoException(e + "Can't update user");
-        } finally {
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public void delete(Integer id) throws DaoException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(DELETE);
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't delete user id = " + id);
             throw new DaoException(e + "Can't delete user id = " + id);
-        } finally {
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 }

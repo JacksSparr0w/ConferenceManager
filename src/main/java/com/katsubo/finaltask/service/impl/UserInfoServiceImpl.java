@@ -45,6 +45,11 @@ public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService 
                 }
                 transaction.commit();
             } catch (DaoException e) {
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
                 throw new ServiceException(e);
             }
         } else {
@@ -61,6 +66,11 @@ public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService 
                 dao.delete(id);
                 transaction.commit();
             } catch (DaoException e) {
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
                 throw new ServiceException(e);
             }
         } else {

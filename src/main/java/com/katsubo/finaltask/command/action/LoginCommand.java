@@ -4,6 +4,7 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
+import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
@@ -63,11 +64,9 @@ public class LoginCommand implements ActionCommand {
     }
 
     private void setAtributesToSession(User user, HttpServletRequest request) {
+        UserDto userDto = new UserDto(user);
         HttpSession session = request.getSession();
-        session.setAttribute(ID.getFieldName(), user.getId());
-        session.setAttribute(ROLE.getFieldName(), user.getClass().getSimpleName().toLowerCase());
-        session.setAttribute(USER.getFieldName(), user.getLogin());
-        //todo send user
+        session.setAttribute(USER.getFieldName(), userDto);
     }
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {

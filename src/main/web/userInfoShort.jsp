@@ -15,7 +15,7 @@
             <a class="nav-link active" href="#">My confences</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Edit profile</a>
+            <a class="nav-link" href="controller?command=profile">Edit profile</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Add conference</a>

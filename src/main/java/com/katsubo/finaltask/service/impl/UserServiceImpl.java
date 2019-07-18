@@ -132,6 +132,11 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
                 }
                 transaction.commit();
             } catch (DaoException e) {
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
                 throw new ServiceException(e);
             }
 
@@ -150,6 +155,11 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
                 dao.delete(id);
                 transaction.commit();
             } catch (DaoException e) {
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
                 throw new ServiceException(e);
             }
         } else {

@@ -32,10 +32,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
 
     @Override
     public List<Event> read() throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_ALL);
+        try (PreparedStatement statement = connection.prepareStatement(READ_ALL)) {
             resultSet = statement.executeQuery();
             List<Event> events = new ArrayList<>();
             Event event = null;
@@ -64,22 +62,13 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public Map<Integer, Role> readUsersIdOnEventByEventId(Integer id) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_USERS_ON_EVENT);
+        try (PreparedStatement statement = connection.prepareStatement(READ_USERS_ON_EVENT)) {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             Map<Integer, Role> usersIdAndRole = new HashMap<>();
@@ -100,22 +89,13 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public List<Event> readByName(String search) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_BY_NAME);
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_NAME)) {
             statement.setString(1, "%" + search + "%");
             resultSet = statement.executeQuery();
             List<Event> events = new ArrayList<>();
@@ -125,7 +105,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setId(resultSet.getInt("id"));
                 event.setName(search);
                 event.setDescription(resultSet.getString("description"));
-                event.setTheme(Theme.getTheme(resultSet.getInt("theme")));
+                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));   //todo
                 event.setAddress(address);
@@ -145,22 +125,13 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public List<Event> readByDate(Date search) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_BY_DATE);
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_DATE)) {
             statement.setDate(1, new java.sql.Date(search.getTime()));
             resultSet = statement.executeQuery();
             List<Event> events = new ArrayList<>();
@@ -190,22 +161,13 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public List<Event> readByTheme(Theme search) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ_BY_THEME);
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_THEME)) {
             statement.setInt(1, search.getFieldCode());
             resultSet = statement.executeQuery();
             List<Event> events = new ArrayList<>();
@@ -219,7 +181,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));   //todo
                 event.setAddress(address);
-                event.setStatus(Status.getStatus(resultSet.getInt("status")));
+                event.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
                 event.setCapacity(resultSet.getInt("capacity"));
                 events.add(event);
             }
@@ -235,22 +197,13 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public Integer create(Event entity) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
             statement.setInt(3, entity.getTheme().getFieldCode());
@@ -276,22 +229,13 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public Event read(Integer id) throws DaoException {
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(READ);
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             Event event = null;
@@ -319,21 +263,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 resultSet.close();
             } catch (SQLException e) {
             }
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public void update(Event entity) throws DaoException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(UPDATE);
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
             statement.setInt(3, entity.getTheme().getFieldCode());
@@ -345,35 +280,17 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update event");
             throw new DaoException(e + "Can't update event");
-        } finally {
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
     @Override
     public void delete(Integer id) throws DaoException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(DELETE);
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't delete event");
             throw new DaoException(e + "Can't delete event");
-        } finally {
-            try {
-                if (statement == null) {
-                    throw new DaoException();
-                }
-                statement.close();
-            } catch (SQLException e) {
-            }
         }
     }
 }

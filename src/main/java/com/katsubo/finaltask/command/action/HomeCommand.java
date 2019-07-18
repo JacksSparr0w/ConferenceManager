@@ -33,7 +33,7 @@ public class HomeCommand implements ActionCommand {
         } else {
             setAttributesToSession(events, request);
         }
-        return new CommandResult(ConfigurationManager.getProperty("path.page.event"));
+        return new CommandResult(ConfigurationManager.getProperty("path.page.main"));
     }
 
     private List<Event> readEvents() throws ServiceException, DaoException {
