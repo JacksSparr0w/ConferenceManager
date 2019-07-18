@@ -20,9 +20,9 @@ import java.util.*;
 public class EventDaoImpl extends BaseDaoImpl implements EventDao {
     private static final String READ_ALL = "SELECT `id`, `name`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` ORDER BY `id`";
     private static final String READ_USERS_ON_EVENT = "SELECT `user_id`, `user_role` FROM `filling` WHERE `event_id` = ?";
-    private static final String READ_BY_NAME = "SELECT `id`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event` WHERE `name` LIKE ? ORDER BY `name`";
-    private static final String READ_BY_DATE = "SELECT `id`, `description`, `theme`, `address`, `status`, `capacity` FROM `event` WHERE `date` LIKE ? ORDER BY `date";
-    private static final String READ_BY_THEME = "SELECT `id`, `name`, `description`, `date`, `address`, `status`, `capacity` FROM `event` WHERE `theme` LIKE ? ORDER BY `theme`";
+    private static final String READ_BY_NAME = "SELECT `id`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `name` LIKE ? ORDER BY `name`";
+    private static final String READ_BY_DATE = "SELECT `id`, `description`, `theme`, `address`, `status`, `capacity` FROM `event_info` WHERE `date` LIKE ? ORDER BY `date`";
+    private static final String READ_BY_THEME = "SELECT `id`, `name`, `description`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `theme` LIKE ? ORDER BY `theme`";
     private static final String CREATE = "INSERT INTO `event_info` (`name`, `description`, `theme`, `date`, `address`, `status`, `capacity`) VALUE (?, ?, ?, ?, ?, ?, ?)";
     private static final String READ = "SELECT `name`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `event_info` SET `name` = ?, `description` = ?, `theme` = ?, `date` = ?, `address` = ?, `status` = ?, `capacity` = ? WHERE `id` = ?";
@@ -44,11 +44,11 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setId(resultSet.getInt("id"));
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
-                event.setTheme(Theme.getTheme(resultSet.getInt("theme")));
+                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));   //todo
                 event.setAddress(address);
-                event.setStatus(Status.valueOf(resultSet.getString("status")));
+                event.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
                 event.setCapacity(resultSet.getInt("capacity"));
                 events.add(event);
             }
@@ -300,11 +300,11 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setId(id);
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
-                event.setTheme(Theme.getTheme(resultSet.getInt("theme")));
+                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));   //todo
                 event.setAddress(address);
-                event.setStatus(Status.getStatus(resultSet.getInt("status")));
+                event.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
                 event.setCapacity(resultSet.getInt("capacity"));
             }
             return event;

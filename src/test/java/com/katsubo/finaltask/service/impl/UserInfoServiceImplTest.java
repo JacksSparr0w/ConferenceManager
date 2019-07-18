@@ -1,9 +1,6 @@
 package com.katsubo.finaltask.service.impl;
 
-import com.katsubo.finaltask.connection.PoolService;
 import com.katsubo.finaltask.dao.DaoException;
-import com.katsubo.finaltask.dao.TransactionFactory;
-import com.katsubo.finaltask.dao.impl.TransactionFactoryImpl;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
@@ -13,10 +10,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
 public class UserInfoServiceImplTest {
-    static PoolService service;
 
     @Test
     public void save() throws ServiceException, DaoException {
@@ -31,8 +25,6 @@ public class UserInfoServiceImplTest {
 
 
         UserInfoService service = new UserInfoServiceImpl();
-        TransactionFactory factory = new TransactionFactoryImpl();
-        ((UserInfoServiceImpl) service).setTransaction(factory.getTransaction());
         service.save(info);
 
         UserInfo actual = service.findByUser(user);

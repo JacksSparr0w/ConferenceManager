@@ -3,9 +3,6 @@ package com.katsubo.finaltask.command.action;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.dao.DaoException;
-import com.katsubo.finaltask.dao.Transaction;
-import com.katsubo.finaltask.dao.TransactionFactory;
-import com.katsubo.finaltask.dao.impl.TransactionFactoryImpl;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.entity.enums.Permission;
@@ -64,18 +61,15 @@ public class RegisterCommand implements ActionCommand {
             createUser(parameters, request);
             logger.log(Level.INFO, "user registrated and authorized with login - " + parameters.get(LOGIN));
             return new CommandResult("controller?command=home_page", true);
-        } catch (DaoException  e){
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
-
 
 
     }
 
     private boolean checkIfUserExist(String login) throws DaoException, ServiceException {
-        TransactionFactory factory = new TransactionFactoryImpl();
         UserService service = new UserServiceImpl();
-        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
         return service.isExist(login);
     }
 
@@ -85,17 +79,13 @@ public class RegisterCommand implements ActionCommand {
         user.setPassword(parameters.get(PASSWORD));
         user.setPermission(Permission.USER);
 
-        TransactionFactory factory = new TransactionFactoryImpl();
         UserService service = new UserServiceImpl();
-        Transaction transaction = factory.getTransaction();
-        ((UserServiceImpl) service).setTransaction(transaction);
         Integer id = service.save(user);
         if (id != null) {
             user.setId(id);
         } else {
             throw new ServiceException("Can't save user!");
         }
-        transaction.commit();
         setAtributesToSession(user, request);
 
         createUserInfo(user, parameters);
@@ -109,12 +99,9 @@ public class RegisterCommand implements ActionCommand {
         info.setEmail(parameters.get(EMAIL));
         info.setDateOfRegistration(new Date());
 
-        TransactionFactory factory = new TransactionFactoryImpl();
         UserInfoService service = new UserInfoServiceImpl();
-        Transaction transaction = factory.getTransaction();
-        ((UserInfoServiceImpl) service).setTransaction(transaction);
         service.save(info);
-        transaction.commit();
+        //todo move to service layer
 
     }
 

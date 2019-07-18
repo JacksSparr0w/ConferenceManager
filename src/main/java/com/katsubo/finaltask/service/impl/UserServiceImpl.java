@@ -20,6 +20,10 @@ import java.util.Map;
 public class UserServiceImpl extends ServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
+    public UserServiceImpl() throws DaoException {
+    }
+
+
     @Override
     public List<User> findAll() throws ServiceException {
         List<User> users = null;
@@ -54,19 +58,18 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
     @Override
     public boolean isExist(String login) throws ServiceException {
         Integer id;
-        if (login != null){
+        if (login != null) {
             UserDao dao = transaction.getUserDao();
-            try{
+            try {
                 id = dao.find(login);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
             return id != null;
+        } else {
+            logger.log(Level.ERROR, "Parameter - LOGIN is inalid");
+            throw new ServiceException("Parameter - LOGIN is invalid");
         }
-    else {
-        logger.log(Level.ERROR, "Parameter - LOGIN is inalid");
-        throw new ServiceException("Parameter - LOGIN is invalid");
-    }
     }
 
     @Override
@@ -127,9 +130,11 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
                 } else {
                     id = dao.create(user);
                 }
+                transaction.commit();
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
+
             return id;
         } else {
             logger.log(Level.ERROR, "Parameter - USER is invalid");
@@ -143,6 +148,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
             UserDao dao = transaction.getUserDao();
             try {
                 dao.delete(id);
+                transaction.commit();
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }

@@ -19,6 +19,9 @@ import java.util.Map;
 public class EventServiceImpl extends ServiceImpl implements EventService {
     private static final Logger logger = LogManager.getLogger(EventServiceImpl.class);
 
+    public EventServiceImpl() throws DaoException {
+    }
+
     @Override
     public List<Event> findAll() throws ServiceException {
         List<Event> events = null;
@@ -82,6 +85,7 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
                 } else {
                     dao.create(event);
                 }
+                transaction.commit();
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
@@ -97,6 +101,7 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
             EventDao dao = transaction.getEventDao();
             try {
                 dao.delete(id);
+                transaction.commit();
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }

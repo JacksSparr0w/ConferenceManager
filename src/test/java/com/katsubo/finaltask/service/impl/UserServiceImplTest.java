@@ -13,42 +13,32 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class UserServiceImplTest {
-    static PoolService service;
+    private static final String LOGIN = "qwerty1234";
+    private static final String PASSWORD = "sdfvggbvcxf";
 
     @Test
-    public void findById() throws DaoException {
-        String login = "root";
-        String password = "user";
+    public void findByLoginAndPassword() throws DaoException, ServiceException {
+        User expectedUser = new User();
+        expectedUser.setLogin(LOGIN);
+        expectedUser.setPassword(PASSWORD);
+        expectedUser.setPermission(Permission.USER);
 
-        User user = null;
-        try {
-            UserService userService = new UserServiceImpl();
-            TransactionFactory factory = new TransactionFactoryImpl();
-            ((UserServiceImpl) userService).setTransaction(factory.getTransaction());
-            user = userService.findByLoginAndPassword(login, password);
+        UserService userService = new UserServiceImpl();
+        expectedUser.setId(userService.save(expectedUser));
+        User actualUser = userService.findByLoginAndPassword(LOGIN, PASSWORD);
 
-        } catch (DaoException | ServiceException e) {
-
-        }
-        Assert.assertEquals(user.getId(), new Integer(1));
+        Assert.assertEquals(expectedUser, actualUser);
 
     }
 
     @Test
-    public void findById1() throws DaoException {
+    public void findById1() throws DaoException, ServiceException {
         String login = "user";
         String password = "user";
 
-        User user = null;
-        try {
-            UserService userService = new UserServiceImpl();
-            TransactionFactory factory = new TransactionFactoryImpl();
-            ((UserServiceImpl) userService).setTransaction(factory.getTransaction());
-            user = userService.findByLoginAndPassword(login, password);
+        UserService userService = new UserServiceImpl();
+        User user = userService.findByLoginAndPassword(login, password);
 
-        } catch (DaoException | ServiceException e) {
-
-        }
         Assert.assertEquals(user.getId(), new Integer(2));
 
     }
@@ -58,26 +48,21 @@ public class UserServiceImplTest {
         String login = "user1";
         String password = "user";
 
-        User user = null;
         UserService service = new UserServiceImpl();
-        TransactionFactory factory = new TransactionFactoryImpl();
-        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
-        user = service.findByLoginAndPassword(login, password);
+        User user = service.findByLoginAndPassword(login, password);
 
         Assert.assertNotNull(user.getId());
 
     }
 
     @Test
-    public void createUser() throws DaoException, ServiceException{
+    public void createUser() throws DaoException, ServiceException {
         User user = new User();
         user.setLogin("TestUser");
         user.setPassword("pass");
         user.setPermission(Permission.USER);
 
         UserService service = new UserServiceImpl();
-        TransactionFactory factory = new TransactionFactoryImpl();
-        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
         Integer id = service.save(user);
 
         Assert.assertNotNull(id);
@@ -87,8 +72,6 @@ public class UserServiceImplTest {
     @After
     public void clean() throws DaoException, ServiceException {
         UserService service = new UserServiceImpl();
-        TransactionFactory factory = new TransactionFactoryImpl();
-        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
         User user = service.findByLoginAndPassword("TestUser", "pass");
         if (user != null) {
             service.delete(user.getId());

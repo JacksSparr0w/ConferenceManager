@@ -3,8 +3,6 @@ package com.katsubo.finaltask.command.action;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.dao.DaoException;
-import com.katsubo.finaltask.dao.TransactionFactory;
-import com.katsubo.finaltask.dao.impl.TransactionFactoryImpl;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
@@ -54,12 +52,8 @@ public class LoginCommand implements ActionCommand {
     }
 
     private boolean initializeUser(String login, String password, HttpServletRequest request) throws DaoException, ServiceException {
-        User user;
-        TransactionFactory factory = new TransactionFactoryImpl();
         UserService service = new UserServiceImpl();
-        ((UserServiceImpl) service).setTransaction(factory.getTransaction());
-        user = service.findByLoginAndPassword(login, password);
-
+        User user = service.findByLoginAndPassword(login, password);
         if (user != null && user.getId() != null) {
             setAtributesToSession(user, request);
             return true;
@@ -73,6 +67,7 @@ public class LoginCommand implements ActionCommand {
         session.setAttribute(ID.getFieldName(), user.getId());
         session.setAttribute(ROLE.getFieldName(), user.getClass().getSimpleName().toLowerCase());
         session.setAttribute(USER.getFieldName(), user.getLogin());
+        //todo send user
     }
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {
