@@ -4,6 +4,7 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
+import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.entity.enums.Permission;
 import com.katsubo.finaltask.service.ServiceException;
@@ -22,6 +23,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.katsubo.finaltask.command.Constances.USER;
+
 public class RegisterCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(RegisterCommand.class);
 
@@ -30,6 +33,8 @@ public class RegisterCommand implements ActionCommand {
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
     private static final String EMAIL = "email";
+    private static final String ERROR_REGISTRATION = "error_registration";
+    private static final String ERROR = "error_";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -43,7 +48,7 @@ public class RegisterCommand implements ActionCommand {
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
                 logger.log(Level.ERROR, "Invalid " + entry.getKey() + " was received");
-                return goBackWithError(request, "error " + entry.getKey());
+                return goBackWithError(request, ERROR + entry.getKey());
             }
         }
 
@@ -55,12 +60,13 @@ public class RegisterCommand implements ActionCommand {
         }
         if (userExist) {
             logger.log(Level.INFO, "user with such login and password already exist");
-            return goBackWithError(request, "error_registration");
+            return goBackWithError(request, ERROR_REGISTRATION);
         }
         try {
             createUser(parameters, request);
             logger.log(Level.INFO, "user registrated and authorized with login - " + parameters.get(LOGIN));
             return new CommandResult("controller?command=home_page", true);
+            //todo
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -101,15 +107,13 @@ public class RegisterCommand implements ActionCommand {
 
         UserInfoService service = new UserInfoServiceImpl();
         service.save(info);
-        //todo move to service layer
 
     }
 
     private void setAtributesToSession(User user, HttpServletRequest request) {
+        UserDto userDto = new UserDto(user);
         HttpSession session = request.getSession();
-        session.setAttribute("id", user.getId());
-        session.setAttribute("role", user.getClass().getSimpleName().toLowerCase());
-        session.setAttribute("user", user.getLogin());
+        session.setAttribute(USER.getFieldName(), userDto);
     }
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {

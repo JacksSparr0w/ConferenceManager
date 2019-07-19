@@ -22,6 +22,9 @@ public class LoginCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+    private static final String ERROR_LOGIN = "error_login";
+    private static final String ERROR_PASSWORD = "error_password";
+    private static final String ERROR_AUTHENTIFICATION = "error_authentification";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -29,11 +32,11 @@ public class LoginCommand implements ActionCommand {
         String password = request.getParameter(PASSWORD);
         if (login == null || login.isEmpty()) {
             logger.log(Level.INFO, "invalid login was received");
-            return goBackWithError(request, "error_login");//todo
+            return goBackWithError(request, ERROR_LOGIN);
         }
         if (password == null || password.isEmpty()) {
             logger.log(Level.INFO, "invalid password was received");
-            return goBackWithError(request, "error_password");//todo
+            return goBackWithError(request, ERROR_PASSWORD);
         }
         boolean userExist = false;
         try {
@@ -44,9 +47,10 @@ public class LoginCommand implements ActionCommand {
         if (userExist) {
             logger.log(Level.INFO, "user authorized with login - " + login);
             return new CommandResult("controller?command=home_page", true);
+            //todo think about what receive into result: jsp or command
         } else {
             logger.log(Level.INFO, "user with such login and password doesn't exist");
-            return goBackWithError(request, "error_authentification");
+            return goBackWithError(request, ERROR_AUTHENTIFICATION);
         }
 
 

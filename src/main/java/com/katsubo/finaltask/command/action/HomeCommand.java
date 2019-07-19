@@ -13,11 +13,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
+
+import static com.katsubo.finaltask.command.Constances.INCLUDE;
 
 public class HomeCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(HomeCommand.class);
+    private static final String THERE_NOT_EVENTS = "there_not_events";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -29,9 +31,9 @@ public class HomeCommand implements ActionCommand {
         }
         if (events == null || events.size() == 0) {
             logger.log(Level.INFO, "there is not events yet!");
-            request.setAttribute("error", "There is not events yet!");
+            request.setAttribute("error", THERE_NOT_EVENTS);
         } else {
-            setAttributesToSession(events, request);
+            setAttributesToRequest(events, request);
         }
         return new CommandResult(ConfigurationManager.getProperty("path.page.main"));
     }
@@ -43,8 +45,8 @@ public class HomeCommand implements ActionCommand {
     }
 
 
-    private void setAttributesToSession(List<Event> events, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.setAttribute("events", events);
+    private void setAttributesToRequest(List<Event> events, HttpServletRequest request) {
+        request.setAttribute(INCLUDE.getFieldName(), ConfigurationManager.getProperty("path.page.eventsShort"));
+        request.setAttribute("events", events);
     }
 }

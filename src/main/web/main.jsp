@@ -58,7 +58,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="controller?command=home_page">Home
                         <span class="sr-only">(current)</span>
                     </a>
@@ -76,7 +76,7 @@
                 <c:choose>
                     <c:when test="${user != null}">
                         <a class="nav-link active" href="controller?command=profile">
-                            <h5>${user.login}</h5>
+                            <h6>${user.login}</h6>
                         </a>
                     </c:when>
                     <c:otherwise>
@@ -99,19 +99,19 @@
 
 <div class="container" style="margin-top:30px">
     <div class="row">
-        <c:if test="${user != null}">
-            <jsp:include page="userInfoShort.jsp"/>
-        </c:if>
+        <div class="col-sm-3">
+            <c:if test="${user != null}">
+                <jsp:include page="menu.jsp"/>
+            </c:if>
+        </div>
         <div class="col">
-            <p class="text-right">Last added conferences</p>
             <!--//todo create forToken-->
-
-
-            <jsp:include page="eventInfo.jsp" flush="true">
-                <jsp:param name="start" value="0"/>
-                <jsp:param name="end" value="1"/>
-            </jsp:include>
-
+            <c:if test="${includeView != null}">
+                <jsp:include page="${includeView}" flush="true"/>
+            </c:if>
+            <c:if test="${includeView == null}">
+                <jsp:include page="eventInfo.jsp" flush="true"/>
+            </c:if>
         </div>
     </div>
 </div>

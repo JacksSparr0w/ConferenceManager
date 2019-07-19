@@ -28,7 +28,7 @@ public class CommandFactory {
                 //
                 break;
             case PROFILE:
-                //
+                result = new ProfileCommand();
                 break;
             case EDIT_PROFILE:
                 //

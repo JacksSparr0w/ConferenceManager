@@ -7,8 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:forEach var="event" items="${events}" varStatus="status" begin="${start}" end="${end}">
-    <div class="col-sm-12">
+<p class="text-right">Last added conferences</p>
+<c:forEach var="event" items="${events}" varStatus="status">
+    <div class="container">
         <h2>${event.name}</h2>
         <!--//todo don't user get/set-->
         <h5>${event.getDate()}</h5>

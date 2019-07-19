@@ -12,7 +12,7 @@ CREATE TABLE `user`
 CREATE TABLE `user_info`
 (
   `id`                   INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `user_id`              INTEGER             NOT NULL,
+  `user_id`              INTEGER UNIQUE      NOT NULL,
   `name`                 VARCHAR(255)        NOT NULL,
   `surname`              VARCHAR(255)        NOT NULL,
   `about`                TEXT,
