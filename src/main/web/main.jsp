@@ -99,7 +99,7 @@
 
 <div class="container" style="margin-top:30px">
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <c:if test="${user != null}">
                 <jsp:include page="menu.jsp"/>
             </c:if>
