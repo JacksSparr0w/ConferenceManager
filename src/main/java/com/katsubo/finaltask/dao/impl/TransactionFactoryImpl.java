@@ -13,9 +13,11 @@ import java.sql.SQLException;
 
 public class TransactionFactoryImpl implements TransactionFactory {
     private static final Logger logger = LogManager.getLogger(TransactionFactoryImpl.class);
+    private static TransactionFactoryImpl instance;
     private Connection connection;
 
-    public TransactionFactoryImpl() throws DaoException {
+
+    private TransactionFactoryImpl() throws DaoException {
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -24,8 +26,13 @@ public class TransactionFactoryImpl implements TransactionFactory {
             logger.log(Level.ERROR, "Can't initialize transactions");
             throw new DaoException(e + "Can't initialize transactions");
         }
+    }
 
-
+    public static TransactionFactoryImpl getInstance() throws DaoException {
+        if (instance == null) {
+            instance = new TransactionFactoryImpl();
+        }
+        return instance;
     }
 
     @Override

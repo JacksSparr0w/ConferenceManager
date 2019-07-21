@@ -277,6 +277,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             statement.setString(6, entity.getStatus().toString());
             statement.setInt(7, entity.getCapacity());
             statement.setInt(8, entity.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update event");
             throw new DaoException(e + "Can't update event");

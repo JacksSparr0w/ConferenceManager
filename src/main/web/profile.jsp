@@ -7,9 +7,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:if test="${error_find_userInfo eq true}">
-    <h2>Error to find your info!</h2>
-</c:if>
+<c:choose>
+    <c:when test="${error_find_userInfo eq true}">
+        <h2>Error to find your info!</h2>
+    </c:when>
+    <c:when test="${incorrect_verify_password eq true}">
+        <h5>Verifu password is incorrect!</h5>
+    </c:when>
+</c:choose>
+
 
 <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
@@ -35,14 +41,14 @@
 
             <div class="tab-content profile-tab" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <form class="form-group" action="controller?command=editUser" method="POST">
+                    <form class="form-group" action="controller?command=edit_user" method="POST">
 
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
                                 <label for="login">Login</label>
                             </div>
                             <div class="col-md-6">
-                                <input type="login" class="form-control" name="login" id="login"
+                                <input type="login" class="form-control" name="login" id="login" value="${user.login}"
                                        placeholder="${user.login}" title="Edit your login.">
                             </div>
                         </div>
@@ -60,7 +66,7 @@
                                 <label for="login">Repeat password</label>
                             </div>
                             <div class="col-md-6">
-                                <input type="password2" class="form-control" name="password2" id="password2"
+                                <input type="password" class="form-control" name="password2" id="password2"
                                        placeholder="Repeat" title="Repeat your new password.">
                             </div>
                         </div>
@@ -78,7 +84,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form class="form-group" action="controller?command=editUserInfo" method="POST">
+                    <form class="form-group" action="controller?command=edit_user_info" method="POST">
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
                                 <label for="name">First name</label>

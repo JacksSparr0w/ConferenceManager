@@ -9,13 +9,8 @@ import com.katsubo.finaltask.service.Service;
 public class ServiceImpl implements Service {
     Transaction transaction;
 
-    /*public void setTransaction(Transaction transaction){
-        this.transaction = transaction;
-    }*/
-
     ServiceImpl() throws DaoException {
-        TransactionFactory factory = new TransactionFactoryImpl();
-        this.transaction = factory.getTransaction();
+        this.transaction = TransactionFactoryImpl.getInstance().getTransaction();
     }
 
 }

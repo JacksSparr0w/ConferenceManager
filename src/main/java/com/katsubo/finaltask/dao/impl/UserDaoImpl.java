@@ -208,6 +208,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             statement.setString(2, entity.getPassword());
             statement.setInt(3, entity.getPermission().getFieldCode());
             statement.setInt(4, entity.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update user");
             throw new DaoException(e + "Can't update user");

@@ -143,6 +143,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             statement.setDate(8, new Date(entity.getDateOfRegistration().getTime()));
             statement.setInt(9, entity.getGender().getFieldCode());
             statement.setInt(10, entity.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update userInfo");
             throw new DaoException(e + "Can't update userInfo");

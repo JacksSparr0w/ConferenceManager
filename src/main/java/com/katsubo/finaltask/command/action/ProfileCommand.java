@@ -37,7 +37,7 @@ public class ProfileCommand implements ActionCommand {
                 logger.log(Level.INFO, e.getMessage());
                 goBackWithError(request, e.getMessage());
             }
-            setAttributesToRequest(info, request);
+            setAttributes(info, request);
             return new CommandResult(ConfigurationManager.getProperty("path.page.main"), false);
         } else {
             logger.log(Level.INFO, ERROR_FIND_USER_DTO);
@@ -56,9 +56,9 @@ public class ProfileCommand implements ActionCommand {
         }
     }
 
-    private void setAttributesToRequest(UserInfo info, HttpServletRequest request) {
+    private void setAttributes(UserInfo info, HttpServletRequest request) {
         request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("path.page.profile"));
-        request.setAttribute(Constances.USER_INFO.getFieldName(), info);
+        request.getSession().setAttribute(Constances.USER_INFO.getFieldName(), info);
     }
 
 

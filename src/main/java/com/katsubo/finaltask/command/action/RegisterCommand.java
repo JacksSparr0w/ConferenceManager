@@ -92,7 +92,7 @@ public class RegisterCommand implements ActionCommand {
         } else {
             throw new ServiceException("Can't save user!");
         }
-        setAtributesToSession(user, request);
+        setAttributesToSession(user, request);
 
         createUserInfo(user, parameters);
     }
@@ -110,7 +110,7 @@ public class RegisterCommand implements ActionCommand {
 
     }
 
-    private void setAtributesToSession(User user, HttpServletRequest request) {
+    private void setAttributesToSession(User user, HttpServletRequest request) {
         UserDto userDto = new UserDto(user);
         HttpSession session = request.getSession();
         session.setAttribute(USER.getFieldName(), userDto);

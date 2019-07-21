@@ -30,7 +30,10 @@ public class CommandFactory {
             case PROFILE:
                 result = new ProfileCommand();
                 break;
-            case EDIT_PROFILE:
+            case EDIT_USER:
+                result = new EditUserCommand();
+                break;
+            case EDIT_USER_INFO:
                 //
                 break;
             case SIGN_UP_FOR_EVENT:
