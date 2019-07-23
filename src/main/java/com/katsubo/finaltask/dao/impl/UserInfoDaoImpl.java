@@ -13,9 +13,9 @@ import java.sql.*;
 
 public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
     public static final String READ_BY_USER = "SELECT `id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration`, `gender` FROM `user_info` WHERE `user_id` = ?";
-    public static final String CREATE = "INSERT INTO `user_info` (`user_id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration`, `gender`) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String CREATE = "INSERT INTO `user_info` (`user_id`, `name`, `surname`, `email`, `date_of_registration`) VALUE (?, ?, ?, ?, ?)";
     public static final String READ = "SELECT `user_id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration`, `gender` FROM `user_info` WHERE `id` = ?";
-    public static final String UPDATE = "UPDATE `user_info` SET `user_id` = ?, `name` = ?, `surname` = ?, `about` = ?, `picture_link` = ?, `email` = ?, `date_of_birth` = ?, `date_of_registration` = ?, `gender` = ? WHERE `id` = ?";
+    public static final String UPDATE = "UPDATE `user_info` SET `user_id` = ?, `name` = ?, `surname` = ?, `about` = ?, `picture_link` = ?, `email` = ?, `date_of_birth` = ?, `gender` = ? WHERE `id` = ?";
     public static final String DELETE = "DELETE FROM `user_info` WHERE `id` = ?";
     private static final Logger logger = LogManager.getLogger(UserInfoDaoImpl.class);
 
@@ -61,17 +61,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             statement.setInt(1, entity.getUser().getId());
             statement.setString(2, entity.getName());
             statement.setString(3, entity.getSurname());
-            statement.setString(4, entity.getAbout() == null ? "" : entity.getAbout());
-            statement.setString(5, entity.getPictureLink() == null ? "" : entity.getPictureLink());
-            statement.setString(6, entity.getEmail() == null ? "" : entity.getEmail());
-            if (entity.getDateOfBirth() != null) {
-                statement.setDate(7, new Date(entity.getDateOfBirth().getTime()));
-            } else {
-                statement.setDate(7, new Date(new java.util.Date().getTime()));
-            }
-
-            statement.setDate(8, new Date(entity.getDateOfRegistration().getTime()));
-            statement.setInt(9, entity.getGender().getFieldCode());
+            statement.setString(4, entity.getEmail());
+            statement.setDate(5, new Date(entity.getDateOfRegistration().getTime()));
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -140,9 +131,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             statement.setString(5, entity.getPictureLink());
             statement.setString(6, entity.getEmail());
             statement.setDate(7, new Date(entity.getDateOfBirth().getTime()));
-            statement.setDate(8, new Date(entity.getDateOfRegistration().getTime()));
-            statement.setInt(9, entity.getGender().getFieldCode());
-            statement.setInt(10, entity.getId());
+            statement.setInt(8, entity.getGender().getFieldCode());
+            statement.setInt(9, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update userInfo");

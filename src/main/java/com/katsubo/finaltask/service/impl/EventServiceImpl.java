@@ -2,21 +2,15 @@ package com.katsubo.finaltask.service.impl;
 
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
-import com.katsubo.finaltask.dao.UserDao;
 import com.katsubo.finaltask.entity.Event;
-import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.enums.Role;
-import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class EventServiceImpl extends ServiceImpl implements EventService {
+public class EventServiceImpl extends ServiceImpl implements com.katsubo.finaltask.service.EventService{
     private static final Logger logger = LogManager.getLogger(EventServiceImpl.class);
 
     public EventServiceImpl() throws DaoException {
@@ -49,28 +43,6 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
             return event;
         } else {
             logger.log(Level.ERROR, "Parameter - ID is inalid");
-            throw new ServiceException("Parameter - ID is invalid");
-        }
-    }
-
-    @Override
-    public Map<User, Role> findUsersWithRolesByEventId(Integer id) throws ServiceException {
-        if (id >= 0) {
-            Map<User, Role> users = new HashMap<>();
-            EventDao eventDao = transaction.getEventDao();
-            UserDao userDao = transaction.getUserDao();
-            try {
-                Map<Integer, Role> usersId;
-                usersId = eventDao.readUsersIdOnEventByEventId(id);
-                for (Map.Entry<Integer, Role> entry : usersId.entrySet()) {
-                    users.put(userDao.read(entry.getKey()), entry.getValue());
-                }
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            }
-            return users;
-        } else {
-            logger.log(Level.ERROR, "Parameter - ID is invalid");
             throw new ServiceException("Parameter - ID is invalid");
         }
     }

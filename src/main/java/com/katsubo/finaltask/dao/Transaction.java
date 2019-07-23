@@ -7,6 +7,8 @@ public interface Transaction {
 
     UserInfoDao getUserInfoDao();
 
+    RegistrationDao getRegistrationDao();
+
     void commit() throws DaoException;
 
     void rollback() throws DaoException;

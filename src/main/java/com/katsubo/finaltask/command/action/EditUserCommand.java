@@ -1,12 +1,10 @@
 package com.katsubo.finaltask.command.action;
 
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
-import com.katsubo.finaltask.entity.enums.Permission;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
@@ -19,31 +17,33 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class EditUserCommand implements ActionCommand {
-    public static final String ERROR_UPDATE_USER = "error_update_user";
+    private static final String ERROR_UPDATE_USER = "error_update_user";
+    private static final String INCORRECT_VERIFY_PASSWORD = "incorrect_verify_password";
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
     private static final String REPEAT_PASSWORD = "password2";
-    public static final String INCORRECT_VERIFY_PASSWORD = "incorrect_verify_password";
+    private static final String DONE = "done";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        clearWarnings(request);
         UserDto userDto = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
         String repeatPassword = request.getParameter(REPEAT_PASSWORD);
 
-        if (!password.equals(repeatPassword)){
-            logger.log(Level.INFO, "Verify password is incorrect");
-            return goBackWithError(INCORRECT_VERIFY_PASSWORD, request);
-        }
-
         User user = new User();
         user.setId(userDto.getUserId());
         user.setLogin(login);
-        user.setPassword(password);
-        user.setPermission(userDto.getPermission());
 
+        if (!password.equals(repeatPassword)) {
+            logger.log(Level.INFO, "Verify password is incorrect");
+            return goBackWithError(INCORRECT_VERIFY_PASSWORD, request);
+        } else if (!password.isEmpty() && !repeatPassword.isEmpty()) {
+            user.setPassword(password);
+        }
+        user.setPermission(userDto.getPermission());
         try {
             update(user);
         } catch (DaoException e) {
@@ -52,7 +52,13 @@ public class EditUserCommand implements ActionCommand {
         }
         setAttributesToSession(user, request);
 
-        return new CommandResult(ConfigurationManager.getProperty("path.page.main"), false);
+        return new CommandResult("/controller?command=profile", false);
+    }
+
+    private void clearWarnings(HttpServletRequest request) {
+        request.removeAttribute(DONE);
+        request.removeAttribute(ERROR_UPDATE_USER);
+        request.removeAttribute(INCORRECT_VERIFY_PASSWORD);
     }
 
     private void update(User user) throws DaoException, ServiceException {
@@ -64,16 +70,15 @@ public class EditUserCommand implements ActionCommand {
     }
 
     private void setAttributesToSession(User user, HttpServletRequest request) {
-        //include fragment into main page
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("path.page.profile"));
+        request.setAttribute(DONE, true);
         HttpSession session = request.getSession();
         UserDto userDto = new UserDto(user);
         session.setAttribute(Constances.USER.getFieldName(), userDto);
+
     }
 
-    private CommandResult goBackWithError(String errorUpdateUser, HttpServletRequest request) {
-        request.setAttribute(ERROR_UPDATE_USER, true);
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("path.page.profile"));
-        return new CommandResult(ConfigurationManager.getProperty("path.page.main"), true);
+    private CommandResult goBackWithError(String error, HttpServletRequest request) {
+        request.setAttribute(error, true);
+        return new CommandResult("/controller?command=profile", false);
     }
 }

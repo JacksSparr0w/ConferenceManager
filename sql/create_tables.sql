@@ -19,8 +19,7 @@ CREATE TABLE `user_info`
   `picture_link`         VARCHAR(255)                         DEFAULT NULL,
   `email`                VARCHAR(255)        NOT NULL,
   `date_of_birth`        DATE,
-  `date_of_registration` DATETIME            NOT NULL,
-  `gender`               ENUM ('no_matter', 'male', 'female') DEFAULT 'no_matter'
+  `date_of_registration` DATETIME            NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -38,9 +37,10 @@ CREATE TABLE `event_info`
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
-CREATE TABLE `filling`
+CREATE TABLE `registrations`
 (
-  `event_id`  INTEGER PRIMARY KEY,
+  `id`        INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `event_id`  INTEGER,
   `user_id`   INTEGER,
   `user_role` ENUM ('listener', 'teller') DEFAULT 'listener'
 ) ENGINE = INNODB
@@ -51,12 +51,12 @@ ALTER TABLE `user_info`
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
-ALTER TABLE `filling`
+ALTER TABLE `registrations`
   ADD FOREIGN KEY (`event_id`) REFERENCES `event_info` (`id`)
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
-ALTER TABLE `filling`
+ALTER TABLE `registrations`
   ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
     ON UPDATE CASCADE
     ON DELETE CASCADE;

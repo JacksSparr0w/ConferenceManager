@@ -11,8 +11,6 @@ import java.util.Map;
 public interface EventDao extends Dao<Event> {
     List<Event> read() throws DaoException;
 
-    Map<Integer, Role> readUsersIdOnEventByEventId(Integer id) throws DaoException;
-
     List<Event> readByName(String search) throws DaoException;
 
     List<Event> readByDate(Date search) throws DaoException;

@@ -36,6 +36,12 @@ public class TransactionImpl implements Transaction {
         return (UserInfoDao) setConnection(dao);
     }
 
+    @Override
+    public RegistrationDao getRegistrationDao() {
+        RegistrationDao dao = new RegistrationDaoImpl();
+        return (RegistrationDao) setConnection(dao);
+    }
+
     private Dao setConnection(Dao dao) {
         ((BaseDaoImpl) dao).setConnection(connection);
         return dao;

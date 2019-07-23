@@ -6,9 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<ul class="nav nav-pills flex-column">
+<hr class="dropdown-divider">
+<ul class="nav nav-tabs flex-column">
     <li class="nav-item">
-        <a class="nav-link active" href="#">My confences</a>
+        <a class="nav-link" href="#">My confences</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="controller?command=profile">Profile</a>
@@ -17,4 +18,3 @@
         <a class="nav-link" href="#">Add conference</a>
     </li>
 </ul>
-<hr class="dropdown-divider">

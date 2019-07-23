@@ -23,17 +23,17 @@ public class HomeCommand implements ActionCommand {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        List<Event> events;
+        List<Event> allEvents;
         try {
-            events = readEvents();
+            allEvents = readEvents();
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
-        if (events == null || events.size() == 0) {
+        if (allEvents == null || allEvents.size() == 0) {
             logger.log(Level.INFO, "there is not events yet!");
             request.setAttribute("error", THERE_NOT_EVENTS);
         } else {
-            setAttributesToRequest(events, request);
+            setAttributesToRequest(allEvents, request);
         }
         return new CommandResult(ConfigurationManager.getProperty("path.page.main"));
     }

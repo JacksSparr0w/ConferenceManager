@@ -4,7 +4,6 @@ import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
-import com.katsubo.finaltask.entity.enums.Role;
 import com.katsubo.finaltask.entity.enums.Status;
 import com.katsubo.finaltask.entity.enums.Theme;
 import org.apache.logging.log4j.Level;
@@ -15,11 +14,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class EventDaoImpl extends BaseDaoImpl implements EventDao {
     private static final String READ_ALL = "SELECT `id`, `name`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` ORDER BY `id`";
-    private static final String READ_USERS_ON_EVENT = "SELECT `user_id`, `user_role` FROM `filling` WHERE `event_id` = ?";
     private static final String READ_BY_NAME = "SELECT `id`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `name` LIKE ? ORDER BY `name`";
     private static final String READ_BY_DATE = "SELECT `id`, `description`, `theme`, `address`, `status`, `capacity` FROM `event_info` WHERE `date` LIKE ? ORDER BY `date`";
     private static final String READ_BY_THEME = "SELECT `id`, `name`, `description`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `theme` LIKE ? ORDER BY `theme`";
@@ -54,33 +54,6 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't read all events");
             throw new DaoException(e + "Can't read all events");
-        } finally {
-            try {
-                if (resultSet == null) {
-                    throw new DaoException();
-                }
-                resultSet.close();
-            } catch (SQLException e) {
-            }
-        }
-    }
-
-    @Override
-    public Map<Integer, Role> readUsersIdOnEventByEventId(Integer id) throws DaoException {
-        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(READ_USERS_ON_EVENT)) {
-            statement.setInt(1, id);
-            resultSet = statement.executeQuery();
-            Map<Integer, Role> usersIdAndRole = new HashMap<>();
-            while (resultSet.next()) {
-                Integer userId = resultSet.getInt("user_id");
-                Role role = Role.valueOf(resultSet.getString("role"));
-                usersIdAndRole.put(userId, role);
-            }
-            return usersIdAndRole;
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't read users on event");
-            throw new DaoException(e + "Can't read users on event");
         } finally {
             try {
                 if (resultSet == null) {

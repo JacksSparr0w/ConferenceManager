@@ -34,7 +34,7 @@ public class CommandFactory {
                 result = new EditUserCommand();
                 break;
             case EDIT_USER_INFO:
-                //
+                result = new EditUserInfoCommand();
                 break;
             case SIGN_UP_FOR_EVENT:
                 //

@@ -4,7 +4,6 @@ import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.UserDao;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.enums.Permission;
-import com.katsubo.finaltask.entity.enums.Role;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,15 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public static final String READ_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
     private static final String READ_BY_LOGIN_AND_PASSWORD = "SELECT `id`, `login`, `password`, `permission` FROM `user` WHERE `login` = ? AND `password` = ?";
     private static final String READ_ALL = "SELECT `login`, `password`, `permission` FROM `user` ORDER BY `login`";
-    private static final String READ_USER_EVENTS = "SELECT `event_id`, `user_role` FROM `filling` WHERE `user_id` = ?";
     private static final String CREATE = "INSERT INTO `user` (`login`, `password`, `permission`) VALUE (?, ?, ?)";
     private static final String READ = "SELECT `login`, `password`, `permission` FROM `user` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `user` SET `login` = ?, `password` = ?, `permission` = ? WHERE `id` = ?";
@@ -105,33 +101,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can'r read all users");
             throw new DaoException(e + "Can'r read all users");
-        } finally {
-            try {
-                if (resultSet == null) {
-                    throw new DaoException();
-                }
-                resultSet.close();
-            } catch (SQLException e) {
-            }
-        }
-    }
-
-    @Override
-    public Map<Integer, Role> readAllUserEvents(Integer userId) throws DaoException {
-        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(READ_USER_EVENTS)) {
-            statement.setInt(1, userId);
-            resultSet = statement.executeQuery();
-            Map<Integer, Role> eventsIdAndRole = new HashMap<>();
-            while (resultSet.next()) {
-                Integer eventId = resultSet.getInt("event_id");
-                Role role = Role.valueOf(resultSet.getString("role"));
-                eventsIdAndRole.put(eventId, role);
-            }
-            return eventsIdAndRole;
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't read all user events");
-            throw new DaoException(e + "Can't read all user events");
         } finally {
             try {
                 if (resultSet == null) {

@@ -7,22 +7,45 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:choose>
-    <c:when test="${error_find_userInfo eq true}">
-        <h2>Error to find your info!</h2>
-    </c:when>
-    <c:when test="${incorrect_verify_password eq true}">
-        <h5>Verifu password is incorrect!</h5>
-    </c:when>
-</c:choose>
 
+<link rel="stylesheet" type="text/css" href="css/avatar.css">
+
+<c:choose>
+    <c:when test="${done == true}">
+        <div class="container alert alert-success fade show m-t-16" role="alert">
+            Profile change was successful!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:when>
+    <c:when test="${error_find_userInfo == true}">
+        <div class="container alert alert-warning fade show m-t-16" role="alert">
+            <h2>Error to find your info!</h2>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:when>
+    <c:when test="${incorrect_verify_password  == true}">
+        <div class="container alert alert-warning fade show m-t-16" role="alert">
+            Verify password is incorrect!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <!---->
+    </c:otherwise>
+</c:choose>
 
 <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"/>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row p-2">
         <div class="col-sm-10"><h5>${userInfo.name} ${userInfo.surname}</h5></div>
     </div>
@@ -84,13 +107,13 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form class="form-group" action="controller?command=edit_user_info" method="POST">
+                    <form class="form-group" action="controller?command=edit_user_info" method="POST" id="editUserInfo">
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
                                 <label for="name">First name</label>
                             </div>
                             <div class="col-md-6">
-                                <input type="name" class="form-control" name="name" id="name"
+                                <input type="name" class="form-control" name="name" id="name" value="${userInfo.name}"
                                        placeholder="${userInfo.name}" title="Edit your first name.">
                             </div>
                         </div>
@@ -100,6 +123,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="surname" class="form-control" name="surname" id="surname"
+                                       value="${userInfo.surname}"
                                        placeholder="${userInfo.surname}" title="Edit your second name.">
                             </div>
                         </div>
@@ -109,6 +133,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" id="email"
+                                       value="${userInfo.email}"
                                        placeholder="${userInfo.email}" title="Edit your email.">
                             </div>
                         </div>
@@ -147,8 +172,8 @@
 
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-12">
-                                <label for="about_me">About me</label>
-                                <textarea rows="3" class="form-control rounded" name="about_me" id="about_me"
+                                <label for="about">About me</label>
+                                <textarea rows="3" class="form-control rounded" name="about" id="about"
                                           placeholder="${userInfo.about}" title="Edit text about you."></textarea>
                             </div>
                         </div>
@@ -167,23 +192,32 @@
 
         </div><!--/col-9-->
         <div class="col-sm-3"><!--right col-->
-            <div class="text-center figure-img">
-                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail rounded-circle"
-                     alt="avatar">
-                <h6>Upload your avatar</h6>
-                <input type="file" class="text-center center-block file-upload">
+            <div class="col-md-4 text-center">
+                <div id="img-preview-block" class="img-circle avatar avatar-original center-block" style="background-size:cover;
+                background-image:url(http://robohash.org/sitsequiquia.png?size=120x120)"></div>
+                <br>
+                <span class="btn btn-link btn-file">Edit avatar <input type="file" id="upload-img" form="editUserInfo" name="avatar"></span>
             </div>
+            <script>
+                $(function() {
+                    $("#upload-img").on("change", function()
+                    {
+                        var files = !!this.files ? this.files : [];
+                        if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+                        if (/^image/.test( files[0].type)){ // only image file
+                            var reader = new FileReader(); // instance of the FileReader
+                            reader.readAsDataURL(files[0]); // read the local file
+
+                            reader.onload = function(e){ // set image data as background of div
+
+                                $("#img-preview-block").css({'background-image': 'url('+e.target.result +')', "background-size": "cover"});
+                            }
+                        }
+                    });
+                });
+            </script>
             <hr class="dropdown-divider">
-            <br>
-
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
-            </ul>
-
         </div><!--/col-3-->
     </div>
     <!--/row-->
