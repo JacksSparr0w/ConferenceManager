@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.command.action;
 
+import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
@@ -28,7 +29,7 @@ public class EditUserInfoCommand implements ActionCommand {
     private static final String DONE = "done";
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         clearWarnings(request);
         UserInfo info = (UserInfo) request.getSession().getAttribute(Constances.USER_INFO.getFieldName());
         info.setName(request.getParameter(NAME));
@@ -46,7 +47,7 @@ public class EditUserInfoCommand implements ActionCommand {
 
         try {
             update(info);
-        } catch (DaoException e) {
+        } catch (DaoException | ServiceException e) {
             logger.log(Level.INFO, "Error editing profile");
             return goBackWithError(ERROR_UPDATE_USER_INFO, request);
         }

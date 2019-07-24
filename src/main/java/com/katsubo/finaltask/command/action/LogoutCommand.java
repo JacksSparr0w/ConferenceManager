@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.command.action;
 
+import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.service.ServiceException;
@@ -17,7 +18,7 @@ public class LogoutCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(LogoutCommand.class);
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("id");
         String userRole = (String) session.getAttribute("role");

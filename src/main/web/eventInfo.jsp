@@ -7,7 +7,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<p class="text-right">Last added conferences</p>
+<c:if test="${register_done eq true}">
+    <div class="container alert alert-success fade show m-t-16" role="alert">
+        Successful register to event!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
+<p class="text-right">New conferences</p>
 <hr>
 <c:forEach var="event" items="${events}" varStatus="status">
     <div class="container-fluid pt-3 pl-3 pr-3">
@@ -24,13 +32,16 @@
             </div>
         </div>
         <div class="container pt-2 pl-2 pr-2">
-            <form class="form-group" action="controller?command=join" method="get">
+            <form action="/controller?command=register_to_event" method="get" id="join">
                 <p class="text-black">There's a free places! Join to us now!</p>
-                <button type="button" class="btn btn-outline-success">
-                    <c:param name="eventId" value="${event.id}">
-                        Join
-                    </c:param>
-                </button>
+                <input type="button" class="btn btn-outline-success" value="join"/>
+            </form>
+            <form>
+                <c:url value="/controller?command=register_to_event" var="registerToEvent">
+                    <c:param name="eventId" value="${event.id}"/>
+                </c:url>
+                <input type="button" value="Put Your Text Here"
+                       onclick="window.location.href='${registerToEvent}'"/>
             </form>
         </div>
         <hr>

@@ -4,7 +4,6 @@ import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.UserInfoDao;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserInfo;
-import com.katsubo.finaltask.entity.enums.Gender;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,10 +11,10 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
 public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
-    public static final String READ_BY_USER = "SELECT `id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration`, `gender` FROM `user_info` WHERE `user_id` = ?";
+    public static final String READ_BY_USER = "SELECT `id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration` FROM `user_info` WHERE `user_id` = ?";
     public static final String CREATE = "INSERT INTO `user_info` (`user_id`, `name`, `surname`, `email`, `date_of_registration`) VALUE (?, ?, ?, ?, ?)";
-    public static final String READ = "SELECT `user_id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration`, `gender` FROM `user_info` WHERE `id` = ?";
-    public static final String UPDATE = "UPDATE `user_info` SET `user_id` = ?, `name` = ?, `surname` = ?, `about` = ?, `picture_link` = ?, `email` = ?, `date_of_birth` = ?, `gender` = ? WHERE `id` = ?";
+    public static final String READ = "SELECT `user_id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration` FROM `user_info` WHERE `id` = ?";
+    public static final String UPDATE = "UPDATE `user_info` SET `user_id` = ?, `name` = ?, `surname` = ?, `about` = ?, `picture_link` = ?, `email` = ?, `date_of_birth` = ? WHERE `id` = ?";
     public static final String DELETE = "DELETE FROM `user_info` WHERE `id` = ?";
     private static final Logger logger = LogManager.getLogger(UserInfoDaoImpl.class);
 
@@ -37,7 +36,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
                 info.setEmail(resultSet.getString("email"));
                 info.setDateOfBirth(resultSet.getDate("date_of_birth"));
                 info.setDateOfRegistration(resultSet.getDate("date_of_registration"));
-                info.setGender(Gender.valueOf(resultSet.getString("gender").toUpperCase()));
             }
             return info;
         } catch (SQLException e) {
@@ -104,7 +102,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
                 info.setEmail(resultSet.getString("email"));
                 info.setDateOfBirth(resultSet.getDate("date_of_birth"));
                 info.setDateOfRegistration(resultSet.getDate("date_of_registration"));
-                info.setGender(Gender.valueOf(resultSet.getString("gender").toUpperCase()));
             }
             return info;
         } catch (SQLException e) {
@@ -131,8 +128,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             statement.setString(5, entity.getPictureLink());
             statement.setString(6, entity.getEmail());
             statement.setDate(7, new Date(entity.getDateOfBirth().getTime()));
-            statement.setInt(8, entity.getGender().getFieldCode());
-            statement.setInt(9, entity.getId());
+            statement.setInt(8, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update userInfo");

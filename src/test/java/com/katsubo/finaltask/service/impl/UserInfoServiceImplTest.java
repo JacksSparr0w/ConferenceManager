@@ -16,7 +16,7 @@ public class UserInfoServiceImplTest {
     public void save() throws ServiceException, DaoException {
         UserInfo info = new UserInfo();
         User user = new User();
-        user.setId(1);
+        user.setId(12);
         info.setUser(user);
         info.setName("name");
         info.setSurname("surname");

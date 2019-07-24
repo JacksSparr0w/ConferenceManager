@@ -10,8 +10,8 @@ public enum CommandType {
     PROFILE("profile"),
     EDIT_USER("edit_user"),
     EDIT_USER_INFO("edit_user_info"),
-    SIGN_UP_FOR_EVENT("sign_up_for_event"),
-    SIGN_OUT_FOR_EVENT("sign_out_for_event"),
+    REGISTER_TO_EVENT("register_to_event"),
+    SIGN_OUT_FOR_EVENT("sign_out_for_event"),//todo rename
     GET_EVENTS("get_events"),
     GET_USERS_ON_EVENT("get_users_on_event"),
     HOME_PAGE("home_page");

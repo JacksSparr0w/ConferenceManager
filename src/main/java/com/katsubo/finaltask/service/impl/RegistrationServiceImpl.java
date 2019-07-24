@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegistrationServiceImpl extends ServiceImpl implements RegistrationService {
@@ -25,7 +26,7 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
     public List<User> findUsersOnEvent(Integer eventId) throws ServiceException {
         if (eventId >= 0) {
             List<Registration> registrations = null;
-            List<User> users = null;
+            List<User> users = new ArrayList<>();
             RegistrationDao registrationDao = transaction.getRegistrationDao();
             UserDao userDao = transaction.getUserDao();
             try {
@@ -49,7 +50,7 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
     public List<Event> findUserEvents(Integer userId) throws ServiceException {
         if (userId >= 0) {
             List<Registration> registrations = null;
-            List<Event> events = null;
+            List<Event> events = new ArrayList<>();
             RegistrationDao registrationDao = transaction.getRegistrationDao();
             EventDao eventDao = transaction.getEventDao();
             try {

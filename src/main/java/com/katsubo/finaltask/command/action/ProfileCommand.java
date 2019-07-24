@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.command.action;
 
+import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
@@ -26,14 +27,14 @@ public class ProfileCommand implements ActionCommand {
     private static final String ERROR_FIND_USER_INFO = "error_find_userInfo";
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserDto userDto = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         UserInfo info = null;
         if (userDto != null) {
             try {
                 User user = findUser(userDto);
                 info = findUserInfo(user);
-            } catch (DaoException e) {
+            } catch (DaoException | ServiceException e) {
                 logger.log(Level.INFO, e.getMessage());
                 goBackWithError(request, e.getMessage());
             }

@@ -16,7 +16,7 @@ CREATE TABLE `user_info`
   `name`                 VARCHAR(255)        NOT NULL,
   `surname`              VARCHAR(255)        NOT NULL,
   `about`                TEXT,
-  `picture_link`         VARCHAR(255)                         DEFAULT NULL,
+  `picture_link`         VARCHAR(255) DEFAULT NULL,
   `email`                VARCHAR(255)        NOT NULL,
   `date_of_birth`        DATE,
   `date_of_registration` DATETIME            NOT NULL
@@ -40,7 +40,7 @@ CREATE TABLE `event_info`
 CREATE TABLE `registrations`
 (
   `id`        INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `event_id`  INTEGER,
+  `event_id`  INTEGER UNIQUE,
   `user_id`   INTEGER,
   `user_role` ENUM ('listener', 'teller') DEFAULT 'listener'
 ) ENGINE = INNODB

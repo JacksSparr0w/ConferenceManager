@@ -36,8 +36,8 @@ public class CommandFactory {
             case EDIT_USER_INFO:
                 result = new EditUserInfoCommand();
                 break;
-            case SIGN_UP_FOR_EVENT:
-                //
+            case REGISTER_TO_EVENT:
+                result = new RegisterToEventCommand();
                 break;
             case SIGN_OUT_FOR_EVENT:
                 //

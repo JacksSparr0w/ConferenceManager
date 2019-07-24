@@ -21,9 +21,9 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
     private static final String READ_USERS_ON_EVENT = "SELECT `user_id`, `user_role` FROM `registrations` WHERE `event_id` = ?";
     private static final String READ_USER_EVENTS = "SELECT `event_id`, `user_role` FROM `registrations` WHERE `user_id` = ?";
     private static final String CREATE = "INSERT INTO `registrations` (`user_id`, `event_id`, `user_role`) VALUE (?, ?, ?)";
-    private static final String READ = "SELECT `user_id`, `event_id`, `role` FROM `registration` WHERE `id` = ?";
-    private static final String UPDATE = "UPDATE `registration` SET `user_id` = ?, `event_id` = ?, `role` = ? WHERE `id` = ?";
-    private static final String DELETE = "DELETE FROM `registration` WHERE `id` = ?";
+    private static final String READ = "SELECT `user_id`, `event_id`, `user_role` FROM `registrations` WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `registrations` SET `user_id` = ?, `event_id` = ?, `user_role` = ? WHERE `id` = ?";
+    private static final String DELETE = "DELETE FROM `registrations` WHERE `id` = ?";
 
 
     @Override
@@ -35,7 +35,7 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             List<Registration> registrations = new ArrayList<>();
             while (resultSet.next()) {
                 Integer userId = resultSet.getInt("user_id");
-                Role role = Role.valueOf(resultSet.getString("role"));
+                Role role = Role.valueOf(resultSet.getString("user_role").toUpperCase());
                 Registration registration = new Registration(userId, eventId, role);
                 registrations.add(registration);
             }
@@ -63,7 +63,7 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             List<Registration> registrations = new ArrayList<>();
             while (resultSet.next()) {
                 Integer eventId = resultSet.getInt("event_id");
-                Role role = Role.valueOf(resultSet.getString("role"));
+                Role role = Role.valueOf(resultSet.getString("user_role").toUpperCase());
                 Registration registration = new Registration(userId, eventId, role);
                 registrations.add(registration);
             }

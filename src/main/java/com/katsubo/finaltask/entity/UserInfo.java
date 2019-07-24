@@ -1,7 +1,5 @@
 package com.katsubo.finaltask.entity;
 
-import com.katsubo.finaltask.entity.enums.Gender;
-
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,7 +12,6 @@ public class UserInfo extends Entity {
     private String email;
     private Date dateOfBirth;
     private Date dateOfRegistration;
-    private Gender gender = Gender.NO_MATTER;
 
     public User getUser() {
         return user;
@@ -80,13 +77,6 @@ public class UserInfo extends Entity {
         this.dateOfRegistration = dateOfRegistration;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -101,13 +91,12 @@ public class UserInfo extends Entity {
                 Objects.equals(pictureLink, userInfo.pictureLink) &&
                 Objects.equals(email, userInfo.email) &&
                 Objects.equals(dateOfBirth, userInfo.dateOfBirth) &&
-                Objects.equals(dateOfRegistration, userInfo.dateOfRegistration) &&
-                gender == userInfo.gender;
+                Objects.equals(dateOfRegistration, userInfo.dateOfRegistration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), user, name, surname, about, pictureLink, email, dateOfBirth, dateOfRegistration, gender);
+        return Objects.hash(super.hashCode(), user, name, surname, about, pictureLink, email, dateOfBirth, dateOfRegistration);
     }
 
     @Override
@@ -121,7 +110,6 @@ public class UserInfo extends Entity {
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", dateOfRegistration=" + dateOfRegistration +
-                ", gender=" + gender +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.command.action;
 
+import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.Constances;
 import com.katsubo.finaltask.dao.DaoException;
@@ -26,7 +27,7 @@ public class EditUserCommand implements ActionCommand {
     private static final String DONE = "done";
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         clearWarnings(request);
         UserDto userDto = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         String login = request.getParameter(LOGIN);
@@ -46,7 +47,7 @@ public class EditUserCommand implements ActionCommand {
         user.setPermission(userDto.getPermission());
         try {
             update(user);
-        } catch (DaoException e) {
+        } catch (DaoException | ServiceException e) {
             logger.log(Level.INFO, e.getMessage());
             return goBackWithError(e.getMessage(), request);
         }

@@ -3,6 +3,7 @@ package com.katsubo.finaltask.service.impl;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
 import com.katsubo.finaltask.entity.Event;
+import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class EventServiceImpl extends ServiceImpl implements com.katsubo.finaltask.service.EventService{
+public class EventServiceImpl extends ServiceImpl implements EventService {
     private static final Logger logger = LogManager.getLogger(EventServiceImpl.class);
 
     public EventServiceImpl() throws DaoException {

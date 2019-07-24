@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.controller;
 
+import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.MessageManager;
 import com.katsubo.finaltask.command.action.ActionCommand;
@@ -44,14 +45,15 @@ public class Controller extends HttpServlet {
         CommandResult result;
         try {
             result = action.execute(request, response);
-        } catch (ServiceException e) {
+        } catch (CommandException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(MessageManager.getProperty("error"), e.getMessage());
-            result = new CommandResult("error", false);
+            result = new CommandResult("/error.jsp", false);
         }
 
         String page = result.getPage();
         if (result.isRedirect()) {
+            page = request.getContextPath() + page;
             redirect(response, page);
         } else {
             dispatch(request, response, page);
@@ -66,5 +68,6 @@ public class Controller extends HttpServlet {
 
     private void redirect(HttpServletResponse response, String page) throws IOException {
         response.sendRedirect(page);
+
     }
 }

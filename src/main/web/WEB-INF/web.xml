@@ -7,13 +7,12 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/jsp/error.jsp</location>
-    </error-page>
-    <error-page>
-        <exception-type>java.lang.RuntimeException</exception-type>
-        <location>/jsp/error.jsp</location>
-    </error-page>
-
+    <servlet>
+        <servlet-name>controller</servlet-name>
+        <servlet-class>com.katsubo.finaltask.controller.Controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>controller</servlet-name>
+        <url-pattern>/com.katsubo.finaltask.controller.Controller</url-pattern>
+    </servlet-mapping>
 </web-app>

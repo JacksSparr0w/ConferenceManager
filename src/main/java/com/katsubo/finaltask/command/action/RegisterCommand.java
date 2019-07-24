@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.command.action;
 
+import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.dao.DaoException;
@@ -37,7 +38,7 @@ public class RegisterCommand implements ActionCommand {
     private static final String ERROR = "error_";
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(LOGIN, request.getParameter(LOGIN));
         parameters.put(PASSWORD, request.getParameter(PASSWORD));
@@ -55,8 +56,9 @@ public class RegisterCommand implements ActionCommand {
         boolean userExist = false;
         try {
             userExist = checkIfUserExist(parameters.get(LOGIN));
-        } catch (DaoException e) {
-            throw new ServiceException(e);
+        } catch (DaoException | ServiceException e) {
+            logger.log(Level.INFO, e.getMessage());
+            return goBackWithError(request, e.getMessage());
         }
         if (userExist) {
             logger.log(Level.INFO, "user with such login and password already exist");
@@ -67,8 +69,9 @@ public class RegisterCommand implements ActionCommand {
             logger.log(Level.INFO, "user registrated and authorized with login - " + parameters.get(LOGIN));
             return new CommandResult("controller?command=home_page", true);
             //todo
-        } catch (DaoException e) {
-            throw new ServiceException(e);
+        } catch (DaoException | ServiceException e) {
+            logger.log(Level.INFO, e.getMessage());
+            return goBackWithError(request, e.getMessage());
         }
 
 
