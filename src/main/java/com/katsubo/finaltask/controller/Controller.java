@@ -6,7 +6,6 @@ import com.katsubo.finaltask.command.MessageManager;
 import com.katsubo.finaltask.command.action.ActionCommand;
 import com.katsubo.finaltask.command.factory.CommandFactory;
 import com.katsubo.finaltask.connection.ConnectionPool;
-import com.katsubo.finaltask.service.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,15 +1,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: jacksparroy
-  Date: 12.07.19
-  Time: 11:15
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" pageEncoding="UTF-8" %>
+
+<c:choose>
+    <c:when test="${sessionScope.language != null}">
+        <fmt:setLocale value="${sessionScope.language}"/>
+    </c:when>
+    <c:otherwise>
+        <fmt:setLocale value="en"/>
+    </c:otherwise>
+</c:choose>
+<fmt:setBundle basename="language" var="language"/>
+
+<fmt:message bundle="${language}" key="home" var="home"/>
+<fmt:message bundle="${language}" key="conferences" var="conferences"/>
+<fmt:message bundle="${language}" key="title" var="title"/>
+<fmt:message bundle="${language}" key="sign_in" var="signin"/>
+<fmt:message bundle="${language}" key="sign_out" var="signout"/>
+
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${sessionScope.language}">
 <head>
     <title>Main page</title>
     <meta charset="UTF-8">
@@ -65,7 +76,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
     <div class="container">
-        <a class="navbar-brand" href="#">Menu</a>
+        <a class="navbar-brand" href="controller?command=home_page">${home}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -73,33 +84,36 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="controller?command=home_page">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Events</a>
+                    <a class="nav-link" href="#">${conferences}</a>
                 </li>
                 <c:if test="${user != null}">
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="controller?command=logout">Log out</a>
+                        <a class="nav-link disabled" href="controller?command=logout">${signout}</a>
                     </li>
                 </c:if>
             </ul>
-            <li class="nav-item">
+            <li class="nav-link">
+                <div class="container p-2">
+                    <a href="controller?language=ru&command=change_language">Ru</a>
+                    <a>|</a>
+                    <a href="controller?language=en&command=change_language">En</a>
+                </div>
+
+            </li>
+            <ul class="nav-item">
                 <c:choose>
                     <c:when test="${user != null}">
-                        <a class="nav-link active" href="controller?command=profile">
-                            <h6>${user.login}</h6>
+                        <a class="nav-link active text-black" href="controller?command=profile">
+                                ${user.login}
                         </a>
                     </c:when>
                     <c:otherwise>
                         <a class="nav-link active" href="controller?command=login">
-                            <h5>Sign in</h5>
+                            <h5>${signin}</h5>
                         </a>
                     </c:otherwise>
                 </c:choose>
-            </li>
+            </ul>
             <!--
             <form class="form-inline">
                 <div class="md-form my-0">
@@ -113,21 +127,23 @@
 
 <div class="container" style="margin-top:30px">
     <div class="row">
-        <div class="col-sm-2">
-            <c:if test="${user != null}">
+
+        <c:if test="${user != null}">
+            <div class="col-sm-2">
                 <jsp:include page="menu.jsp"/>
-            </c:if>
-        </div>
+            </div>
+        </c:if>
+
         <div class="col">
             <!--//todo create forToken-->
-            <c:if test="${includeView != null}">
-                <jsp:include page="${includeView}" flush="true"/>
-            </c:if>
-            <c:if test="${includeView == null}">
-
-
-                <jsp:include page="eventInfo.jsp" flush="true"/>
-            </c:if>
+            <c:choose>
+                <c:when test="${includeView != null}">
+                    <jsp:include page="${includeView}" flush="true"/>
+                </c:when>
+                <c:otherwise>
+                    <jsp:include page="eventInfo.jsp" flush="true"/>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>

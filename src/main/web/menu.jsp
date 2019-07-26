@@ -9,7 +9,7 @@
 <hr class="dropdown-divider">
 <ul class="nav nav-tabs flex-column">
     <li class="nav-item">
-        <a class="nav-link" href="#">My confences</a>
+        <a class="nav-link" href="controller?command=user_events">My confences</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="controller?command=profile">Profile</a>

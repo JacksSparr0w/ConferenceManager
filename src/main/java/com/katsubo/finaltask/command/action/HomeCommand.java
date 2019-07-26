@@ -18,10 +18,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.katsubo.finaltask.command.Constances.INCLUDE;
 
 public class HomeCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(HomeCommand.class);

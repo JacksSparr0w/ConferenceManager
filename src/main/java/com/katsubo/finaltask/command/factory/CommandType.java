@@ -3,7 +3,7 @@ package com.katsubo.finaltask.command.factory;
 public enum CommandType {
     LOGIN("login"),
     LOGOUT("logout"),
-    REGISTER("register"),
+    REGISTER("sign_up"),
     ADD_EVENT("add_event"),
     REMOVE_EVENT("remove_event"),
     EDIT_EVENT("edit_event"),
@@ -12,9 +12,11 @@ public enum CommandType {
     EDIT_USER_INFO("edit_user_info"),
     REGISTER_TO_EVENT("register_to_event"),
     SIGN_OUT_FOR_EVENT("sign_out_for_event"),//todo rename
+    USER_EVENTS("user_events"),
     GET_EVENTS("get_events"),
     GET_USERS_ON_EVENT("get_users_on_event"),
-    HOME_PAGE("home_page");
+    HOME_PAGE("home_page"),
+    CHANGE_LANGUAGE("change_language");
 
     private String fieldName;
 

@@ -12,12 +12,21 @@ public class Event extends Entity {
     private Theme theme;
     private Date date;
     private Address address;
-    private String countryCode;
     private Status status;
     private Integer capacity;
+    private String shortDescription;
 
     public String getName() {
         return name;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    private void setShortDescription() {
+        shortDescription = description.substring(0, 140);
+        shortDescription += "...";
     }
 
     public void setName(String name) {
@@ -30,6 +39,7 @@ public class Event extends Entity {
 
     public void setDescription(String description) {
         this.description = description;
+        setShortDescription();
     }
 
     public Theme getTheme() {
@@ -54,14 +64,6 @@ public class Event extends Entity {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
     }
 
     public Status getStatus() {
@@ -91,14 +93,13 @@ public class Event extends Entity {
                 theme == event.theme &&
                 Objects.equals(date, event.date) &&
                 Objects.equals(address, event.address) &&
-                Objects.equals(countryCode, event.countryCode) &&
                 status == event.status &&
                 Objects.equals(capacity, event.capacity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, theme, date, address, countryCode, status, capacity);
+        return Objects.hash(super.hashCode(), name, description, theme, date, address, status, capacity);
     }
 
     @Override
@@ -109,7 +110,6 @@ public class Event extends Entity {
                 ", theme=" + theme +
                 ", date=" + date +
                 ", address=" + address +
-                ", countryCode='" + countryCode + '\'' +
                 ", status=" + status +
                 ", capacity=" + capacity +
                 '}';

@@ -42,6 +42,9 @@ public class CommandFactory {
             case SIGN_OUT_FOR_EVENT:
                 //
                 break;
+            case USER_EVENTS:
+                result = new UserEventsCommand();
+                break;
             case GET_EVENTS:
                 //
                 break;
@@ -50,6 +53,9 @@ public class CommandFactory {
                 break;
             case HOME_PAGE:
                 result = new HomeCommand();
+                break;
+            case CHANGE_LANGUAGE:
+                result = new ChangeLanguageCommand();
                 break;
                 default:
                     throw new IllegalArgumentException("Invalid command " + command);
