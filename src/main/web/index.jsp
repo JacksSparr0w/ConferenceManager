@@ -3,4 +3,5 @@
 <head><title>Index</title></head>
 <body>
 <jsp:forward page="controller?command=home_page"/>
-</body></html>
+</body>
+</html>s

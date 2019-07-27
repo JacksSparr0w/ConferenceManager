@@ -4,23 +4,24 @@
 
 <c:choose>
     <c:when test="${sessionScope.language != null}">
-        <fmt:setLocale value="${sessionScope.language}"/>
+        <fmt:setLocale value="${sessionScope.language}" variant="en"/>
     </c:when>
     <c:otherwise>
         <fmt:setLocale value="en"/>
     </c:otherwise>
 </c:choose>
-<fmt:setBundle basename="language" var="language"/>
 
-<fmt:message bundle="${language}" key="home" var="home"/>
-<fmt:message bundle="${language}" key="conferences" var="conferences"/>
-<fmt:message bundle="${language}" key="title" var="title"/>
-<fmt:message bundle="${language}" key="sign_in" var="signin"/>
-<fmt:message bundle="${language}" key="sign_out" var="signout"/>
+<fmt:setBundle basename="textResources" var="textResources" scope="session"/>
+
+<fmt:message bundle="${textResources}" key="home" var="home"/>
+<fmt:message bundle="${textResources}" key="conferences" var="conferences"/>
+<fmt:message bundle="${textResources}" key="title" var="title"/>
+<fmt:message bundle="${textResources}" key="sign_in" var="signin"/>
+<fmt:message bundle="${textResources}" key="sign_out" var="signout"/>
 
 
 <!DOCTYPE html>
-<html lang="${sessionScope.language}">
+<html lang="${language}">
 <head>
     <title>Main page</title>
     <meta charset="UTF-8">
@@ -64,12 +65,6 @@
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
     <!--===============================================================================================-->
-    <style>
-        .fakeimg {
-            height: 200px;
-            background: #e1e1e2;
-        }
-    </style>
 </head>
 <body>
 <%@include file="header.jsp" %>
@@ -138,10 +133,10 @@
             <!--//todo create forToken-->
             <c:choose>
                 <c:when test="${includeView != null}">
-                    <jsp:include page="${includeView}" flush="true"/>
+                    <jsp:include page="${includeView}"/>
                 </c:when>
                 <c:otherwise>
-                    <jsp:include page="eventInfo.jsp" flush="true"/>
+                    <jsp:include page="eventInfo.jsp"/>
                 </c:otherwise>
             </c:choose>
         </div>

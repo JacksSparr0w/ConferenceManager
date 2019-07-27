@@ -1,20 +1,25 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: jacksparroy
-  Date: 18.07.19
-  Time: 17:13
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" pageEncoding="UTF-8" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="textResources" var="textResources"/>
+
+<fmt:message bundle="${textResources}" key="my_conferences" var="my_conferences"/>
+<fmt:message bundle="${textResources}" key="profile" var="profile"/>
+<fmt:message bundle="${textResources}" key="add_conference" var="add_conference"/>
+
+
+
 <hr class="dropdown-divider">
 <ul class="nav nav-tabs flex-column">
     <li class="nav-item">
-        <a class="nav-link" href="controller?command=user_events">My confences</a>
+        <a class="nav-link" href="controller?command=user_events">${my_conferences}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="controller?command=profile">Profile</a>
+        <a class="nav-link" href="controller?command=profile">${profile}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Add conference</a>
+        <a class="nav-link" href="#">${add_conference}</a>
     </li>
 </ul>

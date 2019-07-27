@@ -11,7 +11,7 @@ public enum CommandType {
     EDIT_USER("edit_user"),
     EDIT_USER_INFO("edit_user_info"),
     REGISTER_TO_EVENT("register_to_event"),
-    SIGN_OUT_FOR_EVENT("sign_out_for_event"),//todo rename
+    SIGN_OUT_FOR_EVENT("sign_out_for_event"),
     USER_EVENTS("user_events"),
     GET_EVENTS("get_events"),
     GET_USERS_ON_EVENT("get_users_on_event"),

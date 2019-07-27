@@ -1,5 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" pageEncoding="UTF-8" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="textResources" var="textResources"/>
+
+<fmt:message bundle="${textResources}" key="leave" var="leave"/>
+
 <div class="container-fluid pb-5 pl-5 pr-5">
     <c:forEach var="event" items="${events}" varStatus="status">
         <div class="container pt-5">
@@ -24,8 +31,8 @@
                             <c:url value="/controller?command=unregister_to_event" var="unregisterToEvent">
                                 <c:param name="eventId" value="${event.id}"/>
                             </c:url>
-                            <button type="button" class="btn btn-outline-dark" value="Leave event"
-                                    onclick="window.location.href='${unregisterToEvent}'">Leave</button>
+                            <button type="button" class="btn btn-outline-dark"
+                                    onclick="window.location.href='${unregisterToEvent}'">${leave}</button>
                         </form>
                     </div>
                 </div>

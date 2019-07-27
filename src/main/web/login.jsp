@@ -2,32 +2,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" pageEncoding="UTF-8" %>
 
-<c:choose>
-    <c:when test="${sessionScope.language != null}">
-        <fmt:setLocale value="${sessionScope.language}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="en"/>
-    </c:otherwise>
-</c:choose>
-<fmt:setBundle basename="language" var="language"/>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="textResources" var="textResources"/>
 
-<fmt:message key="sign_in" bundle="${language}" var="sign_in"/>
-<fmt:message key="sign_up" bundle="${language}" var="sign_up"/>
-<fmt:message key="login" bundle="${language}" var="login"/>
-<fmt:message key="password" bundle="${language}" var="password"/>
-<fmt:message key="continue_as_guest" bundle="${language}" var="continue_as_guest"/>
-<fmt:message key="dont_have_an_account" bundle="${language}" var="dont_have_an_account"/>
-<fmt:message key="have_an_account" bundle="${language}" var="have_an_account"/>
-<fmt:message key="login" bundle="${language}" var="login"/>
-<fmt:message key="first_name" bundle="${language}" var="first_name"/>
-<fmt:message key="second_name" bundle="${language}" var="second_name"/>
-<fmt:message key="email" bundle="${language}" var="email"/>
-
-
-
-
-
+<fmt:message bundle="${textResources}" key="sign_in" var="sign_in"/>
+<fmt:message bundle="${textResources}" key="sign_up" var="sign_up"/>
+<fmt:message bundle="${textResources}" key="login" var="login"/>
+<fmt:message bundle="${textResources}" key="password" var="password"/>
+<fmt:message bundle="${textResources}" key="continue_as_guest" var="continue_as_guest"/>
+<fmt:message bundle="${textResources}" key="dont_have_an_account" var="dont_have_an_account"/>
+<fmt:message bundle="${textResources}" key="have_an_account" var="have_an_account"/>
+<fmt:message bundle="${textResources}" key="login" var="login"/>
+<fmt:message bundle="${textResources}" key="first_name" var="first_name"/>
+<fmt:message bundle="${textResources}" key="second_name" var="second_name"/>
+<fmt:message bundle="${textResources}" key="email" var="email"/>
 
 
 <!DOCTYPE html>
@@ -69,8 +57,8 @@
                     <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST"
                           action="controller?command=register">
 					<span class="login100-form-title">
-						${sign_up}
-					</span>
+                            ${sign_up}
+                    </span>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
                             <input class="input100" type="text" name="login" placeholder="${login}">
@@ -106,18 +94,18 @@
 
                         <div class="container-login100-form-btn">
                             <button type="submit" class="login100-form-btn">
-                                ${sign_up}
+                                    ${sign_up}
                             </button>
                         </div>
 
 
                         <div class="flex-col-c p-t-170 p-b-40">
 						<span class="txt1 p-b-9">
-							${have_an_account}
-						</span>
+                                ${have_an_account}
+                        </span>
 
                             <a href="controller?command=login" class="txt3">
-                                ${sign_in}
+                                    ${sign_in}
                             </a>
                         </div>
                     </form>
@@ -126,8 +114,8 @@
                     <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST"
                           action="controller?command=login">
 					<span class="login100-form-title">
-						${sign_in}
-					</span>
+                            ${sign_in}
+                    </span>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
                             <input class="input100" type="text" name="login" placeholder="${login}">
@@ -148,23 +136,23 @@
 
                         <div class="container-login100-form-btn">
                             <button type="submit" class="login100-form-btn">
-                                ${sign_in}
+                                    ${sign_in}
                             </button>
                         </div>
 
                         <a href="controller?command=home_page" class="txt2 flex-col-c p-t-16">
-                            ${continue_as_guest}
+                                ${continue_as_guest}
                         </a>
 
                         <div class="flex-col-c p-t-120 p-b-40">
 						<span class="txt1 p-b-9">
-							${dont_have_an_account}
-						</span>
+                                ${dont_have_an_account}
+                        </span>
                             <c:url value="login.jsp" var="toRegistr">
                                 <c:param name="register" value="true"/>
                             </c:url>
                             <a href="controller?command=register" class="txt3">
-                                ${sign_up}
+                                    ${sign_up}
                             </a>
                         </div>
                     </form>

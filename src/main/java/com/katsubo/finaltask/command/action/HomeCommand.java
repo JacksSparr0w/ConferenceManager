@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class HomeCommand implements ActionCommand {
+    private static final String LANGUAGE = "language";
     private static final Logger logger = LogManager.getLogger(HomeCommand.class);
     private static final String THERE_NOT_EVENTS = "there_not_events";
     private static final String CANT_READ_EVENTS = "cant_read_events";
@@ -28,21 +29,21 @@ public class HomeCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         List<Event> events = null;
-        try{
+        try {
             events = readAllEvents();
-        } catch (DaoException |ServiceException e){
+        } catch (DaoException | ServiceException e) {
             logger.log(Level.INFO, e.getMessage());
             return goWithError(CANT_READ_EVENTS, request);
         }
-        if (events.isEmpty()){
+        if (events.isEmpty()) {
             logger.log(Level.INFO, "there is not events yet!");
             request.setAttribute(THERE_NOT_EVENTS, true);
         }
 
         List<Event> userEvents = null;
         UserDto userDto = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
-        if (userDto != null){
-            try{
+        if (userDto != null) {
+            try {
                 userEvents = readUserEvents(userDto.getUserId());
             } catch (DaoException | ServiceException e) {
                 logger.log(Level.INFO, e.getMessage());
@@ -50,9 +51,14 @@ public class HomeCommand implements ActionCommand {
             }
             events.removeAll(userEvents);
         }
-        setAttributesToRequest(events, request);
-        return new CommandResult(ConfigurationManager.getProperty("path.page.main"));
 
+        String language = (String) request.getSession().getAttribute(LANGUAGE);
+        if (language == null) {
+            request.getSession().setAttribute(LANGUAGE, "en");
+        }
+
+        request.setAttribute("events", events);
+        return new CommandResult(ConfigurationManager.getProperty("path.page.main"));
     }
 
     private CommandResult goWithError(String error, HttpServletRequest request) {
@@ -70,10 +76,5 @@ public class HomeCommand implements ActionCommand {
         EventService service = new EventServiceImpl();
         List<Event> events = service.findAll();
         return events;
-    }
-
-
-    private void setAttributesToRequest(List<Event> events, HttpServletRequest request) {
-        request.setAttribute("events", events);
     }
 }
