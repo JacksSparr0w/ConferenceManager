@@ -37,7 +37,7 @@ public class UserEventsCommand implements ActionCommand {
                 goBackWithError(request, e.getMessage());
             }
             setAttributes(events, request);
-            return new CommandResult(ConfigurationManager.getProperty("path.page.main"), false);
+            return new CommandResult(ConfigurationManager.getProperty("page.main"), false);
         } else {
             logger.log(Level.INFO, CANT_FIND_USER);
             return goBackWithError(request, CANT_FIND_USER);
@@ -56,7 +56,7 @@ public class UserEventsCommand implements ActionCommand {
     }
 
     private void setAttributes(List<Event> events, HttpServletRequest request) {
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("path.page.userEvents"));
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.userEvents"));
         request.getSession().setAttribute("events", events);
     }
 

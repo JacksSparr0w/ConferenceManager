@@ -74,7 +74,7 @@ public class EditUserInfoCommand implements ActionCommand {
 
     private CommandResult goBackWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("path.page.profile"));
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.profile"));
         return new CommandResult("/controller?command=profile", false);
     }
 }

@@ -90,7 +90,8 @@ public class Access {
 
 
 
-    public boolean can(CommandType command, HttpServletRequest request){
+    public boolean can(String command, HttpServletRequest request) throws IllegalArgumentException{
+        CommandType commandType = CommandType.valueOf(command.toUpperCase());
         Integer accessLayer;
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         if (user != null){
@@ -101,6 +102,6 @@ public class Access {
 
         List<CommandType> rules = commandsAccess.get(accessLayer);
 
-        return rules.contains(command);
+        return rules.contains(commandType);
     }
 }

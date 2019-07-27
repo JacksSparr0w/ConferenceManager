@@ -26,7 +26,7 @@
     <div class="container-fluid pt-3 pl-3 pr-3">
         <h3 class="text-black">${event.name}</h3>
         <h6 class="text-right">${event.date}</h6>
-        <div class="fakeimg rounded thumb text-center">conference image(optional)</div>
+        <div class="jumbotron rounded thumb text-center">conference image(optional)</div>
         <p class="text-dark text-right">${event.address}</p>
 
         <span class="text-black text-justify pt-2 pl-2 pr-2">${event.description}</span>

@@ -75,6 +75,6 @@ public class LoginCommand implements ActionCommand {
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {
         request.setAttribute(error, true);
-        return new CommandResult(ConfigurationManager.getProperty("path.page.login"), false);
+        return new CommandResult(ConfigurationManager.getProperty("page.login"), false);
     }
 }

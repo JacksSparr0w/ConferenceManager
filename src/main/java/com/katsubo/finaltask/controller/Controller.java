@@ -2,6 +2,7 @@ package com.katsubo.finaltask.controller;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
+import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.MessageManager;
 import com.katsubo.finaltask.command.action.ActionCommand;
 import com.katsubo.finaltask.command.factory.CommandFactory;
@@ -47,7 +48,7 @@ public class Controller extends HttpServlet {
         } catch (CommandException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(MessageManager.getProperty("error"), e.getMessage());
-            result = new CommandResult("/error.jsp", false);
+            result = new CommandResult(ConfigurationManager.getProperty("page.error404"), false);
         }
 
         String page = result.getPage();

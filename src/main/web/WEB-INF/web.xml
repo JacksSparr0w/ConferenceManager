@@ -5,14 +5,26 @@
          version="4.0">
     <display-name>FirstJspServletJsp</display-name>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
-        <servlet-name>controller</servlet-name>
+        <servlet-name>/controller</servlet-name>
         <servlet-class>com.katsubo.finaltask.controller.Controller</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>controller</servlet-name>
+        <servlet-name>/controller</servlet-name>
         <url-pattern>/com.katsubo.finaltask.controller.Controller</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>AccessFilter</filter-name>
+        <filter-class>com.katsubo.finaltask.filter.AccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AccessFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
+    </filter-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/page404.jsp</location>
+    </error-page>
 </web-app>

@@ -58,12 +58,12 @@ public class HomeCommand implements ActionCommand {
         }
 
         request.setAttribute("events", events);
-        return new CommandResult(ConfigurationManager.getProperty("path.page.main"));
+        return new CommandResult(ConfigurationManager.getProperty("page.main"));
     }
 
     private CommandResult goWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult(ConfigurationManager.getProperty("path.page.main"));
+        return new CommandResult(ConfigurationManager.getProperty("page.main"));
     }
 
     private List<Event> readUserEvents(Integer userId) throws DaoException, ServiceException {

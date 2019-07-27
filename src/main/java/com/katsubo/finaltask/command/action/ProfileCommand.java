@@ -39,7 +39,7 @@ public class ProfileCommand implements ActionCommand {
                 goBackWithError(request, e.getMessage());
             }
             setAttributes(info, request);
-            return new CommandResult(ConfigurationManager.getProperty("path.page.main"), false);
+            return new CommandResult(ConfigurationManager.getProperty("page.main"), false);
         } else {
             logger.log(Level.INFO, ERROR_FIND_USER_DTO);
             return goBackWithError(request, ERROR_FIND_USER_DTO);
@@ -58,7 +58,7 @@ public class ProfileCommand implements ActionCommand {
     }
 
     private void setAttributes(UserInfo info, HttpServletRequest request) {
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("path.page.profile"));
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.profile"));
         request.getSession().setAttribute(Constances.USER_INFO.getFieldName(), info);
     }
 
@@ -76,6 +76,6 @@ public class ProfileCommand implements ActionCommand {
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {
         request.setAttribute(error, true);
-        return new CommandResult(ConfigurationManager.getProperty("path.page.main"), false);
+        return new CommandResult(ConfigurationManager.getProperty("page.main"), false);
     }
 }

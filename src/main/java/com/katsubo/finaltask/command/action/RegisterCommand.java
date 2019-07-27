@@ -121,6 +121,6 @@ public class RegisterCommand implements ActionCommand {
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {
         request.setAttribute(error, true);
-        return new CommandResult(ConfigurationManager.getProperty("path.page.register"), false);
+        return new CommandResult(ConfigurationManager.getProperty("page.register"), false);
     }
 }
