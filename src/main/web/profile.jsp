@@ -28,11 +28,12 @@
 
 
 <link rel="stylesheet" type="text/css" href="css/avatar.css">
+<script src="js/avatar.js"></script>
 
 <c:choose>
     <c:when test="${done == true}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
-            ${successful_change_profile}
+                ${successful_change_profile}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -48,7 +49,7 @@
     </c:when>
     <c:when test="${incorrect_verify_password  == true}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
-            ${verify_password_is_incorrect}
+                ${verify_password_is_incorrect}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -118,7 +119,8 @@
                                 <button class="btn btn-lg btn-success" type="submit"><i
                                         class="glyphicon glyphicon-ok-sign"></i>${save}
                                 </button>
-                                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i>${reset}
+                                <button class="btn btn-lg" type="reset"><i
+                                        class="glyphicon glyphicon-repeat"></i>${reset}
                                 </button>
                             </div>
                         </div>
@@ -126,7 +128,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form class="form-group" action="controller?command=edit_user_info" method="POST" id="editUserInfo">
+                    <form class="form-group" action="controller?command=edit_user_info" method="POST" id="editUserInfo" enctype="multipart/form-data">
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
                                 <label for="name">${first_name}</label>
@@ -167,8 +169,6 @@
                                     $('input[name="dateOfBirth"]').daterangepicker({
                                         "singleDatePicker": true,
                                         "autoApply": true,
-                                        "startDate": "07/14/2019",
-                                        "endDate": "07/20/2019",
                                         "opens": "center"
                                     }, function (start, end, label) {
                                         console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
@@ -212,30 +212,12 @@
         </div><!--/col-9-->
         <div class="col-sm-3"><!--right col-->
             <div class="col-md-4 text-center">
-                <div id="img-preview-block" class="img-circle avatar avatar-original center-block" style="background-size:cover;
-                background-image:url(http://robohash.org/sitsequiquia.png?size=120x120)"></div>
+                <div id="img-preview-block" class="avatar avatar-original center-block rounded" style="background-size:cover;
+                background-image:url(userImages/${userInfo.pictureLink}?size=140x140)"></div>
                 <br>
-                <span class="btn btn-link btn-file">${edit_avatar}<input type="file" id="upload-img" form="editUserInfo" name="avatar"></span>
+                <span class="btn btn-link btn-file">${edit_avatar}<input type="file" id="upload-img" form="editUserInfo"
+                                                                         name="avatar" onchange="form.submit()"></span>
             </div>
-            <script>
-                $(function() {
-                    $("#upload-img").on("change", function()
-                    {
-                        var files = !!this.files ? this.files : [];
-                        if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
-
-                        if (/^image/.test( files[0].type)){ // only image file
-                            var reader = new FileReader(); // instance of the FileReader
-                            reader.readAsDataURL(files[0]); // read the local file
-
-                            reader.onload = function(e){ // set image data as background of div
-
-                                $("#img-preview-block").css({'background-image': 'url('+e.target.result +')', "background-size": "cover"});
-                            }
-                        }
-                    });
-                });
-            </script>
             <hr class="dropdown-divider">
         </div><!--/col-3-->
     </div>

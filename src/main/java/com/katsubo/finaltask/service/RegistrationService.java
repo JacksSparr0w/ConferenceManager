@@ -16,4 +16,6 @@ public interface RegistrationService extends Service {
     Integer save(Registration registration) throws ServiceException;
 
     void delete(Integer id) throws ServiceException;
+
+    Registration readByUserAndEvent(Integer eventId, Integer userId) throws ServiceException;
 }

@@ -22,6 +22,7 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
     private static final String READ_USER_EVENTS = "SELECT `event_id`, `user_role` FROM `registrations` WHERE `user_id` = ?";
     private static final String CREATE = "INSERT INTO `registrations` (`user_id`, `event_id`, `user_role`) VALUE (?, ?, ?)";
     private static final String READ = "SELECT `user_id`, `event_id`, `user_role` FROM `registrations` WHERE `id` = ?";
+    private static final String READ_BY_USER_AND_EVENT = "SELECT `id`, `user_role` FROM `registrations` WHERE `event_id` = ? AND `user_id` = ?";
     private static final String UPDATE = "UPDATE `registrations` SET `user_id` = ?, `event_id` = ?, `user_role` = ? WHERE `id` = ?";
     private static final String DELETE = "DELETE FROM `registrations` WHERE `id` = ?";
 
@@ -71,6 +72,36 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't read all user events");
             throw new DaoException(e + "Can't read all user events");
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    @Override
+    public Registration read(Integer eventId, Integer userId) throws DaoException {
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_USER_AND_EVENT)) {
+            statement.setInt(1, eventId);
+            statement.setInt(2, userId);
+            resultSet = statement.executeQuery();
+            Registration registration = null;
+            if (resultSet.next()) {
+                registration = new Registration();
+                registration.setId(resultSet.getInt("id"));
+                registration.setUserId(userId);
+                registration.setEventId(eventId);
+                registration.setRole(Role.valueOf(resultSet.getString("user_role").toUpperCase()));
+            }
+            return registration;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't read registration by user_id and event_id");
+            throw new DaoException(e + "Can't read registration by user_id and event_id");
         } finally {
             try {
                 if (resultSet == null) {

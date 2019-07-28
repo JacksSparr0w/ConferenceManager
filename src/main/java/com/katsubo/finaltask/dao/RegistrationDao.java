@@ -8,4 +8,6 @@ public interface RegistrationDao extends Dao<Registration> {
     List<Registration> readUsersOnEvent(Integer eventId) throws DaoException;
 
     List<Registration> readUserEvents(Integer userId) throws DaoException;
+
+    Registration read(Integer eventId, Integer userId) throws DaoException;
 }

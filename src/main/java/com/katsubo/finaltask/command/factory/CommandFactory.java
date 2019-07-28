@@ -39,8 +39,8 @@ public class CommandFactory {
             case REGISTER_TO_EVENT:
                 result = new RegisterToEventCommand();
                 break;
-            case SIGN_OUT_FOR_EVENT:
-                //
+            case LEAVE_EVENT:
+                result = new LeaveEventCommand();
                 break;
             case USER_EVENTS:
                 result = new UserEventsCommand();

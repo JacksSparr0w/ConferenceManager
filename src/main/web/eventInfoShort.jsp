@@ -28,7 +28,7 @@
                     </div>
                     <div class="container-fluid row align-content-end justify-content-end pr-1 pb-1">
                         <form>
-                            <c:url value="/controller?command=unregister_to_event" var="unregisterToEvent">
+                            <c:url value="/controller?command=leave_event" var="unregisterToEvent">
                                 <c:param name="eventId" value="${event.id}"/>
                             </c:url>
                             <button type="button" class="btn btn-outline-dark"

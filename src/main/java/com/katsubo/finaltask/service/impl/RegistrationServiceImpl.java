@@ -138,4 +138,22 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
             throw new ServiceException("Parameter - ID is invalid");
         }
     }
+
+    @Override
+    public Registration readByUserAndEvent(Integer eventId, Integer userId) throws ServiceException {
+        if (eventId >= 0 && userId >= 0){
+            Registration registration = null;
+            RegistrationDao dao = transaction.getRegistrationDao();
+            try {
+                registration = dao.read(eventId, userId);
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+
+            return registration;
+        } else {
+            logger.log(Level.ERROR, "Parameter - userId or eventId is inalid");
+            throw new ServiceException("Parameter - userId or eventId is invalid");
+        }
+    }
 }

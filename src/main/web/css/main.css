@@ -55,7 +55,7 @@ a:focus {
 
 a:hover {
 	text-decoration: none;
-  color: #1b3815;
+  color: #1a2538;
 }
 
 /*---------------------------------------------*/
@@ -104,15 +104,15 @@ textarea:focus, input:focus {
 }
 
 
-input::-webkit-input-placeholder { color: #1b3815;}
-input:-moz-placeholder { color: #1b3815;}
-input::-moz-placeholder { color: #1b3815;}
-input:-ms-input-placeholder { color: #1b3815;}
+input::-webkit-input-placeholder { color: #1a2538;}
+input:-moz-placeholder { color: #1a2538;}
+input::-moz-placeholder { color: #1a2538;}
+input:-ms-input-placeholder { color: #1a2538;}
 
-textarea::-webkit-input-placeholder { color: #1b3815;}
-textarea:-moz-placeholder { color: #1b3815;}
-textarea::-moz-placeholder { color: #1b3815;}
-textarea:-ms-input-placeholder { color: #1b3815;}
+textarea::-webkit-input-placeholder { color: #1a2538;}
+textarea:-moz-placeholder { color: #1a2538;}
+textarea::-moz-placeholder { color: #1a2538;}
+textarea:-ms-input-placeholder { color: #1a2538;}
 
 /*---------------------------------------------*/
 button {
@@ -141,14 +141,14 @@ iframe {
 .txt2 {
   font-family: Ubuntu-Regular;
   font-size: 15px;
-  color: #57b846;
+  color: #6191b8;
   line-height: 1.4;
 }
 
 .txt3 {
   font-family: Ubuntu-Bold;
   font-size: 15px;
-  color: #57b846;
+  color: #6191b8;
   line-height: 1.4;
   text-transform: uppercase;
 }
@@ -211,7 +211,7 @@ iframe {
   width: 100%;
   top: 0;
   left: 0;
-  background-color: #57b846;
+  background-color: #556ab8;
   padding-top: 50px;
   padding-bottom: 39px;
 }
@@ -230,7 +230,7 @@ iframe {
 .input100 {
   font-family: Ubuntu-Bold;
   font-size: 15px;
-  color: #1b3815;
+  color: #1a2538;
   line-height: 1.2;
 
   position: relative;
@@ -297,7 +297,7 @@ iframe {
   padding: 0 20px;
   width: 100%;
   height: 50px;
-  background-color: #57b846;
+  background-color: #556ab8;
   border-radius: 25px;
 
   font-family: Ubuntu-Bold;
@@ -313,7 +313,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-  background-color: #1b3815;
+  background-color: #1a2538;
 }
 
 

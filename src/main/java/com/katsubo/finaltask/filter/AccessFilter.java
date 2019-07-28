@@ -22,16 +22,13 @@ public class AccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String path = request.getRequestURI();
-        if (path.equals("/web/")) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        }
         String command = request.getParameter(COMMAND);
-        Access access = Access.getInstance();
 
+        Access access = Access.getInstance();
         try {
             if (access.can(command, request)) {
                 filterChain.doFilter(servletRequest, servletResponse);
+                return;
             } else {
                 logger.log(Level.WARN, "no access for this user");
                 dispatch(servletRequest, servletResponse, ConfigurationManager.getProperty("page.error405"));
