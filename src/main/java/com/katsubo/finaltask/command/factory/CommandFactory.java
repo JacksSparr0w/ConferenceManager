@@ -36,6 +36,9 @@ public class CommandFactory {
             case EDIT_USER_INFO:
                 result = new EditUserInfoCommand();
                 break;
+            case EDIT_USER_PHOTO:
+                result = new EditUserPhotoCommand();
+                break;
             case REGISTER_TO_EVENT:
                 result = new RegisterToEventCommand();
                 break;

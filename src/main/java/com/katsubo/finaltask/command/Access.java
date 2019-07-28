@@ -76,6 +76,7 @@ public class Access {
         userRules.add(CommandType.LEAVE_EVENT);
         userRules.add(CommandType.USER_EVENTS);
         userRules.add(CommandType.GET_EVENTS);
+        userRules.add(CommandType.EDIT_USER_PHOTO);
     }
 
     private void setAdminRules() {

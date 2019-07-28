@@ -1,8 +1,8 @@
 img.avatar,
 div.avatar {
     border: 1px solid #eee;
-    width: 122px;
-    height: 122px;
+    width: 160px;
+    height: 160px;
 }
 
 .btn-file {
@@ -17,7 +17,7 @@ div.avatar {
     min-width: 100%;
     min-height: 100%;
     font-size: 100px;
-    text-align: right;
+    text-align: center;
     filter: alpha(opacity=0);
     opacity: 0;
     outline: none;

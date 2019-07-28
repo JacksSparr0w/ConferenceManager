@@ -22,60 +22,40 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class EditUserInfoCommand implements ActionCommand {
+public class EditUserPhotoCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
-    private static final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-    private static final String AVATAR = "avatar";
-    private static final String NAME = "name";
-    private static final String SURNAME = "surname";
-    private static final String EMAIL = "email";
-    private static final String DATE_OF_BIRTH = "dateOfBirth";
-    private static final String ABOUT = "about";
-    private static final String ERROR_UPDATE_USER_INFO = "error_update_user_info";
-    private static final String DONE = "done";
+    private static final String USER_PHOTO = "userPhoto";
+    private static final String ERROR_UPLOAD_USER_PHOTO = "error_upload_user_photo";
+    private static final String DONE = "success_upload_user_photo";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserInfo info = (UserInfo) request.getSession().getAttribute(Constances.USER_INFO.getFieldName());
-        info.setName(request.getParameter(NAME));
-        info.setSurname(request.getParameter(SURNAME));
 
-        /*if (request.getParameter(ABOUT) == null || request.getParameter(ABOUT).isEmpty()) {
-            UserInfo oldInfo = (UserInfo) request.getSession().getAttribute(Constances.USER_INFO.getFieldName());
-            info.setAbout(oldInfo.getAbout());
-        } else {
-            info.setAbout(request.getParameter(ABOUT));
-        }*/
-
-        String about = request.getParameter(ABOUT);
-        if (about != null && !about.isEmpty()){
-            info.setAbout(about);
-        }
-        String email = request.getParameter(EMAIL);
-        //email validation
-        info.setEmail(email);
-
-        Date parsed;
         try {
-            parsed = format.parse(request.getParameter(DATE_OF_BIRTH));
+            Part part = request.getPart(USER_PHOTO);
+            if (part.getSize() > 0){
+                String fileName = DigestUtils.md2Hex(info.getUser().getId().toString()) + "." + "jpg";
+                String path = getPath();
+                File file = new File(path + ConfigurationManager.getProperty("path.imageDirectory") + fileName);
+                if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
+                    info.setPictureLink(fileName);
+                } else {
+                    return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
+                }
+            }
+        } catch (IOException | ServletException | NullPointerException e) {
+            logger.log(Level.WARN, e.getMessage());
+            return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
         }
-        catch(ParseException pe) {
-            logger.log(Level.INFO, "Profile edit error");
-            return goBackWithError(ERROR_UPDATE_USER_INFO, request);
-        }
-        info.setDateOfBirth(parsed);
 
         try {
             update(info);
         } catch (DaoException | ServiceException e) {
-            logger.log(Level.INFO, "Profile edit error");
-            return goBackWithError(ERROR_UPDATE_USER_INFO, request);
+            logger.log(Level.INFO, ERROR_UPLOAD_USER_PHOTO);
+            return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
         }
-
         request.setAttribute(DONE, true);
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
@@ -83,16 +63,20 @@ public class EditUserInfoCommand implements ActionCommand {
         return new CommandResult("/controller?command=profile", false);
     }
 
+    private String getPath() {
+        String path = getClass().getClassLoader().getResource("").getPath();
+        String[] pathArr = path.split("/WEB-INF/classes/");
+        return pathArr[0];
+    }
+
     private void update(UserInfo info) throws DaoException, ServiceException {
         UserInfoService service = new UserInfoServiceImpl();
         service.save(info);
     }
-
 
     private CommandResult goBackWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
         //request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.profile"));
         return new CommandResult("/controller?command=profile", false);
     }
-
 }

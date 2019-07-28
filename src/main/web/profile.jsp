@@ -128,7 +128,8 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form class="form-group" action="controller?command=edit_user_info" method="POST" id="editUserInfo" enctype="multipart/form-data">
+                    <form class="form-group" action="controller?command=edit_user_info" method="POST" id="editUserInfo"
+                          enctype="multipart/form-data">
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
                                 <label for="name">${first_name}</label>
@@ -212,13 +213,17 @@
         </div><!--/col-9-->
         <div class="col-sm-3"><!--right col-->
             <div class="col-md-4 text-center">
-                <div id="img-preview-block" class="avatar avatar-original center-block rounded" style="background-size:cover;
-                background-image:url(userImages/${userInfo.pictureLink}?size=140x140)"></div>
-                <br>
-                <span class="btn btn-link btn-file">${edit_avatar}<input type="file" id="upload-img" form="editUserInfo"
-                                                                         name="avatar" onchange="form.submit()"></span>
+                <form class="form-group" action="controller?command=edit_user_photo" method="POST"
+                      enctype="multipart/form-data">
+
+                    <div id="img-preview-block" class="avatar avatar-original center-block rounded rounded-circle"
+                         style="background-size:cover;
+                                 background-image:url(userImages/${userInfo.pictureLink}?size=140x140)"></div>
+                    <span class="btn btn-link btn-file">${edit_avatar}<input type="file" id="upload-img"
+                                                                             name="userPhoto"
+                                                                             onchange="form.submit()"></span>
+                </form>
             </div>
-            <hr class="dropdown-divider">
         </div><!--/col-3-->
     </div>
     <!--/row-->

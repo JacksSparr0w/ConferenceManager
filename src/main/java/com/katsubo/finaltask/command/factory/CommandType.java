@@ -10,6 +10,7 @@ public enum CommandType {
     PROFILE("profile"),
     EDIT_USER("edit_user"),
     EDIT_USER_INFO("edit_user_info"),
+    EDIT_USER_PHOTO("edit_user_photo"),
     REGISTER_TO_EVENT("register_to_event"),
     LEAVE_EVENT("leave_event"),
     USER_EVENTS("user_events"),
