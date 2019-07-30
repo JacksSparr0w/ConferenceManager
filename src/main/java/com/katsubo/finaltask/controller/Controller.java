@@ -50,15 +50,15 @@ public class Controller extends HttpServlet {
         } catch (CommandException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(MessageManager.getProperty("error"), e.getMessage());
-            result = new CommandResult(ConfigurationManager.getProperty("page.error404"), false);
+            result = new CommandResult(ConfigurationManager.getProperty("page.error404"));
         }
 
         String page = result.getPage();
         if (result.isRedirect()) {
-            page = request.getContextPath() + page;
+            //page = request.getContextPath() + page;
             redirect(response, page);
         } else {
-            dispatch(request, response, page);
+            dispatch(request, response, "/"+page);
         }
     }
 

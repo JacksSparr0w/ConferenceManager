@@ -1,8 +1,9 @@
-package com.katsubo.finaltask.command.action;
+package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.action.ActionCommand;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
@@ -47,7 +48,7 @@ public class LoginCommand implements ActionCommand {
         }
         if (userExist) {
             logger.log(Level.INFO, "user authorized with login - " + login);
-            return new CommandResult("/controller?command=home_page", true);
+            return new CommandResult("controller?command=home_page", true);
         } else {
             logger.log(Level.INFO, "user with such login and password doesn't exist");
             return goBackWithError(request, ERROR_AUTHENTIFICATION);

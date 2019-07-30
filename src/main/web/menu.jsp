@@ -11,7 +11,6 @@
 
 
 
-<hr class="dropdown-divider">
 <ul class="nav nav-tabs flex-column">
     <li class="nav-item">
         <a class="nav-link" href="controller?command=user_events">${my_conferences}</a>
@@ -20,6 +19,6 @@
         <a class="nav-link" href="controller?command=profile">${profile}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">${add_conference}</a>
+        <a class="nav-link" href="controller?command=add_event">${add_conference}</a>
     </li>
 </ul>

@@ -2,7 +2,8 @@ package com.katsubo.finaltask.entity.enums;
 
 public enum Role {
     LISTENER(1),
-    TELLER(2);
+    TELLER(2),
+    AUTHOR(3);
 
     private Integer fieldCode;
 

@@ -25,10 +25,12 @@
 <fmt:message bundle="${textResources}" key="first_name" var="first_name"/>
 <fmt:message bundle="${textResources}" key="second_name" var="second_name"/>
 <fmt:message bundle="${textResources}" key="email" var="email"/>
+<fmt:message bundle="${textResources}" key="error_upload_user_photo" var="error_photo"/>
+<fmt:message bundle="${textResources}" key="success_upload_user_photo" var="success_photo"/>
 
 
 <link rel="stylesheet" type="text/css" href="css/avatar.css">
-<script src="js/avatar.js"></script>
+<script src="js/image.js"></script>
 
 <c:choose>
     <c:when test="${done == true}">
@@ -50,6 +52,22 @@
     <c:when test="${incorrect_verify_password  == true}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
                 ${verify_password_is_incorrect}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:when>
+    <c:when test="${error_upload_user_photo  == true}">
+        <div class="container alert alert-warning fade show m-t-16" role="alert">
+                ${error_photo}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:when>
+    <c:when test="${success_upload_user_photo  == true}">
+        <div class="container alert alert-success fade show m-t-16" role="alert">
+                ${success_photo}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -128,7 +146,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form class="form-group" action="controller?command=edit_user_info" method="POST" id="editUserInfo"
+                    <form class="form-group" action="controller?command=edit_user_info" method="POST"
                           enctype="multipart/form-data">
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
@@ -165,12 +183,46 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="dateOfBirth" id="dateOfBirth"
-                                       placeholder="${userInfo.dateOfBirth}" title="Edit your dateOfBirth.">
+                                       value="${userInfo.dateOfBirth}" title="Edit your dateOfBirth.">
                                 <script>
                                     $('input[name="dateOfBirth"]').daterangepicker({
                                         "singleDatePicker": true,
-                                        "autoApply": true,
-                                        "opens": "center"
+                                        "locale": {
+                                            "format": "YYYY-MM-DD",
+                                            "separator": " - ",
+                                            "applyLabel": "Apply",
+                                            "cancelLabel": "Cancel",
+                                            "fromLabel": "From",
+                                            "toLabel": "To",
+                                            "customRangeLabel": "Custom",
+                                            "weekLabel": "W",
+                                            "daysOfWeek": [
+                                                "Su",
+                                                "Mo",
+                                                "Tu",
+                                                "We",
+                                                "Th",
+                                                "Fr",
+                                                "Sa"
+                                            ],
+                                            "monthNames": [
+                                                "January",
+                                                "February",
+                                                "March",
+                                                "April",
+                                                "May",
+                                                "June",
+                                                "July",
+                                                "August",
+                                                "September",
+                                                "October",
+                                                "November",
+                                                "December"
+                                            ],
+                                            "firstDay": 1
+                                        },
+                                        "linkedCalendars": false,
+                                        "showCustomRangeLabel": false
                                     }, function (start, end, label) {
                                         console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
                                     });
@@ -212,13 +264,13 @@
 
         </div><!--/col-9-->
         <div class="col-sm-3"><!--right col-->
-            <div class="col-md-4 text-center">
+            <div class="text-center">
                 <form class="form-group" action="controller?command=edit_user_photo" method="POST"
                       enctype="multipart/form-data">
 
                     <div id="img-preview-block" class="avatar avatar-original center-block rounded rounded-circle"
                          style="background-size:cover;
-                                 background-image:url(userImages/${userInfo.pictureLink}?size=140x140)"></div>
+                                 background-image:url(userImages/${userInfo.pictureLink})"></div>
                     <span class="btn btn-link btn-file">${edit_avatar}<input type="file" id="upload-img"
                                                                              name="userPhoto"
                                                                              onchange="form.submit()"></span>
@@ -226,10 +278,6 @@
             </div>
         </div><!--/col-3-->
     </div>
-    <!--/row-->
-    <!--
-        //todo think about photos
-    -->
 </div>
 
 

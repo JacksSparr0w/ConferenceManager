@@ -5,7 +5,8 @@ public enum Constances {
     ROLE("role"),
     USER("user"),
     INCLUDE("includeView"),
-    USER_INFO("userInfo");
+    USER_INFO("userInfo"),
+    EVENT("event");
 
     private final String fieldName;
 

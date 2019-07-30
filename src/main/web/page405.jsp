@@ -30,7 +30,7 @@
 <div id="notfound">
     <div class="notfound">
         <div class="notfound-404">
-            <h1>4<span></span>4</h1>
+            <h1>4<span></span>5</h1>
         </div>
         <h2>${title}</h2>
         <a href="controller?command=home_page">${back}</a>

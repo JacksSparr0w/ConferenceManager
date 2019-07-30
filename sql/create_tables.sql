@@ -26,14 +26,15 @@ CREATE TABLE `user_info`
 
 CREATE TABLE `event_info`
 (
-  `id`          INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `name`        VARCHAR(255)        NOT NULL,
-  `description` TEXT,
-  `theme`       ENUM ('business', 'advertising', 'science', 'design') DEFAULT NULL,
-  `date`        DATETIME            NOT NULL,
-  `address`     VARCHAR(255),
-  `status`      ENUM ('created', 'running', 'done', 'failure'),
-  `capacity`    INTEGER
+  `id`           INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `name`         VARCHAR(255)        NOT NULL,
+  `description`  TEXT,
+  `picture_link` VARCHAR(255)                                          DEFAULT NULL,
+  `theme`        ENUM ('business', 'advertising', 'science', 'design') DEFAULT NULL,
+  `date`         DATETIME            NOT NULL,
+  `address`      VARCHAR(255),
+  `author_id`    INTEGER             NOT NULL,
+  `capacity`     INTEGER
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -42,7 +43,7 @@ CREATE TABLE `registrations`
   `id`        INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `event_id`  INTEGER UNIQUE,
   `user_id`   INTEGER,
-  `user_role` ENUM ('listener', 'teller') DEFAULT 'listener'
+  `user_role` ENUM ('listener', 'teller', 'author') DEFAULT 'listener'
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -58,5 +59,10 @@ ALTER TABLE `registrations`
 
 ALTER TABLE `registrations`
   ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE `event_info`
+  ADD FOREIGN KEY (`author_id`) REFERENCES `user` (`id`)
     ON UPDATE CASCADE
     ON DELETE CASCADE;

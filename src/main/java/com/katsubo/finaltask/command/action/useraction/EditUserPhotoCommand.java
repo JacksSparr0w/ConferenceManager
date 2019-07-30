@@ -1,14 +1,19 @@
-package com.katsubo.finaltask.command.action;
+package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.repair.Recover;
+import com.katsubo.finaltask.command.repair.UserInfoRecover;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
+import com.katsubo.finaltask.validate.UserInfoValidator;
+import com.katsubo.finaltask.validate.Validator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +29,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class EditUserPhotoCommand implements ActionCommand {
-    private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
+    private static final Logger logger = LogManager.getLogger(EditUserPhotoCommand.class);
     private static final String USER_PHOTO = "userPhoto";
     private static final String ERROR_UPLOAD_USER_PHOTO = "error_upload_user_photo";
     private static final String DONE = "success_upload_user_photo";
@@ -35,21 +40,24 @@ public class EditUserPhotoCommand implements ActionCommand {
 
         try {
             Part part = request.getPart(USER_PHOTO);
-            if (part.getSize() > 0){
+            if (part.getSize() > 0) {
                 String fileName = DigestUtils.md2Hex(info.getUser().getId().toString()) + "." + "jpg";
                 String path = getPath();
-                File file = new File(path + ConfigurationManager.getProperty("path.imageDirectory") + fileName);
+                File file = new File(path + ConfigurationManager.getProperty("path.userImageDirectory") + fileName);
                 if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
                     info.setPictureLink(fileName);
                 } else {
                     return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
                 }
+            } else {
+                return new CommandResult("controller?command=profile", false);
             }
         } catch (IOException | ServletException | NullPointerException e) {
             logger.log(Level.WARN, e.getMessage());
             return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
         }
 
+        validate(info);
         try {
             update(info);
         } catch (DaoException | ServiceException e) {
@@ -60,7 +68,16 @@ public class EditUserPhotoCommand implements ActionCommand {
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
 
-        return new CommandResult("/controller?command=profile", false);
+        return new CommandResult("controller?command=profile", false);
+    }
+
+    private void validate(UserInfo info) {
+        Validator validator = new UserInfoValidator();
+        Recover recover = new UserInfoRecover();
+        if (!validator.isValid(info)) {
+            info = (UserInfo) recover.recover(info);
+        }
+
     }
 
     private String getPath() {
@@ -76,7 +93,6 @@ public class EditUserPhotoCommand implements ActionCommand {
 
     private CommandResult goBackWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        //request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.profile"));
-        return new CommandResult("/controller?command=profile", false);
+        return new CommandResult("controller?command=profile", false);
     }
 }

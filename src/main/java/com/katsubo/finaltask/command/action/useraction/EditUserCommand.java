@@ -1,8 +1,9 @@
-package com.katsubo.finaltask.command.action;
+package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.command.action.ActionCommand;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
@@ -53,7 +54,7 @@ public class EditUserCommand implements ActionCommand {
         }
         setAttributesToSession(user, request);
 
-        return new CommandResult("/controller?command=profile", false);
+        return new CommandResult("controller?command=profile", false);
     }
 
     private void clearWarnings(HttpServletRequest request) {
@@ -80,6 +81,6 @@ public class EditUserCommand implements ActionCommand {
 
     private CommandResult goBackWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult("/controller?command=profile", false);
+        return new CommandResult("controller?command=profile", false);
     }
 }

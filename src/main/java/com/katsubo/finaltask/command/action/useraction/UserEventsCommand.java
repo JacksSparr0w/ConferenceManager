@@ -1,9 +1,10 @@
-package com.katsubo.finaltask.command.action;
+package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.command.action.ActionCommand;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
@@ -62,6 +63,6 @@ public class UserEventsCommand implements ActionCommand {
 
     private CommandResult goBackWithError(HttpServletRequest request, String error) {
         request.setAttribute(error, true);
-        return new CommandResult("/controller?command=home_page", false);
+        return new CommandResult("controller?command=home_page", false);
     }
 }

@@ -4,7 +4,6 @@ import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
-import com.katsubo.finaltask.entity.enums.Status;
 import com.katsubo.finaltask.entity.enums.Theme;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -19,13 +18,13 @@ import java.util.Date;
 import java.util.List;
 
 public class EventDaoImpl extends BaseDaoImpl implements EventDao {
-    private static final String READ_ALL = "SELECT `id`, `name`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` ORDER BY `id`";
-    private static final String READ_BY_NAME = "SELECT `id`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `name` LIKE ? ORDER BY `name`";
-    private static final String READ_BY_DATE = "SELECT `id`, `description`, `theme`, `address`, `status`, `capacity` FROM `event_info` WHERE `date` LIKE ? ORDER BY `date`";
-    private static final String READ_BY_THEME = "SELECT `id`, `name`, `description`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `theme` LIKE ? ORDER BY `theme`";
-    private static final String CREATE = "INSERT INTO `event_info` (`name`, `description`, `theme`, `date`, `address`, `status`, `capacity`) VALUE (?, ?, ?, ?, ?, ?, ?)";
-    private static final String READ = "SELECT `name`, `description`, `theme`, `date`, `address`, `status`, `capacity` FROM `event_info` WHERE `id` = ?";
-    private static final String UPDATE = "UPDATE `event_info` SET `name` = ?, `description` = ?, `theme` = ?, `date` = ?, `address` = ?, `status` = ?, `capacity` = ? WHERE `id` = ?";
+    private static final String READ_ALL = "SELECT `id`, `name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` ORDER BY `id`";
+    private static final String READ_BY_NAME = "SELECT `id`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `name` LIKE ? ORDER BY `name`";
+    private static final String READ_BY_DATE = "SELECT `id`, `name`, `description`, `picture_link`, `theme`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `date` LIKE ? ORDER BY `date`";
+    private static final String READ_BY_THEME = "SELECT `id`, `name`, `description`, `picture_link`, `date`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `theme` LIKE ? ORDER BY `theme`";
+    private static final String CREATE = "INSERT INTO `event_info` (`name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity`) VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String READ = "SELECT `name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `event_info` SET `name` = ?, `description` = ?, `picture_link` = ?, `theme` = ?, `date` = ?, `address` = ?, `author_id` = ?, `capacity` = ? WHERE `id` = ?";
     private static final String DELETE = "DELETE FROM `event_info` WHERE `id` = ?";
 
     private static final Logger logger = LogManager.getLogger(EventDaoImpl.class);
@@ -42,11 +41,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setId(resultSet.getInt("id"));
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
+                event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getDate("date"));
-                Address address = new Address(resultSet.getString("address"));   //todo
+                Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
-                event.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
+                event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
                 events.add(event);
             }
@@ -78,11 +78,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setId(resultSet.getInt("id"));
                 event.setName(search);
                 event.setDescription(resultSet.getString("description"));
+                event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getDate("date"));
-                Address address = new Address(resultSet.getString("address"));   //todo
+                Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
-                event.setStatus(Status.valueOf(resultSet.getString("status")));
+                event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
                 events.add(event);
             }
@@ -114,11 +115,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setId(resultSet.getInt("id"));
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
-                event.setTheme(Theme.getTheme(resultSet.getInt("theme")));
+                event.setPictureLink(resultSet.getString("picture_link"));
+                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(search);
-                Address address = new Address(resultSet.getString("address"));   //todo
+                Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
-                event.setStatus(Status.valueOf(resultSet.getString("status")));
+                event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
                 events.add(event);
             }
@@ -150,11 +152,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setId(resultSet.getInt("id"));
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
+                event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(search);
                 event.setDate(resultSet.getDate("date"));
-                Address address = new Address(resultSet.getString("address"));   //todo
+                Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
-                event.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
+                event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
                 events.add(event);
             }
@@ -179,11 +182,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
         try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
-            statement.setInt(3, entity.getTheme().getFieldCode());
-            statement.setDate(4, new java.sql.Date(entity.getDate().getTime()));
-            statement.setString(5, entity.getAddress().toString());
-            statement.setString(6, entity.getStatus().toString());
-            statement.setInt(7, entity.getCapacity());
+            statement.setString(3,entity.getPictureLink());
+            statement.setInt(4, entity.getTheme().getFieldCode());
+            statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
+            statement.setString(6, entity.getAddress().toString());
+            statement.setInt(7, entity.getAuthor_id());
+            statement.setInt(8, entity.getCapacity());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -214,14 +218,15 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             Event event = null;
             if (resultSet.next()) {
                 event = new Event();
-                event.setId(id);
+                event.setId(resultSet.getInt("id"));
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
+                event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getDate("date"));
-                Address address = new Address(resultSet.getString("address"));   //todo
+                Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
-                event.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
+                event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
             }
             return event;
@@ -244,12 +249,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
-            statement.setInt(3, entity.getTheme().getFieldCode());
-            statement.setDate(4, new java.sql.Date(entity.getDate().getTime()));
-            statement.setString(5, entity.getAddress().toString());
-            statement.setString(6, entity.getStatus().toString());
-            statement.setInt(7, entity.getCapacity());
-            statement.setInt(8, entity.getId());
+            statement.setString(3,entity.getPictureLink());
+            statement.setInt(4, entity.getTheme().getFieldCode());
+            statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
+            statement.setString(6, entity.getAddress().toString());
+            statement.setInt(7, entity.getAuthor_id());
+            statement.setInt(8, entity.getCapacity());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update event");

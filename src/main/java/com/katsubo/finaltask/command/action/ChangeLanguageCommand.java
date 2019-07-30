@@ -19,9 +19,9 @@ public class ChangeLanguageCommand implements ActionCommand {
         String referer = request.getHeader("referer");
         String backURI = null;
         try {
-            backURI = referer.substring(referer.indexOf("controller") - 1, referer.length());
+            backURI = referer.substring(referer.indexOf("controller"));
         } catch (StringIndexOutOfBoundsException e) {
-            backURI = "/controller?command=home_page";
+            backURI = "controller?command=home_page";
         }
         String language = request.getParameter(LANGUAGE).toUpperCase();
         if (language == null) {

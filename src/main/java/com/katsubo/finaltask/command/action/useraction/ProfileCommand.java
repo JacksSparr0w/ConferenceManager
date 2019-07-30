@@ -1,9 +1,10 @@
-package com.katsubo.finaltask.command.action;
+package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.command.action.ActionCommand;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;

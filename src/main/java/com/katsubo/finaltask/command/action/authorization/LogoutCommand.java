@@ -1,9 +1,9 @@
-package com.katsubo.finaltask.command.action;
+package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ConfigurationManager;
-import com.katsubo.finaltask.service.ServiceException;
+import com.katsubo.finaltask.command.action.ActionCommand;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

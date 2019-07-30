@@ -1,35 +1,32 @@
-package com.katsubo.finaltask.command.action;
+package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.repair.Recover;
+import com.katsubo.finaltask.command.repair.UserInfoRecover;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
-import org.apache.commons.codec.digest.DigestUtils;
+import com.katsubo.finaltask.validate.UserInfoValidator;
+import com.katsubo.finaltask.validate.Validator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EditUserInfoCommand implements ActionCommand {
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
-    private static final SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-    private static final String AVATAR = "avatar";
+    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
     private static final String EMAIL = "email";
@@ -41,34 +38,30 @@ public class EditUserInfoCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserInfo info = (UserInfo) request.getSession().getAttribute(Constances.USER_INFO.getFieldName());
-        info.setName(request.getParameter(NAME));
-        info.setSurname(request.getParameter(SURNAME));
-
-        /*if (request.getParameter(ABOUT) == null || request.getParameter(ABOUT).isEmpty()) {
-            UserInfo oldInfo = (UserInfo) request.getSession().getAttribute(Constances.USER_INFO.getFieldName());
-            info.setAbout(oldInfo.getAbout());
-        } else {
-            info.setAbout(request.getParameter(ABOUT));
-        }*/
-
+        String name = request.getParameter(NAME);
+            info.setName(name);
+        String surname = request.getParameter(SURNAME);
+            info.setSurname(surname);
         String about = request.getParameter(ABOUT);
-        if (about != null && !about.isEmpty()){
             info.setAbout(about);
-        }
         String email = request.getParameter(EMAIL);
-        //email validation
-        info.setEmail(email);
+            info.setEmail(email);
+        String date = request.getParameter(DATE_OF_BIRTH);
 
+        if (date == null || date.isEmpty()){
+            logger.log(Level.INFO, "Profile edit error");
+            return goBackWithError(ERROR_UPDATE_USER_INFO, request);
+        }
         Date parsed;
         try {
             parsed = format.parse(request.getParameter(DATE_OF_BIRTH));
-        }
-        catch(ParseException pe) {
+        } catch (ParseException pe) {
             logger.log(Level.INFO, "Profile edit error");
             return goBackWithError(ERROR_UPDATE_USER_INFO, request);
         }
         info.setDateOfBirth(parsed);
 
+        validate(info);
         try {
             update(info);
         } catch (DaoException | ServiceException e) {
@@ -80,7 +73,16 @@ public class EditUserInfoCommand implements ActionCommand {
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
 
-        return new CommandResult("/controller?command=profile", false);
+        return new CommandResult("controller?command=profile", false);
+    }
+
+    private void validate(UserInfo info) {
+        Validator validator = new UserInfoValidator();
+        Recover recover = new UserInfoRecover();
+        if (!validator.isValid(info)) {
+            recover.recover(info);
+        }
+
     }
 
     private void update(UserInfo info) throws DaoException, ServiceException {
@@ -91,8 +93,6 @@ public class EditUserInfoCommand implements ActionCommand {
 
     private CommandResult goBackWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        //request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.profile"));
-        return new CommandResult("/controller?command=profile", false);
+        return new CommandResult("controller?command=profile", false);
     }
-
 }
