@@ -75,7 +75,7 @@ public class AddEventCommand implements ActionCommand {
 
         try {
             Part part = request.getPart(PICTURE);
-            if (part.getSize() > 0){
+            if (part != null && part.getSize() > 0){
                 String fileName = DigestUtils.md2Hex(parameters.get(NAME)) + "." + "jpg";
                 String path = getPath();
                 File file = new File(path + ConfigurationManager.getProperty("path.eventImageDirectory") + fileName);
@@ -100,10 +100,12 @@ public class AddEventCommand implements ActionCommand {
         }
         event.setDate(date);
 
-        event.setAddress(new Address(parameters.get(COUNTRY)+
-                parameters.get(CITY)+
-                parameters.get(STREET)+
-                parameters.get(BUILDING)));
+        event.setAddress(new Address(
+                parameters.get(COUNTRY),
+                parameters.get(CITY),
+                parameters.get(STREET),
+                Integer.valueOf(parameters.get(BUILDING))
+        ));
 
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         if (user != null){

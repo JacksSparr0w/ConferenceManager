@@ -20,19 +20,22 @@ public class Event extends Entity {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getShortDescription() {
         return shortDescription;
     }
 
     private void setShortDescription() {
         int sizeShortDescription = 140;
-        if (description.length() > sizeShortDescription)
-        shortDescription = description.substring(0, sizeShortDescription);
-        shortDescription += "...";
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        if (description.length() > sizeShortDescription) {
+            shortDescription = description.substring(0, sizeShortDescription);
+            shortDescription += "...";
+        } else {
+            shortDescription = description;
+        }
     }
 
     public String getDescription() {

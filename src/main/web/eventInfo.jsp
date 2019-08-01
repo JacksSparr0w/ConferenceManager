@@ -14,7 +14,7 @@
 
 <c:if test="${requestScope.register_done eq true}">
     <div class="container alert alert-success fade show m-t-16" role="alert">
-        ${successful_register_to_event}
+            ${successful_register_to_event}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -26,7 +26,10 @@
     <div class="container-fluid pt-3 pl-3 pr-3">
         <h3 class="text-black">${event.name}</h3>
         <h6 class="text-right">${event.date}</h6>
-        <div class="jumbotron rounded thumb text-center">conference image(optional)</div>
+        <img src="eventImages/${event.pictureLink}" class="rounded" style="size: auto;
+        width: inherit;"
+             alt="Event picture">
+        <span class="text-center">conference image</span>
         <p class="text-dark text-right">${event.address}</p>
 
         <span class="text-black text-justify pt-2 pl-2 pr-2">${event.description}</span>

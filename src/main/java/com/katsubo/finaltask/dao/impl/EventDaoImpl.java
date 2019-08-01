@@ -218,7 +218,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             Event event = null;
             if (resultSet.next()) {
                 event = new Event();
-                event.setId(resultSet.getInt("id"));
+                event.setId(id);
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));

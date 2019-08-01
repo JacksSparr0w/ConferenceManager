@@ -17,6 +17,13 @@ public class Address {
         //todo add table
     }
 
+    public Address(String country, String city, String street, int building) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.building = building;
+    }
+
     public String getCountry() {
         return country;
     }

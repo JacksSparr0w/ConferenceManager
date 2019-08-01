@@ -18,9 +18,12 @@
 <fmt:message bundle="${textResources}" key="save" var="save"/>
 <fmt:message bundle="${textResources}" key="edit_image" var="edit_image"/>
 
-
 <link rel="stylesheet" type="text/css" href="css/image.css">
 <script src="js/image.js"></script>
+<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
+<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"/>
 
 <c:choose>
     <c:when test="${done == true}">
@@ -33,7 +36,7 @@
     </c:when>
     <c:when test="${error_add_event == true}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
-            ${error_find_user_info}
+                ${error_find_user_info}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -52,35 +55,30 @@
     </c:otherwise>
 </c:choose>
 
-<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
-<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
-<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"/>
-
 <div class="container-fluid">
-    <div class="row p-5">
-        <div class="text-center">
-                <div id="img-preview-block" class="avatar avatar-original center-block rounded"
-                     style="background-size:contain; size: auto;
-                             background-image:url(eventImages/${event.pictureLink})"></div>
-                <span class="btn btn-link btn-file">${edit_image}<input type="file" id="upload-img"
-                                                                         name="eventPhoto" form="addForm"></span>
-        </div>
+    <div class="text-center">
+
+        <div id="img-preview-block" class="avatar avatar-original center-block rounded rounded-circle"
+             style="background-image:url(eventImages/${event.pictureLink});
+                     background-repeat: no-repeat;
+                     background-size: cover;"></div>
+        <span class="btn btn-link btn-file">${edit_image}<input type="file" id="upload-img"
+                                                                name="picture" form="addForm"></span>
     </div>
     <div class="row">
         <form class="form-group" action="controller?command=add_event" method="POST" id="addForm"
               enctype="multipart/form-data">
             <div class="row pt-3 pl-3 pr-3">
                 <!--name-->
-                    <label for="name">${name}</label>
-                    <input type="text" class="form-control" name="name" id="name"
-                           placeholder="${name}" title="Enter name of conference">
+                <label for="name">${name}</label>
+                <input type="text" class="form-control" name="name" id="name"
+                       placeholder="${name}" title="Enter name of conference">
             </div>
 
             <div class="row pt-3 pl-3 pr-3">
-                    <label for="description">${description}</label>
-                    <textarea rows="4" class="form-control rounded" name="description" id="description"
-                              placeholder="${description}" title="Enter description of the event"></textarea>
+                <label for="description">${description}</label>
+                <textarea rows="4" class="form-control rounded" name="description" id="description"
+                          placeholder="${description}" title="Enter description of the event"></textarea>
             </div>
 
             <div class="row pt-3 pl-3 pr-3">
@@ -96,52 +94,52 @@
             </div>
 
             <div class="row pt-3 pl-3 pr-3">
-                    <label for="date">${date}</label>
-                    <input type="text" class="form-control" name="date" id="date"
-                           title="Edit date of conference.">
-                    <script>
-                        $('input[name="date"]').daterangepicker({
-                            "singleDatePicker": true,
-                            "locale": {
-                                "format": "YYYY-MM-DD",
-                                "separator": " - ",
-                                "applyLabel": "Apply",
-                                "cancelLabel": "Cancel",
-                                "fromLabel": "From",
-                                "toLabel": "To",
-                                "customRangeLabel": "Custom",
-                                "weekLabel": "W",
-                                "daysOfWeek": [
-                                    "Su",
-                                    "Mo",
-                                    "Tu",
-                                    "We",
-                                    "Th",
-                                    "Fr",
-                                    "Sa"
-                                ],
-                                "monthNames": [
-                                    "January",
-                                    "February",
-                                    "March",
-                                    "April",
-                                    "May",
-                                    "June",
-                                    "July",
-                                    "August",
-                                    "September",
-                                    "October",
-                                    "November",
-                                    "December"
-                                ],
-                                "firstDay": 1
-                            },
-                            "linkedCalendars": false,
-                            "showCustomRangeLabel": false
-                        }, function (start, end, label) {
-                            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-                        });
-                    </script>
+                <label for="date">${date}</label>
+                <input type="text" class="form-control" name="date" id="date"
+                       title="Edit date of conference.">
+                <script>
+                    $('input[name="date"]').daterangepicker({
+                        "singleDatePicker": true,
+                        "timePicker": true,
+                        "timePicker24Hour": true,
+                        "locale": {
+                            "format": "YYYY-MM-DD",
+                            "separator": " - ",
+                            "applyLabel": "Apply",
+                            "cancelLabel": "Cancel",
+                            "fromLabel": "From",
+                            "toLabel": "To",
+                            "customRangeLabel": "Custom",
+                            "weekLabel": "W",
+                            "daysOfWeek": [
+                                "Su",
+                                "Mo",
+                                "Tu",
+                                "We",
+                                "Th",
+                                "Fr",
+                                "Sa"
+                            ],
+                            "monthNames": [
+                                "January",
+                                "February",
+                                "March",
+                                "April",
+                                "May",
+                                "June",
+                                "July",
+                                "August",
+                                "September",
+                                "October",
+                                "November",
+                                "December"
+                            ],
+                            "firstDay": 1
+                        }
+                    }, function (start, end, label) {
+                        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+                    });
+                </script>
             </div>
 
             <!--address-->
@@ -171,9 +169,9 @@
 
             <div class="row pt-3 pl-3 pr-3">
                 <!--capacity-->
-                    <label for="capacity">${capacity}</label>
-                    <input type="number" class="form-control" name="capacity" id="capacity"
-                           title="Enter capacity">
+                <label for="capacity">${capacity}</label>
+                <input type="number" class="form-control" name="capacity" id="capacity"
+                       title="Enter capacity">
             </div>
 
             <div class="row pt-3 pl-3 pr-3">
