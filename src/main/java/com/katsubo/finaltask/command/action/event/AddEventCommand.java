@@ -1,10 +1,10 @@
-package com.katsubo.finaltask.command.action.useraction;
+package com.katsubo.finaltask.command.action.event;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.ResourceManager;
 import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
@@ -31,9 +31,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddEventCommand implements ActionCommand {
+public class AddEventCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddEventCommand.class);
-    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private static final String DESCRIPTION = "description";
     private static final String THEME = "theme";
     private static final String CAPACITY = "capacity";
@@ -65,7 +65,7 @@ public class AddEventCommand implements ActionCommand {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
                 logger.log(Level.WARN, ERROR_ADD_EVENT + ": " + INVALID_FIELD + " - " + entry.getKey());
                 request.setAttribute(INVALID_FIELD, entry.getKey());
-                return goBackWithError(ERROR_ADD_EVENT, request);
+                return failure(ERROR_ADD_EVENT, request);
             }
         }
 
@@ -78,16 +78,16 @@ public class AddEventCommand implements ActionCommand {
             if (part != null && part.getSize() > 0){
                 String fileName = DigestUtils.md2Hex(parameters.get(NAME)) + "." + "jpg";
                 String path = getPath();
-                File file = new File(path + ConfigurationManager.getProperty("path.eventImageDirectory") + fileName);
+                File file = new File(path + ResourceManager.getProperty("path.eventImageDirectory") + fileName);
                 if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
                     event.setPictureLink(fileName);
                 } else {
-                    return goBackWithError(ERROR_ADD_EVENT, request);
+                    return failure(ERROR_ADD_EVENT, request);
                 }
             }
         } catch (IOException | ServletException | NullPointerException e) {
             logger.log(Level.WARN, e.getMessage());
-            return goBackWithError(ERROR_ADD_EVENT, request);
+            return failure(ERROR_ADD_EVENT, request);
         }
 
         event.setTheme(Theme.valueOf(parameters.get(THEME).toUpperCase()));
@@ -96,7 +96,7 @@ public class AddEventCommand implements ActionCommand {
             date = format.parse(parameters.get(DATE));
         } catch (ParseException pe) {
             logger.log(Level.INFO, ERROR_ADD_EVENT);
-            return goBackWithError(ERROR_ADD_EVENT, request);
+            return failure(ERROR_ADD_EVENT, request);
         }
         event.setDate(date);
 
@@ -112,7 +112,7 @@ public class AddEventCommand implements ActionCommand {
             event.setAuthor_id(user.getUserId());
         }else{
             logger.log(Level.INFO, ERROR_ADD_EVENT);
-            return goBackWithError(ERROR_ADD_EVENT, request);
+            return failure(ERROR_ADD_EVENT, request);
         }
         event.setCapacity(Integer.valueOf(parameters.get(CAPACITY)));
 
@@ -120,13 +120,13 @@ public class AddEventCommand implements ActionCommand {
             add(event);
         } catch (DaoException | ServiceException e) {
             logger.log(Level.INFO, ERROR_ADD_EVENT);
-            return goBackWithError(ERROR_ADD_EVENT, request);
+            return failure(ERROR_ADD_EVENT, request);
         }
 
         request.setAttribute(DONE, true);
         request.setAttribute(Constances.EVENT.getFieldName(), event);
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.addEvent"));
-        return new CommandResult("controller?command=home_page", false);
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addEvent"));
+        return new CommandResult(ResourceManager.getProperty("command.home"));
     }
 
     private String getPath() {
@@ -141,10 +141,10 @@ public class AddEventCommand implements ActionCommand {
     }
 
 
-    private CommandResult goBackWithError(String error, HttpServletRequest request) {
+    private CommandResult failure(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.addEvent"));
-        return new CommandResult(ConfigurationManager.getProperty("page.main"), false);
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addEvent"));
+        return new CommandResult(ResourceManager.getProperty("command.home"));
     }
 
 }

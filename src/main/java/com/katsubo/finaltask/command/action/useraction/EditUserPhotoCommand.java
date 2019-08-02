@@ -2,9 +2,9 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.ResourceManager;
 import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.repair.Recover;
 import com.katsubo.finaltask.command.repair.UserInfoRecover;
 import com.katsubo.finaltask.dao.DaoException;
@@ -28,7 +28,7 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 
-public class EditUserPhotoCommand implements ActionCommand {
+public class EditUserPhotoCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditUserPhotoCommand.class);
     private static final String USER_PHOTO = "userPhoto";
     private static final String ERROR_UPLOAD_USER_PHOTO = "error_upload_user_photo";
@@ -43,32 +43,32 @@ public class EditUserPhotoCommand implements ActionCommand {
             if (part.getSize() > 0) {
                 String fileName = DigestUtils.md2Hex(info.getUser().getId().toString()) + "." + "jpg";
                 String path = getPath();
-                File file = new File(path + ConfigurationManager.getProperty("path.userImageDirectory") + fileName);
+                File file = new File(path + ResourceManager.getProperty("path.userImageDirectory") + fileName);
                 if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
                     info.setPictureLink(fileName);
                 } else {
-                    return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
+                    return failure(ERROR_UPLOAD_USER_PHOTO, request);
                 }
             } else {
-                return new CommandResult("controller?command=profile", false);
+                return new CommandResult(ResourceManager.getProperty("command.profile"));
             }
         } catch (IOException | ServletException | NullPointerException e) {
             logger.log(Level.WARN, e.getMessage());
-            return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
+            return failure(ERROR_UPLOAD_USER_PHOTO, request);
         }
 
         validate(info);
         try {
             update(info);
         } catch (DaoException | ServiceException e) {
-            logger.log(Level.INFO, ERROR_UPLOAD_USER_PHOTO);
-            return goBackWithError(ERROR_UPLOAD_USER_PHOTO, request);
+            logger.log(Level.WARN, ERROR_UPLOAD_USER_PHOTO);
+            return failure(ERROR_UPLOAD_USER_PHOTO, request);
         }
         request.setAttribute(DONE, true);
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
 
-        return new CommandResult("controller?command=profile", false);
+        return new CommandResult(ResourceManager.getProperty("command.profile"));
     }
 
     private void validate(UserInfo info) {
@@ -91,8 +91,8 @@ public class EditUserPhotoCommand implements ActionCommand {
         service.save(info);
     }
 
-    private CommandResult goBackWithError(String error, HttpServletRequest request) {
+    private CommandResult failure(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult("controller?command=profile", false);
+        return new CommandResult(ResourceManager.getProperty("command.profile"));
     }
 }

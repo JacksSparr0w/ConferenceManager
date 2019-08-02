@@ -2,9 +2,9 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
 import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class UserEventsCommand implements ActionCommand {
+public class UserEventsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(UserEventsCommand.class);
     private static final String CANT_FIND_USER = "cant_find_user";
     private static final String ERROR_FIND_USER_EVENTS = "error_find_user_events";
@@ -34,14 +34,15 @@ public class UserEventsCommand implements ActionCommand {
             try {
                 events = findUserEvents(userDto);
             } catch (DaoException | ServiceException e) {
-                logger.log(Level.INFO, e.getMessage());
-                goBackWithError(request, e.getMessage());
+                logger.log(Level.WARN, e.getMessage());
+                failure(request, e.getMessage());
             }
-            setAttributes(events, request);
-            return new CommandResult(ConfigurationManager.getProperty("page.main"), false);
+            request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.userEvents"));
+            request.getSession().setAttribute("events", events);
+            return new CommandResult(ResourceManager.getProperty("page.main"));
         } else {
-            logger.log(Level.INFO, CANT_FIND_USER);
-            return goBackWithError(request, CANT_FIND_USER);
+            logger.log(Level.WARN, CANT_FIND_USER);
+            return failure(request, CANT_FIND_USER);
         }
 
     }
@@ -56,13 +57,8 @@ public class UserEventsCommand implements ActionCommand {
         }
     }
 
-    private void setAttributes(List<Event> events, HttpServletRequest request) {
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.userEvents"));
-        request.getSession().setAttribute("events", events);
-    }
-
-    private CommandResult goBackWithError(HttpServletRequest request, String error) {
+    private CommandResult failure(HttpServletRequest request, String error) {
         request.setAttribute(error, true);
-        return new CommandResult("controller?command=home_page", false);
+        return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 }

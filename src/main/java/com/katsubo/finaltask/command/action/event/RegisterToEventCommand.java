@@ -1,9 +1,10 @@
-package com.katsubo.finaltask.command.action.useraction;
+package com.katsubo.finaltask.command.action.event;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Registration;
 import com.katsubo.finaltask.entity.UserDto;
@@ -18,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class RegisterToEventCommand implements ActionCommand {
+public class RegisterToEventCommand implements Command {
     private static final String CANT_FIND_EVENT_ID = "cant_find_event_id";
     private static final Logger logger = LogManager.getLogger(RegisterToEventCommand.class);
     private static final String EVENT_ID = "eventId";
@@ -28,8 +29,8 @@ public class RegisterToEventCommand implements ActionCommand {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         if (request.getParameter(EVENT_ID) == null) {
-            logger.log(Level.INFO, "can't find eventId");
-            return goBackWithError(CANT_FIND_EVENT_ID, request);
+            logger.log(Level.WARN, "can't find eventId");
+            return failure(CANT_FIND_EVENT_ID, request);
         }
         Integer eventId = Integer.valueOf(request.getParameter(EVENT_ID));
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
@@ -38,11 +39,12 @@ public class RegisterToEventCommand implements ActionCommand {
         try {
             register(registration);
         } catch (DaoException | ServiceException e) {
-            logger.log(Level.INFO, e);
-            return goBackWithError(CANT_FIND_EVENT_ID, request);
+            logger.log(Level.WARN, e);
+            return failure(CANT_FIND_EVENT_ID, request);
         }
         request.setAttribute(DONE, true);
-        return new CommandResult("controller?command=home_page", false);
+        return new CommandResult(ResourceManager.getProperty("command.home"));
+
     }
 
     private void register(Registration registration) throws DaoException, ServiceException {
@@ -53,8 +55,8 @@ public class RegisterToEventCommand implements ActionCommand {
         }
     }
 
-    private CommandResult goBackWithError(String error, HttpServletRequest request) {
+    private CommandResult failure(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult("controller?command=home_page");
+        return new CommandResult(ResourceManager.getProperty("command.home"));
     }
 }

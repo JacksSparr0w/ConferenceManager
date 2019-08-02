@@ -1,5 +1,7 @@
-package com.katsubo.finaltask.command;
+package com.katsubo.finaltask.filter;
 
+import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.factory.CommandType;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.enums.Permission;
@@ -35,7 +37,6 @@ public class Access {
 
         commandsAccess.put(Permission.ADMINISTRATOR.getFieldCode(), adminRules);
         commandsAccess.put(Permission.USER.getFieldCode(), userRules);
-        //for guest
         commandsAccess.put(0, guestRules);
 
         setCommonRules();
@@ -60,7 +61,9 @@ public class Access {
     private void setGuestRules() {
         guestRules.addAll(commonRules);
 
+        guestRules.add(CommandType.LOGIN_PAGE);
         guestRules.add(CommandType.LOGIN);
+        guestRules.add(CommandType.REGISTER_PAGE);
         guestRules.add(CommandType.REGISTER);
     }
 
@@ -68,6 +71,7 @@ public class Access {
         userRules.addAll(commonRules);
 
         userRules.add(CommandType.LOGOUT);
+        userRules.add(CommandType.ADD_EVENT_PAGE);
         userRules.add(CommandType.ADD_EVENT);
         userRules.add(CommandType.EDIT_USER);
         userRules.add(CommandType.EDIT_USER_INFO);

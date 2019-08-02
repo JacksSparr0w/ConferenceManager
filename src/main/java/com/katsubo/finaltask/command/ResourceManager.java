@@ -2,10 +2,10 @@ package com.katsubo.finaltask.command;
 
 import java.util.ResourceBundle;
 
-public class ConfigurationManager {
+public class ResourceManager {
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("resources");
 
-    private ConfigurationManager() {
+    private ResourceManager() {
     }
 
     public static String getProperty(String key) {

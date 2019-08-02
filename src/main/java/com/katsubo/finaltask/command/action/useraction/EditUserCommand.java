@@ -3,7 +3,8 @@ package com.katsubo.finaltask.command.action.useraction;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class EditUserCommand implements ActionCommand {
+public class EditUserCommand implements Command {
     private static final String ERROR_UPDATE_USER = "error_update_user";
     private static final String INCORRECT_VERIFY_PASSWORD = "incorrect_verify_password";
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
@@ -40,21 +41,23 @@ public class EditUserCommand implements ActionCommand {
         user.setLogin(login);
 
         if (!password.equals(repeatPassword)) {
-            logger.log(Level.INFO, "Verify password is incorrect");
-            return goBackWithError(INCORRECT_VERIFY_PASSWORD, request);
-        } else if (!password.isEmpty() && !repeatPassword.isEmpty()) {
+            logger.log(Level.WARN, "Verify password is incorrect");
+            return failure(INCORRECT_VERIFY_PASSWORD, request);
+        } else if (!password.isEmpty()) {
             user.setPassword(password);
         }
         user.setPermission(userDto.getPermission());
         try {
             update(user);
         } catch (DaoException | ServiceException e) {
-            logger.log(Level.INFO, e.getMessage());
-            return goBackWithError(e.getMessage(), request);
+            logger.log(Level.WARN, e.getMessage());
+            return failure(e.getMessage(), request);
         }
-        setAttributesToSession(user, request);
-
-        return new CommandResult("controller?command=profile", false);
+        request.setAttribute(DONE, true);
+        HttpSession session = request.getSession();
+        userDto = new UserDto(user);
+        session.setAttribute(Constances.USER.getFieldName(), userDto);
+        return new CommandResult(ResourceManager.getProperty("command.profile"));
     }
 
     private void clearWarnings(HttpServletRequest request) {
@@ -71,16 +74,8 @@ public class EditUserCommand implements ActionCommand {
         }
     }
 
-    private void setAttributesToSession(User user, HttpServletRequest request) {
-        request.setAttribute(DONE, true);
-        HttpSession session = request.getSession();
-        UserDto userDto = new UserDto(user);
-        session.setAttribute(Constances.USER.getFieldName(), userDto);
-
-    }
-
-    private CommandResult goBackWithError(String error, HttpServletRequest request) {
+    private CommandResult failure(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult("controller?command=profile", false);
+        return new CommandResult(ResourceManager.getProperty("command.profile"));
     }
 }

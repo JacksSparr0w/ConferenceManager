@@ -2,9 +2,9 @@ package com.katsubo.finaltask.controller;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.ResourceManager;
 import com.katsubo.finaltask.command.MessageManager;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.factory.CommandFactory;
 import com.katsubo.finaltask.connection.ConnectionPool;
 import org.apache.logging.log4j.Level;
@@ -42,7 +42,7 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String command = request.getParameter(COMMAND);
-        ActionCommand action = CommandFactory.create(command);
+        Command action = CommandFactory.create(command);
 
         CommandResult result;
         try {
@@ -50,21 +50,19 @@ public class Controller extends HttpServlet {
         } catch (CommandException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(MessageManager.getProperty("error"), e.getMessage());
-            result = new CommandResult(ConfigurationManager.getProperty("page.error404"));
+            result = new CommandResult(ResourceManager.getProperty("page.error404"));
         }
 
         String page = result.getPage();
         if (result.isRedirect()) {
-            //page = request.getContextPath() + page;
             redirect(response, page);
         } else {
-            dispatch(request, response, "/"+page);
+            forward(request, response, page);
         }
     }
 
-    private void dispatch(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
-        ServletContext context = getServletContext();
-        RequestDispatcher dispatcher = context.getRequestDispatcher(page);
+    private void forward(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/" + page);
         dispatcher.forward(request, response);
     }
 

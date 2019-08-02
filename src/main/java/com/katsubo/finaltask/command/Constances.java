@@ -6,7 +6,8 @@ public enum Constances {
     USER("user"),
     INCLUDE("includeView"),
     USER_INFO("userInfo"),
-    EVENT("event");
+    EVENT("event"),
+    ERROR("error");
 
     private final String fieldName;
 

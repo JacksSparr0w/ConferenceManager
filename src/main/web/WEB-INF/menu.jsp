@@ -19,6 +19,6 @@
         <a class="nav-link" href="controller?command=profile">${profile}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="controller?command=add_event">${add_conference}</a>
+        <a class="nav-link" href="controller?command=add_event_page">${add_conference}</a>
     </li>
 </ul>

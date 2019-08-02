@@ -2,9 +2,9 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.ResourceManager;
 import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ProfileCommand implements ActionCommand {
+public class ProfileCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ProfileCommand.class);
     private static final String ERROR_FIND_USER_DTO = "error_find_user_dto";
     private static final String ERROR_FIND_USER = "error_find_user";
@@ -36,14 +36,15 @@ public class ProfileCommand implements ActionCommand {
                 User user = findUser(userDto);
                 info = findUserInfo(user);
             } catch (DaoException | ServiceException e) {
-                logger.log(Level.INFO, e.getMessage());
-                goBackWithError(request, e.getMessage());
+                logger.log(Level.WARN, e.getMessage());
+                failure(request, e.getMessage());
             }
-            setAttributes(info, request);
-            return new CommandResult(ConfigurationManager.getProperty("page.main"), false);
+            request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.profile"));
+            request.getSession().setAttribute(Constances.USER_INFO.getFieldName(), info);
+            return new CommandResult(ResourceManager.getProperty("page.main"));
         } else {
-            logger.log(Level.INFO, ERROR_FIND_USER_DTO);
-            return goBackWithError(request, ERROR_FIND_USER_DTO);
+            logger.log(Level.WARN, ERROR_FIND_USER_DTO);
+            return failure(request, ERROR_FIND_USER_DTO);
         }
 
     }
@@ -58,12 +59,6 @@ public class ProfileCommand implements ActionCommand {
         }
     }
 
-    private void setAttributes(UserInfo info, HttpServletRequest request) {
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ConfigurationManager.getProperty("page.profile"));
-        request.getSession().setAttribute(Constances.USER_INFO.getFieldName(), info);
-    }
-
-
     private UserInfo findUserInfo(User user) throws DaoException, ServiceException {
         UserInfoService service = new UserInfoServiceImpl();
         UserInfo info;
@@ -75,8 +70,8 @@ public class ProfileCommand implements ActionCommand {
         }
     }
 
-    private CommandResult goBackWithError(HttpServletRequest request, String error) {
+    private CommandResult failure(HttpServletRequest request, String error) {
         request.setAttribute(error, true);
-        return new CommandResult(ConfigurationManager.getProperty("page.main"), false);
+        return new CommandResult(ResourceManager.getProperty("command.home"));
     }
 }

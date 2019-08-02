@@ -1,17 +1,19 @@
 package com.katsubo.finaltask.command.factory;
 
 import com.katsubo.finaltask.command.action.*;
-import com.katsubo.finaltask.command.action.authorization.LoginCommand;
-import com.katsubo.finaltask.command.action.authorization.LogoutCommand;
-import com.katsubo.finaltask.command.action.authorization.RegisterCommand;
+import com.katsubo.finaltask.command.action.authorization.*;
+import com.katsubo.finaltask.command.action.event.AddEventCommand;
+import com.katsubo.finaltask.command.action.event.AddEventPageCommand;
+import com.katsubo.finaltask.command.action.event.LeaveEventCommand;
+import com.katsubo.finaltask.command.action.event.RegisterToEventCommand;
 import com.katsubo.finaltask.command.action.useraction.*;
 
 public class CommandFactory {
 
-    public static ActionCommand create(String command){
+    public static Command create(String command){
         CommandType commandType = CommandType.valueOf(command.toUpperCase());
 
-        ActionCommand result = null;
+        Command result = null;
         switch (commandType){
             case LOGIN:
                 result = new LoginCommand();
@@ -63,6 +65,15 @@ public class CommandFactory {
                 break;
             case CHANGE_LANGUAGE:
                 result = new ChangeLanguageCommand();
+                break;
+            case LOGIN_PAGE:
+                result = new LoginPageCommand();
+                break;
+            case REGISTER_PAGE:
+                result = new RegisterPageCommand();
+                break;
+            case ADD_EVENT_PAGE:
+                result = new AddEventPageCommand();
                 break;
                 default:
                     throw new IllegalArgumentException("Invalid command " + command);

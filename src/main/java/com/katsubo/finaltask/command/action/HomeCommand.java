@@ -2,7 +2,7 @@ package com.katsubo.finaltask.command.action;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.ResourceManager;
 import com.katsubo.finaltask.command.Constances;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Event;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class HomeCommand implements ActionCommand {
+public class HomeCommand implements Command {
     private static final String LANGUAGE = "language";
     private static final Logger logger = LogManager.getLogger(HomeCommand.class);
     private static final String THERE_NOT_EVENTS = "there_not_events";
@@ -58,12 +58,12 @@ public class HomeCommand implements ActionCommand {
         }
 
         request.setAttribute("events", events);
-        return new CommandResult(ConfigurationManager.getProperty("page.main"));
+        return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 
     private CommandResult goWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult(ConfigurationManager.getProperty("page.main"));
+        return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 
     private List<Event> readUserEvents(Integer userId) throws DaoException, ServiceException {

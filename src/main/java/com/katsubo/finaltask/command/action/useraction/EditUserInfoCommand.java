@@ -3,7 +3,8 @@ package com.katsubo.finaltask.command.action.useraction;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.repair.Recover;
 import com.katsubo.finaltask.command.repair.UserInfoRecover;
 import com.katsubo.finaltask.dao.DaoException;
@@ -24,7 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class EditUserInfoCommand implements ActionCommand {
+public class EditUserInfoCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static final String NAME = "name";
@@ -34,6 +35,7 @@ public class EditUserInfoCommand implements ActionCommand {
     private static final String ABOUT = "about";
     private static final String ERROR_UPDATE_USER_INFO = "error_update_user_info";
     private static final String DONE = "done";
+    public static final String PROFILE_EDIT_ERROR = "Profile edit error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -49,15 +51,15 @@ public class EditUserInfoCommand implements ActionCommand {
         String date = request.getParameter(DATE_OF_BIRTH);
 
         if (date == null || date.isEmpty()){
-            logger.log(Level.INFO, "Profile edit error");
-            return goBackWithError(ERROR_UPDATE_USER_INFO, request);
+            logger.log(Level.WARN, PROFILE_EDIT_ERROR);
+            return failure(ERROR_UPDATE_USER_INFO, request);
         }
         Date parsed;
         try {
             parsed = format.parse(request.getParameter(DATE_OF_BIRTH));
         } catch (ParseException pe) {
-            logger.log(Level.INFO, "Profile edit error");
-            return goBackWithError(ERROR_UPDATE_USER_INFO, request);
+            logger.log(Level.WARN, PROFILE_EDIT_ERROR);
+            return failure(ERROR_UPDATE_USER_INFO, request);
         }
         info.setDateOfBirth(parsed);
 
@@ -65,15 +67,16 @@ public class EditUserInfoCommand implements ActionCommand {
         try {
             update(info);
         } catch (DaoException | ServiceException e) {
-            logger.log(Level.INFO, "Profile edit error");
-            return goBackWithError(ERROR_UPDATE_USER_INFO, request);
+            logger.log(Level.WARN, PROFILE_EDIT_ERROR);
+            return failure(ERROR_UPDATE_USER_INFO, request);
         }
 
         request.setAttribute(DONE, true);
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
 
-        return new CommandResult("controller?command=profile", false);
+        return new CommandResult(ResourceManager.getProperty("command.profile"));
+
     }
 
     private void validate(UserInfo info) {
@@ -91,8 +94,9 @@ public class EditUserInfoCommand implements ActionCommand {
     }
 
 
-    private CommandResult goBackWithError(String error, HttpServletRequest request) {
+    private CommandResult failure(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult("controller?command=profile", false);
+        return new CommandResult(ResourceManager.getProperty("command.profile"));
+
     }
 }

@@ -2,9 +2,12 @@ package com.katsubo.finaltask.command.factory;
 
 public enum CommandType {
     LOGIN("login"),
+    LOGIN_PAGE("login_page"),
+    REGISTER_PAGE("register_page"),
     LOGOUT("logout"),
-    REGISTER("sign_up"),
+    REGISTER("register"),
     ADD_EVENT("add_event"),
+    ADD_EVENT_PAGE("add_event_page"),
     REMOVE_EVENT("remove_event"),
     EDIT_EVENT("edit_event"),
     PROFILE("profile"),

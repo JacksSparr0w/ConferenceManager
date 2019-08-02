@@ -2,8 +2,8 @@ package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.command.action.Command;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import static com.katsubo.finaltask.command.Constances.*;
 
-public class LogoutCommand implements ActionCommand {
+public class LogoutCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LogoutCommand.class);
 
     @Override
@@ -26,6 +26,6 @@ public class LogoutCommand implements ActionCommand {
         session.removeAttribute(ID.getFieldName());
         session.removeAttribute(ROLE.getFieldName());
         session.removeAttribute(USER.getFieldName());
-        return new CommandResult(ConfigurationManager.getProperty("page.login"), false);
+        return new CommandResult(ResourceManager.getProperty("command.loginPage"), true);
     }
 }

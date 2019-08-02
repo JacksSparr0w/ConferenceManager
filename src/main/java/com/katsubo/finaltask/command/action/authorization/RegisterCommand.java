@@ -2,8 +2,8 @@ package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ConfigurationManager;
-import com.katsubo.finaltask.command.action.ActionCommand;
+import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
@@ -27,7 +27,7 @@ import java.util.Map;
 
 import static com.katsubo.finaltask.command.Constances.USER;
 
-public class RegisterCommand implements ActionCommand {
+public class RegisterCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegisterCommand.class);
 
     private static final String LOGIN = "login";
@@ -50,7 +50,7 @@ public class RegisterCommand implements ActionCommand {
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
                 logger.log(Level.ERROR, "Invalid " + entry.getKey() + " was received");
-                return goBackWithError(request, ERROR + entry.getKey());
+                return failure(request, ERROR + entry.getKey());
             }
         }
 
@@ -58,20 +58,20 @@ public class RegisterCommand implements ActionCommand {
         try {
             userExist = checkIfUserExist(parameters.get(LOGIN));
         } catch (DaoException | ServiceException e) {
-            logger.log(Level.INFO, e.getMessage());
-            return goBackWithError(request, e.getMessage());
+            logger.log(Level.WARN, e.getMessage());
+            return failure(request, e.getMessage());
         }
         if (userExist) {
-            logger.log(Level.INFO, "user with such login and password already exist");
-            return goBackWithError(request, ERROR_REGISTRATION);
+            logger.log(Level.WARN, "user with such login and password already exist");
+            return failure(request, ERROR_REGISTRATION);
         }
         try {
             createUser(parameters, request);
             logger.log(Level.INFO, "user registrated and authorized with login - " + parameters.get(LOGIN));
-            return new CommandResult("controller?command=home_page", true);
+            return new CommandResult(ResourceManager.getProperty("command.home"), true);
         } catch (DaoException | ServiceException e) {
-            logger.log(Level.INFO, e.getMessage());
-            return goBackWithError(request, e.getMessage());
+            logger.log(Level.WARN, e.getMessage());
+            return failure(request, e.getMessage());
         }
 
 
@@ -95,7 +95,9 @@ public class RegisterCommand implements ActionCommand {
         } else {
             throw new ServiceException("Can't save user!");
         }
-        setAttributesToSession(user, request);
+        UserDto userDto = new UserDto(user);
+        HttpSession session = request.getSession();
+        session.setAttribute(USER.getFieldName(), userDto);
 
         createUserInfo(user, parameters);
     }
@@ -113,14 +115,8 @@ public class RegisterCommand implements ActionCommand {
 
     }
 
-    private void setAttributesToSession(User user, HttpServletRequest request) {
-        UserDto userDto = new UserDto(user);
-        HttpSession session = request.getSession();
-        session.setAttribute(USER.getFieldName(), userDto);
-    }
-
-    private CommandResult goBackWithError(HttpServletRequest request, String error) {
+    private CommandResult failure(HttpServletRequest request, String error) {
         request.setAttribute(error, true);
-        return new CommandResult(ConfigurationManager.getProperty("page.register"));
+        return new CommandResult(ResourceManager.getProperty("command.registerPage"));
     }
 }

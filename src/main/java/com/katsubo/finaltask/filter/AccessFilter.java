@@ -1,7 +1,6 @@
 package com.katsubo.finaltask.filter;
 
-import com.katsubo.finaltask.command.Access;
-import com.katsubo.finaltask.command.ConfigurationManager;
+import com.katsubo.finaltask.command.ResourceManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +22,6 @@ public class AccessFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String command = request.getParameter(COMMAND);
-
         Access access = Access.getInstance();
         try {
             if (access.can(command, request)) {
@@ -31,19 +29,19 @@ public class AccessFilter implements Filter {
                 return;
             } else {
                 logger.log(Level.WARN, "no access for this user");
-                dispatch(servletRequest, servletResponse, ConfigurationManager.getProperty("page.error405"));
+                dispatch(servletRequest, servletResponse, ResourceManager.getProperty("page.error405"));
                 return;
             }
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARN, "illegal command: " + command);
-            dispatch(servletRequest, servletResponse, ConfigurationManager.getProperty("page.error404"));
+            dispatch(servletRequest, servletResponse, ResourceManager.getProperty("page.error404"));
             return;
         }
 
     }
 
     private void dispatch(ServletRequest servletRequest, ServletResponse servletResponse, String page) throws ServletException, IOException {
-        RequestDispatcher dispatcher = servletRequest.getRequestDispatcher(page);
+        RequestDispatcher dispatcher = servletRequest.getRequestDispatcher("/" + page);
         dispatcher.forward(servletRequest, servletResponse);
     }
 

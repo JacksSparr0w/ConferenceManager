@@ -105,7 +105,7 @@
                         </a>
                     </c:when>
                     <c:otherwise>
-                        <a class="nav-link active" href="controller?command=login">
+                        <a class="nav-link active" href="controller?command=login_page">
                             <h5>${signin}</h5>
                         </a>
                     </c:otherwise>
@@ -138,7 +138,7 @@
                     <jsp:include page="${includeView}"/>
                 </c:when>
                 <c:otherwise>
-                    <jsp:include page="eventInfo.jsp"/>
+                    <jsp:include page="event/eventInfo.jsp"/>
                 </c:otherwise>
             </c:choose>
         </div>
