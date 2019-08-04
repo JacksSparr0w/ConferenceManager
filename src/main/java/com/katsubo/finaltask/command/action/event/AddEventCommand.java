@@ -124,9 +124,11 @@ public class AddEventCommand implements Command {
         }
 
         request.setAttribute(DONE, true);
-        request.setAttribute(Constances.EVENT.getFieldName(), event);
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addEvent"));
-        return new CommandResult(ResourceManager.getProperty("command.home"));
+        request.setAttribute("event_id", event.getId());
+        return new CommandResult(ResourceManager.getProperty("command.registerToEvent"));
+        //request.setAttribute(Constances.EVENT.getFieldName(), event);
+        //request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addEvent"));
+        //return new CommandResult(ResourceManager.getProperty("command.home"));
     }
 
     private String getPath() {

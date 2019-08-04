@@ -21,14 +21,14 @@
                 </div>
                 <div class="col-3">
                     <div class="row align-text-top pt-2">
-                        <span class="text-dark h6">${event.date}</span>
+                        <span class="text-dark h6"><fmt:formatDate value="${event.date}" pattern="yyyy-MM-dd HH:mm" /></span>
                     </div>
                     <div class="row align-text-top pt-2">
                         <span class="text-dark h6">${event.address}</span>
                     </div>
                     <div class="container-fluid row align-content-end justify-content-end pr-1 pb-1">
                         <form>
-                            <c:url value="/controller?command=leave_event" var="unregisterToEvent">
+                            <c:url value="controller?command=leave_event" var="unregisterToEvent">
                                 <c:param name="eventId" value="${event.id}"/>
                             </c:url>
                             <button type="button" class="btn btn-outline-dark"

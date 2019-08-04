@@ -56,14 +56,15 @@
 </c:choose>
 
 <div class="container-fluid">
-    <div class="text-center">
-
-        <div id="img-preview-block" class="avatar avatar-original center-block rounded rounded-circle"
-             style="background-image:url(eventImages/${event.pictureLink});
-                     background-repeat: no-repeat;
-                     background-size: cover;"></div>
-        <span class="btn btn-link btn-file">${edit_image}<input type="file" id="upload-img"
-                                                                name="picture" form="addForm"></span>
+    <div class="col-6 justify-content-center p-3">
+        <div class="text-center">
+            <div id="img-preview-block" class="avatar avatar-original center-block rounded rounded-circle"
+                 style="background-image:url(eventImages/${event.pictureLink});
+                         background-repeat: no-repeat;
+                         background-size: cover;"></div>
+            <span class="btn btn-link btn-file">${edit_image}<input type="file" id="upload-img"
+                                                                    name="picture" form="addForm"></span>
+        </div>
     </div>
     <div class="row">
         <form class="form-group" action="controller?command=add_event" method="POST" id="addForm"
@@ -103,7 +104,7 @@
                         "timePicker": true,
                         "timePicker24Hour": true,
                         "locale": {
-                            "format": "YYYY-MM-DD",
+                            "format": "YYYY-MM-DD HH:mm",
                             "separator": " - ",
                             "applyLabel": "Apply",
                             "cancelLabel": "Cancel",
@@ -137,7 +138,7 @@
                             "firstDay": 1
                         }
                     }, function (start, end, label) {
-                        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+                        console.log('New date range selected: ' + start.format('YYYY-MM-DD HH:mm') + ' to ' + end.format('YYYY-MM-DD HH:mm') + ' (predefined range: ' + label + ')');
                     });
                 </script>
             </div>

@@ -41,7 +41,7 @@ CREATE TABLE `event_info`
 CREATE TABLE `registrations`
 (
   `id`        INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `event_id`  INTEGER UNIQUE,
+  `event_id`  INTEGER,
   `user_id`   INTEGER,
   `user_role` ENUM ('listener', 'teller', 'author') DEFAULT 'listener'
 ) ENGINE = INNODB

@@ -5,20 +5,12 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<fmt:message bundle="${textResources}" key="my_conferences" var="my_conferences"/>
-<fmt:message bundle="${textResources}" key="profile" var="profile"/>
-<fmt:message bundle="${textResources}" key="add_conference" var="add_conference"/>
-
-
-
 <ul class="nav nav-tabs flex-column">
-    <li class="nav-item">
-        <a class="nav-link" href="controller?command=user_events">${my_conferences}</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="controller?command=profile">${profile}</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="controller?command=add_event_page">${add_conference}</a>
-    </li>
+    <c:forEach var="menuItem" items="${menu}" varStatus="status">
+        <li class="nav-item">
+            <a class="nav-link" href="${menuItem.path}">
+                    <fmt:message bundle="${textResources}" key="${menuItem.name}"/></a>
+        </li>
+    </c:forEach>
 </ul>
+

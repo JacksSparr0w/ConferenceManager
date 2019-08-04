@@ -9,10 +9,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +40,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
-                event.setDate(resultSet.getDate("date"));
+                event.setDate(resultSet.getTimestamp("date"));
+                //event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
                 event.setAuthor_id(resultSet.getInt("author_id"));
@@ -80,7 +78,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
-                event.setDate(resultSet.getDate("date"));
+                event.setDate(resultSet.getTimestamp("date"));
+                //event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
                 event.setAuthor_id(resultSet.getInt("author_id"));
@@ -154,7 +153,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(search);
-                event.setDate(resultSet.getDate("date"));
+                event.setDate(resultSet.getTimestamp("date"));
+                //event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
                 event.setAuthor_id(resultSet.getInt("author_id"));
@@ -184,7 +184,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             statement.setString(2, entity.getDescription());
             statement.setString(3,entity.getPictureLink());
             statement.setInt(4, entity.getTheme().getFieldCode());
-            statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
+            //statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
+            statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
             statement.setString(6, entity.getAddress().toString());
             statement.setInt(7, entity.getAuthor_id());
             statement.setInt(8, entity.getCapacity());
@@ -223,7 +224,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
-                event.setDate(resultSet.getDate("date"));
+                event.setDate(resultSet.getTimestamp("date"));
                 Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
                 event.setAuthor_id(resultSet.getInt("author_id"));
@@ -251,7 +252,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             statement.setString(2, entity.getDescription());
             statement.setString(3,entity.getPictureLink());
             statement.setInt(4, entity.getTheme().getFieldCode());
-            statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
+            statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
+            //statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
             statement.setString(6, entity.getAddress().toString());
             statement.setInt(7, entity.getAuthor_id());
             statement.setInt(8, entity.getCapacity());

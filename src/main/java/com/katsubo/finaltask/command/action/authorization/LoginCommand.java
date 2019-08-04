@@ -4,6 +4,8 @@ import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
+import com.katsubo.finaltask.command.menu.Menu;
+import com.katsubo.finaltask.command.menu.MenuFactory;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
@@ -47,6 +49,7 @@ public class LoginCommand implements Command {
             return failure(request, e.getMessage());
         }
         if (userExist) {
+
             logger.log(Level.WARN, "user authorized with login - " + login);
             return new CommandResult(ResourceManager.getProperty("command.home"), true);
         } else {
@@ -64,10 +67,16 @@ public class LoginCommand implements Command {
             UserDto userDto = new UserDto(user);
             HttpSession session = request.getSession();
             session.setAttribute(USER.getFieldName(), userDto);
+            setMenuForUser(userDto, request);
             return true;
         } else {
             return false;
         }
+    }
+
+    private void setMenuForUser(UserDto user, HttpServletRequest request) {
+        Menu menu = MenuFactory.getMenu(user.getPermission());
+        request.getSession().setAttribute("menu", menu.getMenuItems());
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {

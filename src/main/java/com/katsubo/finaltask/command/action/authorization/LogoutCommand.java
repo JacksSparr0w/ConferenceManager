@@ -26,6 +26,6 @@ public class LogoutCommand implements Command {
         session.removeAttribute(ID.getFieldName());
         session.removeAttribute(ROLE.getFieldName());
         session.removeAttribute(USER.getFieldName());
-        return new CommandResult(ResourceManager.getProperty("command.loginPage"), true);
+        return new CommandResult(ResourceManager.getProperty("command.home"), true);
     }
 }

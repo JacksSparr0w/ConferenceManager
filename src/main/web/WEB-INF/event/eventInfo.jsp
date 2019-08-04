@@ -20,23 +20,33 @@
         </button>
     </div>
 </c:if>
+<c:if test="${requestScope.no_free_places eq true}">
+    <div class="container alert alert-warning fade show m-t-16" role="alert">
+            No free places left!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
 <p class="text-right">${new_conferences}</p>
 <hr>
 <c:forEach var="event" items="${events}" varStatus="status">
     <div class="container-fluid pt-3 pl-3 pr-3">
         <h3 class="text-black">${event.name}</h3>
-        <h6 class="text-right">${event.date}</h6>
-        <img src="eventImages/${event.pictureLink}" class="rounded" style="size: auto;
+        <h6 class="text-right"><fmt:formatDate value="${event.date}" pattern="yyyy-MM-dd HH:mm"/></h6>
+        <div class="col-8 justify-content-center">
+            <img src="eventImages/${event.pictureLink}" class="rounded" style="size: auto;
         width: inherit;"
-             alt="Event picture">
-        <span class="text-center">conference image</span>
+                 alt="Event picture">
+        </div>
         <p class="text-dark text-right">${event.address}</p>
 
         <span class="text-black text-justify pt-2 pl-2 pr-2">${event.description}</span>
         <div class="w-75 pt-2 pl-2 pr-2">
-            <div class="progress" style="height:15px">
-                <div class="progress-bar bg-success" style="width:${(45 / event.capacity)*100}%">${places_left}
-                    45/${event.capacity}</div>
+            <div class="progress">
+                <c:set value="${event.capacity - filling.get(event.id)}" var="numberOfFreePlaces"/>
+                <div class="progress-bar bg-success" style="height:25px; width:${(numberOfFreePlaces / event.capacity)*100}%">${places_left}
+                        ${numberOfFreePlaces}/${event.capacity}</div>
             </div>
         </div>
         <c:if test="${user != null}">
@@ -45,6 +55,7 @@
                 <form>
                     <c:url value="/controller?command=register_to_event" var="registerToEvent">
                         <c:param name="eventId" value="${event.id}"/>
+                        <c:param name="freePlaces" value="${numberOfFreePlaces}"/>
                     </c:url>
                     <input type="button" class="btn btn-outline-success" value="${join}"
                            onclick="window.location.href='${registerToEvent}'"/>
