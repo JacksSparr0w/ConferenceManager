@@ -2,12 +2,11 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.command.repair.Recover;
-import com.katsubo.finaltask.command.repair.UserInfoRecover;
-import com.katsubo.finaltask.dao.DaoException;
+import com.katsubo.finaltask.util.repair.Recover;
+import com.katsubo.finaltask.util.repair.UserInfoRecover;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
@@ -26,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EditUserInfoCommand implements Command {
+    private static final String PROFILE_EDIT_ERROR = "Profile edit error";
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static final String NAME = "name";
@@ -35,22 +35,21 @@ public class EditUserInfoCommand implements Command {
     private static final String ABOUT = "about";
     private static final String ERROR_UPDATE_USER_INFO = "error_update_user_info";
     private static final String DONE = "done";
-    public static final String PROFILE_EDIT_ERROR = "Profile edit error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserInfo info = (UserInfo) request.getSession().getAttribute(Constances.USER_INFO.getFieldName());
         String name = request.getParameter(NAME);
-            info.setName(name);
+        info.setName(name);
         String surname = request.getParameter(SURNAME);
-            info.setSurname(surname);
+        info.setSurname(surname);
         String about = request.getParameter(ABOUT);
-            info.setAbout(about);
+        info.setAbout(about);
         String email = request.getParameter(EMAIL);
-            info.setEmail(email);
+        info.setEmail(email);
         String date = request.getParameter(DATE_OF_BIRTH);
 
-        if (date == null || date.isEmpty()){
+        if (date == null || date.isEmpty()) {
             logger.log(Level.WARN, PROFILE_EDIT_ERROR);
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
@@ -66,7 +65,7 @@ public class EditUserInfoCommand implements Command {
         validate(info);
         try {
             update(info);
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, PROFILE_EDIT_ERROR);
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
@@ -88,7 +87,7 @@ public class EditUserInfoCommand implements Command {
 
     }
 
-    private void update(UserInfo info) throws DaoException, ServiceException {
+    private void update(UserInfo info) throws ServiceException {
         UserInfoService service = new UserInfoServiceImpl();
         service.save(info);
     }

@@ -2,8 +2,10 @@ package com.katsubo.finaltask.command.action;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.util.page.EventPagination;
+import com.katsubo.finaltask.util.page.Pagination;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
@@ -23,10 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 public class HomeCommand implements Command {
-    private static final String LANGUAGE = "language";
     private static final Logger logger = LogManager.getLogger(HomeCommand.class);
+    private static final String LANGUAGE = "language";
     private static final String THERE_NOT_EVENTS = "there_not_events";
     private static final String CANT_READ_EVENTS = "cant_read_events";
+    private static final Integer NOTES_PER_PAGE = 5;
+    private static final String PAGE = "page";
+
+    private Pagination pagination;
+    private Integer page;
 
 
     @Override
@@ -70,9 +77,26 @@ public class HomeCommand implements Command {
             request.getSession().setAttribute(LANGUAGE, "en");
         }
 
+        events = getPage(events, request);
         request.setAttribute("events", events);
+        request.setAttribute("countOfPages", pagination.getCountOfPages());
+        request.setAttribute(PAGE, page);
         request.setAttribute("filling", filling);
         return new CommandResult(ResourceManager.getProperty("page.main"));
+    }
+
+    private List<Event> getPage(List<Event> events, HttpServletRequest request) {
+        String pageString = request.getParameter(PAGE);
+        pagination = new EventPagination(NOTES_PER_PAGE);
+        if (pageString != null){
+            int page = Integer.valueOf(pageString);
+            this.page = page;
+            return pagination.getPage(events, page);
+        } else {
+            this.page = 1;
+            return pagination.getPage(events, 1);
+        }
+
     }
 
     private Integer readUsersOnEvent(Event event) throws DaoException, ServiceException {

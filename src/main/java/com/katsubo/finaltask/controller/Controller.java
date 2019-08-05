@@ -2,8 +2,8 @@ package com.katsubo.finaltask.controller;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ResourceManager;
-import com.katsubo.finaltask.command.MessageManager;
+import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.util.MessageManager;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.factory.CommandFactory;
 import com.katsubo.finaltask.connection.ConnectionPool;
@@ -12,7 +12,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;

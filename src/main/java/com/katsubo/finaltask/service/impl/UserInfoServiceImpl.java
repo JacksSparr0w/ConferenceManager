@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService {
     private static final Logger logger = LogManager.getLogger(UserInfoServiceImpl.class);
 
-    public UserInfoServiceImpl() throws DaoException {
+    public UserInfoServiceImpl() throws ServiceException {
     }
 
     @Override

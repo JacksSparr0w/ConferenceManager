@@ -2,7 +2,7 @@ package com.katsubo.finaltask.command.action;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.ResourceManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

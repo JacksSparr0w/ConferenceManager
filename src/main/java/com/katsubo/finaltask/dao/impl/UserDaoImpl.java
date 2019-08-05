@@ -18,7 +18,7 @@ import java.util.List;
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public static final String READ_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
     private static final String READ_BY_LOGIN_AND_PASSWORD = "SELECT `id`, `login`, `password`, `permission` FROM `user` WHERE `login` = ? AND `password` = ?";
-    private static final String READ_ALL = "SELECT `login`, `password`, `permission` FROM `user` ORDER BY `login`";
+    private static final String READ_ALL = "SELECT `id`, `login`, `password`, `permission` FROM `user` ORDER BY `login`";
     private static final String CREATE = "INSERT INTO `user` (`login`, `password`, `permission`) VALUE (?, ?, ?)";
     private static final String READ = "SELECT `login`, `password`, `permission` FROM `user` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `user` SET `login` = ?, `password` = ?, `permission` = ? WHERE `id` = ?";
@@ -38,9 +38,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                String string = resultSet.getString("permission");
-                Permission permission = Permission.valueOf(string.toUpperCase());
-                user.setPermission(permission);
+                user.setPermission(Permission.valueOf(resultSet.getString("permission").toUpperCase()));
             }
             return user;
         } catch (SQLException e) {
@@ -94,7 +92,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.getPermission(resultSet.getInt("permission")));
+                user.setPermission(Permission.valueOf(resultSet.getString("permission").toUpperCase()));
                 users.add(user);
             }
             return users;

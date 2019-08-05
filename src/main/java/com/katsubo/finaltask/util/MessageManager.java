@@ -1,4 +1,4 @@
-package com.katsubo.finaltask.command;
+package com.katsubo.finaltask.util;
 
 import java.util.ResourceBundle;
 

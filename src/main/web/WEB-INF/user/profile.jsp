@@ -6,27 +6,27 @@
 <fmt:setBundle basename="textResources" var="textResources"/>
 
 <fmt:message bundle="${textResources}" key="home" var="home"/>
-<fmt:message bundle="${textResources}" key="successful_change_profile" var="successful_change_profile"/>
-<fmt:message bundle="${textResources}" key="error_find_user_info" var="error_find_user_info"/>
+<fmt:message bundle="${textResources}" key="profile.change.success" var="successful_change_profile"/>
+<fmt:message bundle="${textResources}" key="user.find.error" var="error_find_user_info"/>
 <fmt:message bundle="${textResources}" key="verify_password_is_incorrect" var="verify_password_is_incorrect"/>
-<fmt:message bundle="${textResources}" key="account" var="account"/>
-<fmt:message bundle="${textResources}" key="user_info" var="user_info"/>
+<fmt:message bundle="${textResources}" key="tab.account" var="account"/>
+<fmt:message bundle="${textResources}" key="tab.user.info" var="user_info"/>
 
-<fmt:message bundle="${textResources}" key="login" var="login"/>
-<fmt:message bundle="${textResources}" key="password" var="password"/>
-<fmt:message bundle="${textResources}" key="repeat_password" var="repeat_password"/>
-<fmt:message bundle="${textResources}" key="reset" var="reset"/>
-<fmt:message bundle="${textResources}" key="save" var="save"/>
-<fmt:message bundle="${textResources}" key="date_of_birth" var="date_of_bitrh"/>
-<fmt:message bundle="${textResources}" key="date_of_registration" var="date_of_registration"/>
-<fmt:message bundle="${textResources}" key="about" var="about"/>
-<fmt:message bundle="${textResources}" key="edit_avatar" var="edit_avatar"/>
-<fmt:message bundle="${textResources}" key="login" var="login"/>
-<fmt:message bundle="${textResources}" key="first_name" var="first_name"/>
-<fmt:message bundle="${textResources}" key="second_name" var="second_name"/>
-<fmt:message bundle="${textResources}" key="email" var="email"/>
-<fmt:message bundle="${textResources}" key="error_upload_user_photo" var="error_photo"/>
-<fmt:message bundle="${textResources}" key="success_upload_user_photo" var="success_photo"/>
+<fmt:message bundle="${textResources}" key="user.login" var="login"/>
+<fmt:message bundle="${textResources}" key="user.password" var="password"/>
+<fmt:message bundle="${textResources}" key="user.password.repeat" var="repeat_password"/>
+<fmt:message bundle="${textResources}" key="profile.reset" var="reset"/>
+<fmt:message bundle="${textResources}" key="profile.save" var="save"/>
+<fmt:message bundle="${textResources}" key="user.date.birth" var="date_of_bitrh"/>
+<fmt:message bundle="${textResources}" key="user.date.registration" var="date_of_registration"/>
+<fmt:message bundle="${textResources}" key="user.about" var="about"/>
+<fmt:message bundle="${textResources}" key="edit.avatar" var="edit_avatar"/>
+<fmt:message bundle="${textResources}" key="user.login" var="login"/>
+<fmt:message bundle="${textResources}" key="name.first" var="first_name"/>
+<fmt:message bundle="${textResources}" key="name.second" var="second_name"/>
+<fmt:message bundle="${textResources}" key="user.email" var="email"/>
+<fmt:message bundle="${textResources}" key="user.photo.fail" var="error_photo"/>
+<fmt:message bundle="${textResources}" key="user.photo.success" var="success_photo"/>
 
 
 <link rel="stylesheet" type="text/css" href="css/avatar.css">

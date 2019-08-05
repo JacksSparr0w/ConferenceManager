@@ -2,9 +2,8 @@ package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.UserInfo;
@@ -25,7 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katsubo.finaltask.command.Constances.USER;
+import static com.katsubo.finaltask.util.Constances.USER;
 
 public class RegisterCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegisterCommand.class);
@@ -57,7 +56,7 @@ public class RegisterCommand implements Command {
         boolean userExist = false;
         try {
             userExist = checkIfUserExist(parameters.get(LOGIN));
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(request, e.getMessage());
         }
@@ -69,7 +68,7 @@ public class RegisterCommand implements Command {
             createUser(parameters, request);
             logger.log(Level.INFO, "user registrated and authorized with login - " + parameters.get(LOGIN));
             return new CommandResult(ResourceManager.getProperty("command.home"), true);
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(request, e.getMessage());
         }
@@ -77,12 +76,12 @@ public class RegisterCommand implements Command {
 
     }
 
-    private boolean checkIfUserExist(String login) throws DaoException, ServiceException {
+    private boolean checkIfUserExist(String login) throws ServiceException {
         UserService service = new UserServiceImpl();
         return service.isExist(login);
     }
 
-    private void createUser(Map<String, String> parameters, HttpServletRequest request) throws DaoException, ServiceException {
+    private void createUser(Map<String, String> parameters, HttpServletRequest request) throws ServiceException {
         User user = new User();
         user.setLogin(parameters.get(LOGIN));
         user.setPassword(parameters.get(PASSWORD));
@@ -102,7 +101,7 @@ public class RegisterCommand implements Command {
         createUserInfo(user, parameters);
     }
 
-    private void createUserInfo(User user, Map<String, String> parameters) throws DaoException, ServiceException {
+    private void createUserInfo(User user, Map<String, String> parameters) throws ServiceException {
         UserInfo info = new UserInfo();
         info.setUser(user);
         info.setName(parameters.get(NAME));

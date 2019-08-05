@@ -14,13 +14,15 @@ public enum CommandType {
     EDIT_USER("edit_user"),
     EDIT_USER_INFO("edit_user_info"),
     EDIT_USER_PHOTO("edit_user_photo"),
+    DELETE_USER("delete_user"),
     REGISTER_TO_EVENT("register_to_event"),
     LEAVE_EVENT("leave_event"),
     USER_EVENTS("user_events"),
     GET_EVENTS("get_events"),
     GET_USERS_ON_EVENT("get_users_on_event"),
     HOME_PAGE("home_page"),
-    CHANGE_LANGUAGE("change_language");
+    CHANGE_LANGUAGE("change_language"),
+    ALL_USERS("all_users");
 
     private String fieldName;
 

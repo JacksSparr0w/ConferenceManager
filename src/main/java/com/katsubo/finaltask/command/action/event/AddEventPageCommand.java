@@ -2,8 +2,8 @@ package com.katsubo.finaltask.command.action.event;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
 
 import javax.servlet.http.HttpServletRequest;

@@ -5,8 +5,8 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<fmt:message bundle="${textResources}" key="404title" var="title"/>
-<fmt:message bundle="${textResources}" key="404subtitle" var="subtitle"/>
+<fmt:message bundle="${textResources}" key="error.404title" var="title"/>
+<fmt:message bundle="${textResources}" key="error.404.subtitle" var="subtitle"/>
 
 <fmt:message bundle="${textResources}" key="back_to_homepage" var="back"/>
 <!DOCTYPE html>

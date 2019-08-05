@@ -15,7 +15,7 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-    public UserServiceImpl() throws DaoException {
+    public UserServiceImpl() throws ServiceException {
     }
 
 

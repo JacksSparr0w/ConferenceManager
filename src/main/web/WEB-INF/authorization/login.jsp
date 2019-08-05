@@ -5,17 +5,16 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<fmt:message bundle="${textResources}" key="sign_in" var="sign_in"/>
-<fmt:message bundle="${textResources}" key="sign_up" var="sign_up"/>
-<fmt:message bundle="${textResources}" key="login" var="login"/>
-<fmt:message bundle="${textResources}" key="password" var="password"/>
+<fmt:message bundle="${textResources}" key="sign.in" var="sign_in"/>
+<fmt:message bundle="${textResources}" key="sign.up" var="sign_up"/>
+<fmt:message bundle="${textResources}" key="user.login" var="login"/>
+<fmt:message bundle="${textResources}" key="user.password" var="password"/>
 <fmt:message bundle="${textResources}" key="continue_as_guest" var="continue_as_guest"/>
 <fmt:message bundle="${textResources}" key="dont_have_an_account" var="dont_have_an_account"/>
 <fmt:message bundle="${textResources}" key="have_an_account" var="have_an_account"/>
-<fmt:message bundle="${textResources}" key="login" var="login"/>
-<fmt:message bundle="${textResources}" key="first_name" var="first_name"/>
-<fmt:message bundle="${textResources}" key="second_name" var="second_name"/>
-<fmt:message bundle="${textResources}" key="email" var="email"/>
+<fmt:message bundle="${textResources}" key="name.first" var="first_name"/>
+<fmt:message bundle="${textResources}" key="name.second" var="second_name"/>
+<fmt:message bundle="${textResources}" key="user.email" var="email"/>
 
 
 <!DOCTYPE html>

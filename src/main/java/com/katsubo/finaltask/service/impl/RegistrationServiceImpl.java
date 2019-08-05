@@ -19,7 +19,7 @@ import java.util.List;
 public class RegistrationServiceImpl extends ServiceImpl implements RegistrationService {
     private static final Logger logger = LogManager.getLogger(RegistrationServiceImpl.class);
 
-    public RegistrationServiceImpl() throws DaoException {
+    public RegistrationServiceImpl() throws ServiceException {
     }
 
     @Override

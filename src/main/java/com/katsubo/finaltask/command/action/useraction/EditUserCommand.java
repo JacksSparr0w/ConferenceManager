@@ -2,10 +2,9 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.service.ServiceException;
@@ -49,7 +48,7 @@ public class EditUserCommand implements Command {
         user.setPermission(userDto.getPermission());
         try {
             update(user);
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(e.getMessage(), request);
         }
@@ -66,7 +65,7 @@ public class EditUserCommand implements Command {
         request.removeAttribute(INCORRECT_VERIFY_PASSWORD);
     }
 
-    private void update(User user) throws DaoException, ServiceException {
+    private void update(User user) throws ServiceException {
         UserService service = new UserServiceImpl();
         Integer id = service.save(user);
         if (id == null) {

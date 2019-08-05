@@ -2,11 +2,10 @@ package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.menu.Menu;
 import com.katsubo.finaltask.command.menu.MenuFactory;
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.service.ServiceException;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static com.katsubo.finaltask.command.Constances.*;
+import static com.katsubo.finaltask.util.Constances.*;
 
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
@@ -44,7 +43,7 @@ public class LoginCommand implements Command {
         boolean userExist = false;
         try {
             userExist = initializeUser(login, password, request);
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(request, e.getMessage());
         }
@@ -60,7 +59,7 @@ public class LoginCommand implements Command {
 
     }
 
-    private boolean initializeUser(String login, String password, HttpServletRequest request) throws DaoException, ServiceException {
+    private boolean initializeUser(String login, String password, HttpServletRequest request) throws ServiceException {
         UserService service = new UserServiceImpl();
         User user = service.findByLoginAndPassword(login, password);
         if (user != null && user.getId() != null) {

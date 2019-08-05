@@ -2,15 +2,17 @@ package com.katsubo.finaltask.command.action.event;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.dao.DaoException;
+import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.Registration;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.enums.Role;
-import com.katsubo.finaltask.service.ServiceException;
+import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.RegistrationService;
+import com.katsubo.finaltask.service.ServiceException;
+import com.katsubo.finaltask.service.impl.EventServiceImpl;
 import com.katsubo.finaltask.service.impl.RegistrationServiceImpl;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -20,45 +22,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegisterToEventCommand implements Command {
+    public static final String FREE_PLACES = "freePlaces";
+    public static final String NO_FREE_PLACES = "no_free_places";
+    public static final String CANT_FIND_EVENT = "cant_find_event";
     private static final String CANT_FIND_EVENT_ID = "cant_find_event_id";
     private static final Logger logger = LogManager.getLogger(RegisterToEventCommand.class);
     private static final String EVENT_ID = "eventId";
     private static final String CANT_SAVE_REGISTRATION = "cant_save_registration";
     private static final String DONE = "register_done";
     private static final String SUCH_REGISTRATION_ALREADY_EXIST = "such_registration_already_exist";
-    public static final String FREE_PLACES = "freePlaces";
-    public static final String NO_FREE_PLACES = "no_free_places";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Integer eventId;
-        Integer freePlaces = Integer.valueOf(request.getParameter(FREE_PLACES));
 
         if (request.getParameter(EVENT_ID) == null) {
-            if (request.getAttribute(EVENT_ID) == null){
+            if (request.getAttribute(EVENT_ID) == null) {
                 logger.log(Level.WARN, "can't find eventId");
                 return failure(CANT_FIND_EVENT_ID, request);
-            } else{
+            } else {
                 eventId = Integer.valueOf((String) request.getAttribute(EVENT_ID));
-            }
-
-            if (freePlaces == null || freePlaces < 1){
-                logger.log(Level.WARN, "there's no free places on this conference!");
-                return failure(NO_FREE_PLACES, request);
             }
         } else {
             eventId = Integer.valueOf(request.getParameter(EVENT_ID));
         }
+        try {
+            if (isBusy(eventId)) {
+                throw new ServiceException();
+            }
+        } catch (ServiceException e){
+            logger.log(Level.WARN, "there's no free places on this conference!");
+            return failure(NO_FREE_PLACES, request);
+        }
+
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         Integer userId = user.getUserId();
         Registration registration = new Registration(userId, eventId, Role.LISTENER);
         try {
             if (!registrationExist(eventId, userId)) {
                 register(registration);
-            }else{
-                throw new DaoException(SUCH_REGISTRATION_ALREADY_EXIST);
+            } else {
+                logger.log(Level.WARN, SUCH_REGISTRATION_ALREADY_EXIST);
+                return failure(SUCH_REGISTRATION_ALREADY_EXIST, request);
             }
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, e);
             return failure(CANT_FIND_EVENT_ID, request);
         }
@@ -67,16 +74,29 @@ public class RegisterToEventCommand implements Command {
 
     }
 
-    private boolean registrationExist(Integer eventId, Integer userId) throws DaoException, ServiceException {
+    private boolean isBusy(Integer eventId) throws ServiceException {
+        RegistrationService service = new RegistrationServiceImpl();
+        Integer busyPlaces = service.findUsersOnEvent(eventId).size();
+        EventService eventService = new EventServiceImpl();
+        Event event = eventService.findById(eventId);
+        Integer capacity = null;
+        if (event == null) {
+            throw new ServiceException(CANT_FIND_EVENT);
+        }
+        capacity = event.getCapacity();
+        return capacity <= busyPlaces;
+    }
+
+    private boolean registrationExist(Integer eventId, Integer userId) throws ServiceException {
         RegistrationService service = new RegistrationServiceImpl();
         Registration registration = service.readByUserAndEvent(eventId, userId);
         return registration != null;
     }
 
-    private void register(Registration registration) throws DaoException, ServiceException {
+    private void register(Registration registration) throws ServiceException {
         RegistrationService service = new RegistrationServiceImpl();
         Integer id = service.save(registration);
-        if (id == null){
+        if (id == null) {
             throw new ServiceException(CANT_SAVE_REGISTRATION);
         }
     }

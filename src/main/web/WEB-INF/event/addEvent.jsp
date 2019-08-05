@@ -5,18 +5,18 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<fmt:message bundle="${textResources}" key="event_name" var="name"/>
-<fmt:message bundle="${textResources}" key="description" var="description"/>
-<fmt:message bundle="${textResources}" key="theme" var="theme"/>
-<fmt:message bundle="${textResources}" key="date" var="date"/>
-<fmt:message bundle="${textResources}" key="country" var="country"/>
-<fmt:message bundle="${textResources}" key="city" var="city"/>
-<fmt:message bundle="${textResources}" key="street" var="street"/>
-<fmt:message bundle="${textResources}" key="building" var="building"/>
-<fmt:message bundle="${textResources}" key="capacity" var="capacity"/>
-<fmt:message bundle="${textResources}" key="reset" var="reset"/>
-<fmt:message bundle="${textResources}" key="save" var="save"/>
-<fmt:message bundle="${textResources}" key="edit_image" var="edit_image"/>
+<fmt:message bundle="${textResources}" key="event.name" var="name"/>
+<fmt:message bundle="${textResources}" key="event.description" var="description"/>
+<fmt:message bundle="${textResources}" key="event.theme" var="theme"/>
+<fmt:message bundle="${textResources}" key="event.date" var="date"/>
+<fmt:message bundle="${textResources}" key="event.country" var="country"/>
+<fmt:message bundle="${textResources}" key="event.city" var="city"/>
+<fmt:message bundle="${textResources}" key="event.street" var="street"/>
+<fmt:message bundle="${textResources}" key="event.building" var="building"/>
+<fmt:message bundle="${textResources}" key="event.capacity" var="capacity"/>
+<fmt:message bundle="${textResources}" key="profile.reset" var="reset"/>
+<fmt:message bundle="${textResources}" key="profile.save" var="save"/>
+<fmt:message bundle="${textResources}" key="event.image.edit" var="edit_image"/>
 
 <link rel="stylesheet" type="text/css" href="css/image.css">
 <script src="js/image.js"></script>
@@ -56,7 +56,7 @@
 </c:choose>
 
 <div class="container-fluid">
-    <div class="col-6 justify-content-center p-3">
+    <div class="col-md-8 col-lg-6 justify-content-center p-3">
         <div class="text-center">
             <div id="img-preview-block" class="avatar avatar-original center-block rounded rounded-circle"
                  style="background-image:url(eventImages/${event.pictureLink});
@@ -69,20 +69,20 @@
     <div class="row">
         <form class="form-group" action="controller?command=add_event" method="POST" id="addForm"
               enctype="multipart/form-data">
-            <div class="row pt-3 pl-3 pr-3">
+            <div class="row mb-3">
                 <!--name-->
                 <label for="name">${name}</label>
                 <input type="text" class="form-control" name="name" id="name"
                        placeholder="${name}" title="Enter name of conference">
             </div>
 
-            <div class="row pt-3 pl-3 pr-3">
+            <div class="row mb-3">
                 <label for="description">${description}</label>
                 <textarea rows="4" class="form-control rounded" name="description" id="description"
                           placeholder="${description}" title="Enter description of the event"></textarea>
             </div>
 
-            <div class="row pt-3 pl-3 pr-3">
+            <div class="row mb-3">
                 <div class="form-group">
                     <label for="selectTheme">${theme}</label>
                     <select class="form-control" id="selectTheme" name="theme">
@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div class="row pt-3 pl-3 pr-3">
+            <div class="row mb-3">
                 <label for="date">${date}</label>
                 <input type="text" class="form-control" name="date" id="date"
                        title="Edit date of conference.">
@@ -143,40 +143,39 @@
                 </script>
             </div>
 
-            <!--address-->
-            <div class="row pt-3 pl-3 pr-3">
-                <div class="col-3">
+            <div class="row">
+                <div class="col-md-3 mb-3">
                     <label for="country">${country}</label>
                     <input type="text" class="form-control" name="country" id="country"
                            placeholder="${country}" title="Enter country">
                 </div>
-                <div class="col-3">
+                <div class="col-md-3 mb-3">
 
                     <label for="city">${city}</label>
                     <input type="text" class="form-control" name="city" id="city"
                            placeholder="${city}" title="Enter city">
                 </div>
-                <div class="col-3">
+                <div class="col-md-3 mb-3">
                     <label for="street">${street}</label>
                     <input type="text" class="form-control" name="street" id="street"
                            placeholder="${street}" title="Enter street">
                 </div>
-                <div class="col-3">
+                <div class="col-md-3 mb-3">
                     <label for="building">${building}</label>
                     <input type="text" class="form-control" name="building" id="building"
                            placeholder="${building}" title="Enter building">
                 </div>
             </div>
 
-            <div class="row pt-3 pl-3 pr-3">
+            <div class="row mb-3">
                 <!--capacity-->
                 <label for="capacity">${capacity}</label>
                 <input type="number" class="form-control" name="capacity" id="capacity"
                        title="Enter capacity">
             </div>
+            <hr>
+            <div class="row mb-3">
 
-            <div class="row pt-3 pl-3 pr-3">
-                <hr>
                 <button class="btn btn-lg btn-success" type="submit"><i
                         class="glyphicon glyphicon-ok-sign"></i>${save}
                 </button>

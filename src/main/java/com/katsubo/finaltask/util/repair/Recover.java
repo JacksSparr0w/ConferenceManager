@@ -1,4 +1,4 @@
-package com.katsubo.finaltask.command.repair;
+package com.katsubo.finaltask.util.repair;
 
 public interface Recover<T> {
     T recover(T entity);

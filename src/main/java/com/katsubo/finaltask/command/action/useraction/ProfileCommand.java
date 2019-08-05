@@ -2,10 +2,9 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ResourceManager;
-import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.UserInfo;
@@ -35,7 +34,7 @@ public class ProfileCommand implements Command {
             try {
                 User user = findUser(userDto);
                 info = findUserInfo(user);
-            } catch (DaoException | ServiceException e) {
+            } catch (ServiceException e) {
                 logger.log(Level.WARN, e.getMessage());
                 failure(request, e.getMessage());
             }
@@ -49,24 +48,24 @@ public class ProfileCommand implements Command {
 
     }
 
-    private User findUser(UserDto userDto) throws ServiceException, DaoException {
+    private User findUser(UserDto userDto) throws ServiceException {
         UserService service = new UserServiceImpl();
         User user = service.findById(userDto.getUserId());
-        if (user != null){
+        if (user != null) {
             return user;
         } else {
-            throw new DaoException(ERROR_FIND_USER);
+            throw new ServiceException(ERROR_FIND_USER);
         }
     }
 
-    private UserInfo findUserInfo(User user) throws DaoException, ServiceException {
+    private UserInfo findUserInfo(User user) throws ServiceException {
         UserInfoService service = new UserInfoServiceImpl();
         UserInfo info;
         info = service.findByUser(user);
         if (info != null) {
             return info;
         } else {
-            throw new DaoException(ERROR_FIND_USER_INFO);
+            throw new ServiceException(ERROR_FIND_USER_INFO);
         }
     }
 

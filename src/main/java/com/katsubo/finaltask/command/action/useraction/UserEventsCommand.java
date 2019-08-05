@@ -2,10 +2,9 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.UserInfo;
@@ -33,7 +32,7 @@ public class UserEventsCommand implements Command {
         if (userDto != null) {
             try {
                 events = findUserEvents(userDto);
-            } catch (DaoException | ServiceException e) {
+            } catch (ServiceException e) {
                 logger.log(Level.WARN, e.getMessage());
                 failure(request, e.getMessage());
             }
@@ -47,13 +46,13 @@ public class UserEventsCommand implements Command {
 
     }
 
-    private List<Event> findUserEvents(UserDto userDto) throws ServiceException, DaoException {
+    private List<Event> findUserEvents(UserDto userDto) throws ServiceException{
         RegistrationService service = new RegistrationServiceImpl();
         List<Event> events = service.findUserEvents(userDto.getUserId());
         if (events != null) {
             return events;
         } else {
-            throw new DaoException(ERROR_FIND_USER_EVENTS);
+            throw new ServiceException(ERROR_FIND_USER_EVENTS);
         }
     }
 

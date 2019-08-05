@@ -1,4 +1,4 @@
-package com.katsubo.finaltask.command.repair;
+package com.katsubo.finaltask.util.repair;
 
 import com.katsubo.finaltask.entity.UserInfo;
 

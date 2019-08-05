@@ -2,10 +2,9 @@ package com.katsubo.finaltask.command.action.event;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.ResourceManager;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Registration;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.service.RegistrationService;
@@ -36,7 +35,7 @@ public class LeaveEventCommand implements Command {
         Integer userId = user.getUserId();
         try {
             unregister(eventId, userId);
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, e);
             return failure(THERES_NO_SUCH_REGISTRAION, request);
         }
@@ -44,10 +43,10 @@ public class LeaveEventCommand implements Command {
         return new CommandResult(ResourceManager.getProperty("command.userEvents"));
     }
 
-    private void unregister(Integer eventId, Integer userId) throws DaoException, ServiceException {
+    private void unregister(Integer eventId, Integer userId) throws ServiceException {
         RegistrationService service = new RegistrationServiceImpl();
         Registration registration = service.readByUserAndEvent(eventId, userId);
-        if (registration != null){
+        if (registration != null) {
             service.delete(registration.getId());
         } else {
             throw new ServiceException(THERES_NO_SUCH_REGISTRAION);

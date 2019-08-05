@@ -14,10 +14,8 @@
 <fmt:setBundle basename="textResources" var="textResources" scope="session"/>
 
 <fmt:message bundle="${textResources}" key="home" var="home"/>
-<fmt:message bundle="${textResources}" key="conferences" var="conferences"/>
-<fmt:message bundle="${textResources}" key="title" var="title"/>
-<fmt:message bundle="${textResources}" key="sign_in" var="signin"/>
-<fmt:message bundle="${textResources}" key="sign_out" var="signout"/>
+<fmt:message bundle="${textResources}" key="sign.in" var="signin"/>
+<fmt:message bundle="${textResources}" key="sign.out" var="signout"/>
 
 
 <!DOCTYPE html>
@@ -47,7 +45,6 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/nav_bar.css">
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->
@@ -62,8 +59,6 @@
     <script src="vendor/daterangepicker/daterangepicker.js"></script>
     <!--===============================================================================================-->
     <script src="vendor/countdowntime/countdowntime.js"></script>
-    <!--===============================================================================================-->
-    <script src="js/main.js"></script>
     <!--===============================================================================================-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
 
@@ -122,11 +117,11 @@
     </div>
 </nav>
 
-<div class="container" style="margin-top:30px">
+<div class="container rounded mb-5" style="margin-top:30px; background-color:rgb(252,252,252);">
     <div class="row">
 
         <c:if test="${user != null}">
-            <div class="col-sm-2">
+            <div class="col-sm-1 col-md-2">
                 <jsp:include page="menu.jsp"/>
             </div>
         </c:if>

@@ -1,7 +1,6 @@
 package com.katsubo.finaltask.filter;
 
-import com.katsubo.finaltask.command.Constances;
-import com.katsubo.finaltask.command.action.Command;
+import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.command.factory.CommandType;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.enums.Permission;
@@ -89,6 +88,8 @@ public class Access {
         adminRules.add(CommandType.EDIT_EVENT);
         adminRules.add(CommandType.REMOVE_EVENT);
         adminRules.add(CommandType.GET_USERS_ON_EVENT);
+        adminRules.add(CommandType.ALL_USERS);
+        adminRules.add(CommandType.DELETE_USER);
     }
 
 

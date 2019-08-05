@@ -14,7 +14,7 @@ import java.util.List;
 public class EventServiceImpl extends ServiceImpl implements EventService {
     private static final Logger logger = LogManager.getLogger(EventServiceImpl.class);
 
-    public EventServiceImpl() throws DaoException {
+    public EventServiceImpl() throws ServiceException {
     }
 
     @Override

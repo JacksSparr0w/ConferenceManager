@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.command.factory;
 
+import com.katsubo.finaltask.command.DeleteUserCommand;
 import com.katsubo.finaltask.command.action.*;
 import com.katsubo.finaltask.command.action.authorization.*;
 import com.katsubo.finaltask.command.action.event.AddEventCommand;
@@ -45,6 +46,9 @@ public class CommandFactory {
             case EDIT_USER_PHOTO:
                 result = new EditUserPhotoCommand();
                 break;
+            case DELETE_USER:
+                result = new DeleteUserCommand();
+                break;
             case REGISTER_TO_EVENT:
                 result = new RegisterToEventCommand();
                 break;
@@ -74,6 +78,9 @@ public class CommandFactory {
                 break;
             case ADD_EVENT_PAGE:
                 result = new AddEventPageCommand();
+                break;
+            case ALL_USERS:
+                result = new AllUsersCommand();
                 break;
                 default:
                     throw new IllegalArgumentException("Invalid command " + command);

@@ -2,12 +2,11 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.command.ResourceManager;
-import com.katsubo.finaltask.command.Constances;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.command.repair.Recover;
-import com.katsubo.finaltask.command.repair.UserInfoRecover;
-import com.katsubo.finaltask.dao.DaoException;
+import com.katsubo.finaltask.util.repair.Recover;
+import com.katsubo.finaltask.util.repair.UserInfoRecover;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
@@ -60,7 +59,7 @@ public class EditUserPhotoCommand implements Command {
         validate(info);
         try {
             update(info);
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, ERROR_UPLOAD_USER_PHOTO);
             return failure(ERROR_UPLOAD_USER_PHOTO, request);
         }
@@ -86,7 +85,7 @@ public class EditUserPhotoCommand implements Command {
         return pathArr[0];
     }
 
-    private void update(UserInfo info) throws DaoException, ServiceException {
+    private void update(UserInfo info) throws ServiceException {
         UserInfoService service = new UserInfoServiceImpl();
         service.save(info);
     }
