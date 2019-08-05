@@ -38,7 +38,7 @@
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Or sign up for existing ones</h1>
-                    <p class="text-white">Some text Some text Some text Some text Some text Some text Some text Some text</p>
+                    <p class="rounded text-dark bg-light">Some text Some text Some text Some text Some text Some text Some text Some text</p>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
             <div class="container">
                 <div class="carousel-caption text-right">
                     <h1>Group with other people</h1>
-                    <p class="text-white">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida
+                    <p class="rounded text-dark bg-light">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida
                         at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
                 </div>
             </div>
