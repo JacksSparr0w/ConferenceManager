@@ -16,6 +16,8 @@
 <fmt:message bundle="${textResources}" key="home" var="home"/>
 <fmt:message bundle="${textResources}" key="sign.in" var="signin"/>
 <fmt:message bundle="${textResources}" key="sign.out" var="signout"/>
+<fmt:message bundle="${textResources}" key="conferences" var="conferences"/>
+
 
 
 <!DOCTYPE html>
@@ -44,7 +46,6 @@
     <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->
@@ -61,12 +62,19 @@
     <script src="vendor/countdowntime/countdowntime.js"></script>
     <!--===============================================================================================-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" href="css/unicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owlvendor/bootstrap/css/bootstrap.css.theme.default.min.css">
+
+    <!-- MAIN STYLE -->
+    <link rel="stylesheet" href="css/tooplate-style.css">
 
 </head>
 <body>
 <%@include file="header.jsp" %>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="controller?command=home_page">${home}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -76,7 +84,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">${conferences}</a>
+                    <a class="nav-link" href="controller?command=all_events">${conferences}</a>
                 </li>
                 <c:if test="${user != null}">
                     <li class="nav-item">
@@ -133,7 +141,7 @@
                     <jsp:include page="${includeView}"/>
                 </c:when>
                 <c:otherwise>
-                    <jsp:include page="event/eventInfo.jsp"/>
+                    <jsp:include page="homePage.jsp"/>
                 </c:otherwise>
             </c:choose>
         </div>

@@ -22,7 +22,9 @@ public enum CommandType {
     GET_USERS_ON_EVENT("get_users_on_event"),
     HOME_PAGE("home_page"),
     CHANGE_LANGUAGE("change_language"),
-    ALL_USERS("all_users");
+    ALL_USERS("all_users"),
+    START_PAGE("start_page"),
+    ALL_EVENTS("all_events");
 
     private String fieldName;
 

@@ -78,7 +78,7 @@
                 <li class="page-item active"><a class="page-link" href="#!">${i}</a></li>
             </c:when>
             <c:otherwise>
-                <c:url value="controller?command=home_page" var="homeUrl">
+                <c:url value="controller?command=all_events" var="homeUrl">
                     <c:param name="page" value="${i}"/>
                 </c:url>
                 <li class="page-item"><a class="page-link" href="${homeUrl}">${i}</a></li>

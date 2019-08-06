@@ -1,6 +1,7 @@
 package com.katsubo.finaltask.command.factory;
 
-import com.katsubo.finaltask.command.DeleteUserCommand;
+import com.katsubo.finaltask.command.action.DeleteUserCommand;
+import com.katsubo.finaltask.command.action.HomePageCommand;
 import com.katsubo.finaltask.command.action.*;
 import com.katsubo.finaltask.command.action.authorization.*;
 import com.katsubo.finaltask.command.action.event.AddEventCommand;
@@ -65,7 +66,7 @@ public class CommandFactory {
                 //
                 break;
             case HOME_PAGE:
-                result = new HomeCommand();
+                result = new HomePageCommand();
                 break;
             case CHANGE_LANGUAGE:
                 result = new ChangeLanguageCommand();
@@ -81,6 +82,12 @@ public class CommandFactory {
                 break;
             case ALL_USERS:
                 result = new AllUsersCommand();
+                break;
+            case START_PAGE:
+                result = new HomePageCommand();
+                break;
+            case ALL_EVENTS:
+                result = new AllEventsCommand();
                 break;
                 default:
                     throw new IllegalArgumentException("Invalid command " + command);

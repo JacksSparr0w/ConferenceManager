@@ -28,7 +28,6 @@
                                 to start</a></p>
                         </c:otherwise>
                     </c:choose>
-
                 </div>
             </div>
         </div>

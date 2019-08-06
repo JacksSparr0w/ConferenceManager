@@ -1,6 +1,7 @@
-package com.katsubo.finaltask.command;
+package com.katsubo.finaltask.command.action;
 
-import com.katsubo.finaltask.command.action.Command;
+import com.katsubo.finaltask.command.CommandException;
+import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;

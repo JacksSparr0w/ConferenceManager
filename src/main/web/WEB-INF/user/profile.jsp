@@ -85,7 +85,10 @@
 
 <div class="container-fluid">
     <div class="row p-2">
+        <strong class="d-inline-block mb-2 text-primary"><h5>${userInfo.name} ${userInfo.surname}</h5></strong>
+        <!--
         <div class="col-sm-10"><h5>${userInfo.name} ${userInfo.surname}</h5></div>
+        -->
     </div>
     <div class="row">
         <div class="col-sm-9">

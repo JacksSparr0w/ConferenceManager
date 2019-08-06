@@ -24,9 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(HomeCommand.class);
-    private static final String LANGUAGE = "language";
+public class AllEventsCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(AllEventsCommand.class);
     private static final String THERE_NOT_EVENTS = "there_not_events";
     private static final String CANT_READ_EVENTS = "cant_read_events";
     private static final Integer NOTES_PER_PAGE = 5;
@@ -72,16 +71,14 @@ public class HomeCommand implements Command {
             }
         }
 
-        String language = (String) request.getSession().getAttribute(LANGUAGE);
-        if (language == null) {
-            request.getSession().setAttribute(LANGUAGE, "en");
-        }
+
 
         events = getPage(events, request);
         request.setAttribute("events", events);
         request.setAttribute("countOfPages", pagination.getCountOfPages());
         request.setAttribute(PAGE, page);
         request.setAttribute("filling", filling);
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.eventInfo"));
         return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 
@@ -111,6 +108,7 @@ public class HomeCommand implements Command {
 
     private CommandResult goWithError(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.eventInfo"));
         return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 

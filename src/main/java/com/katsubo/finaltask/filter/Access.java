@@ -55,6 +55,8 @@ public class Access {
         commonRules.add(CommandType.HOME_PAGE);
         commonRules.add(CommandType.CHANGE_LANGUAGE);
         commonRules.add(CommandType.GET_EVENTS);
+        commonRules.add(CommandType.START_PAGE);
+        commonRules.add(CommandType.ALL_EVENTS);
     }
 
     private void setGuestRules() {
