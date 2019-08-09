@@ -2,17 +2,14 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.util.Constances;
-import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.util.repair.Recover;
-import com.katsubo.finaltask.util.repair.UserInfoRecover;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
-import com.katsubo.finaltask.validate.UserInfoValidator;
-import com.katsubo.finaltask.validate.Validator;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.util.repair.UserInfoRecover;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,12 +76,7 @@ public class EditUserInfoCommand implements Command {
     }
 
     private void validate(UserInfo info) {
-        Validator validator = new UserInfoValidator();
-        Recover recover = new UserInfoRecover();
-        if (!validator.isValid(info)) {
-            recover.recover(info);
-        }
-
+        new UserInfoRecover().recover(info);
     }
 
     private void update(UserInfo info) throws ServiceException {

@@ -140,7 +140,7 @@
                                 <button class="btn btn-lg btn-success" type="submit"><i
                                         class="glyphicon glyphicon-ok-sign"></i>${save}
                                 </button>
-                                <button class="btn btn-lg" type="reset"><i
+                                <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i
                                         class="glyphicon glyphicon-repeat"></i>${reset}
                                 </button>
                             </div>
@@ -257,7 +257,7 @@
                             <button class="btn btn-lg btn-success" type="submit"><i
                                     class="glyphicon glyphicon-ok-sign"></i>${save}
                             </button>
-                            <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i>
+                            <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i class="glyphicon glyphicon-repeat"></i>
                                 ${reset}
                             </button>
                         </div>

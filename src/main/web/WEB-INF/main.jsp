@@ -19,15 +19,12 @@
 <fmt:message bundle="${textResources}" key="conferences" var="conferences"/>
 
 
-
 <!DOCTYPE html>
 <html lang="${language}">
 <head>
     <title>Main page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.css">
     <!--===============================================================================================-->
@@ -74,53 +71,50 @@
 <body>
 <%@include file="header.jsp" %>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="controller?command=home_page">${home}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <c:choose>
+            <c:when test="${user != null}">
+                <a class="navbar-brand" href="controller?command=profile" style="padding-bottom: 1rem"><i
+                        class='uil uil-user'></i> ${user.login}</a>
+
+            </c:when>
+            <c:otherwise>
+                <a class="navbar-brand" href="controller?command=login_page" style="padding-bottom: 1rem"><i
+                        class='uil uil-user'></i> ${signin}</a>
+            </c:otherwise>
+        </c:choose>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav container-fluid">
                 <li class="nav-item">
-                    <a class="nav-link" href="controller?command=all_events">${conferences}</a>
+                    <a href="controller?command=home_page" class="nav-link"><span
+                            data-hover="${home}">${home}</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="controller?command=all_events" class="nav-link"><span
+                            data-hover="${conferences}">${conferences}</span></a>
                 </li>
                 <c:if test="${user != null}">
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="controller?command=logout">${signout}</a>
+                        <a href="controller?command=logout" class="nav-link"><span
+                                data-hover="${signout}">${signout}</span></a>
                     </li>
                 </c:if>
+                <li class="nav-item disabled" style="padding: 0 20px;">
+                    <a href="controller?language=ru&command=change_language"><span>Ru</span></a>
+                    <span>|</span>
+                    <a href="controller?language=en&command=change_language"><span>En</span></a>
+                </li>
             </ul>
-            <li class="nav-link">
-                <div class="container p-2">
-                    <a href="controller?language=ru&command=change_language">Ru</a>
-                    <a>|</a>
-                    <a href="controller?language=en&command=change_language">En</a>
-                </div>
-
-            </li>
-            <ul class="nav-item">
-                <c:choose>
-                    <c:when test="${user != null}">
-                        <a class="nav-link active text-black" href="controller?command=profile">
-                                ${user.login}
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="nav-link active" href="controller?command=login_page">
-                            <h5>${signin}</h5>
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-            <!--
-            <form class="form-inline">
-                <div class="md-form my-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                </div>
-            </form>
-            -->
         </div>
     </div>
 </nav>

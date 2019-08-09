@@ -162,7 +162,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="building">${building}</label>
-                    <input type="text" class="form-control" name="building" id="building"
+                    <input type="text" maxlength="5" class="form-control" name="building" id="building"
                            placeholder="${building}" title="Enter building">
                 </div>
             </div>
@@ -170,8 +170,16 @@
             <div class="row mb-3">
                 <!--capacity-->
                 <label for="capacity">${capacity}</label>
-                <input type="number" class="form-control" name="capacity" id="capacity"
+                <input type="number"class="form-control" name="capacity" id="capacity"
                        title="Enter capacity">
+                <script>
+                    $("#capacity").on("keypress", function (evt) {
+                        var keycode = evt.charCode || evt.keyCode;
+                        if (keycode == 46 || this.value.length == 5) {
+                            return false;
+                        }
+                    });
+                </script>
             </div>
             <hr>
             <div class="row mb-3">
@@ -179,7 +187,8 @@
                 <button class="btn btn-lg btn-success" type="submit"><i
                         class="glyphicon glyphicon-ok-sign"></i>${save}
                 </button>
-                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i>
+                <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i
+                        class="glyphicon glyphicon-repeat"></i>
                     ${reset}
                 </button>
             </div>

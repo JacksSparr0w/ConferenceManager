@@ -54,7 +54,6 @@ public class Access {
     private void setCommonRules() {
         commonRules.add(CommandType.HOME_PAGE);
         commonRules.add(CommandType.CHANGE_LANGUAGE);
-        commonRules.add(CommandType.GET_EVENTS);
         commonRules.add(CommandType.START_PAGE);
         commonRules.add(CommandType.ALL_EVENTS);
     }
@@ -80,15 +79,15 @@ public class Access {
         userRules.add(CommandType.REGISTER_TO_EVENT);
         userRules.add(CommandType.LEAVE_EVENT);
         userRules.add(CommandType.USER_EVENTS);
-        userRules.add(CommandType.GET_EVENTS);
         userRules.add(CommandType.EDIT_USER_PHOTO);
+        userRules.add(CommandType.EDIT_EVENT);
+        userRules.add(CommandType.EDIT_EVENT_PAGE);
+        userRules.add(CommandType.REMOVE_EVENT);
     }
 
     private void setAdminRules() {
         adminRules.addAll(userRules);
 
-        adminRules.add(CommandType.EDIT_EVENT);
-        adminRules.add(CommandType.REMOVE_EVENT);
         adminRules.add(CommandType.GET_USERS_ON_EVENT);
         adminRules.add(CommandType.ALL_USERS);
         adminRules.add(CommandType.DELETE_USER);

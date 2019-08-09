@@ -24,7 +24,7 @@ public class AccessFilter implements Filter {
         String command = request.getParameter(COMMAND);
         Access access = Access.getInstance();
         try {
-            if (access.can(command, request)) {
+            if (command != null && access.can(command, request)) {
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
             } else {

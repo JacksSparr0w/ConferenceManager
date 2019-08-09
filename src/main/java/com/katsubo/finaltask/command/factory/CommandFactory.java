@@ -1,13 +1,12 @@
 package com.katsubo.finaltask.command.factory;
 
+import com.katsubo.finaltask.command.action.event.DeleteEventCommand;
+import com.katsubo.finaltask.command.action.event.EditEventCommand;
 import com.katsubo.finaltask.command.action.DeleteUserCommand;
 import com.katsubo.finaltask.command.action.HomePageCommand;
 import com.katsubo.finaltask.command.action.*;
 import com.katsubo.finaltask.command.action.authorization.*;
-import com.katsubo.finaltask.command.action.event.AddEventCommand;
-import com.katsubo.finaltask.command.action.event.AddEventPageCommand;
-import com.katsubo.finaltask.command.action.event.LeaveEventCommand;
-import com.katsubo.finaltask.command.action.event.RegisterToEventCommand;
+import com.katsubo.finaltask.command.action.event.*;
 import com.katsubo.finaltask.command.action.useraction.*;
 
 public class CommandFactory {
@@ -30,10 +29,13 @@ public class CommandFactory {
                 result = new AddEventCommand();
                 break;
             case REMOVE_EVENT:
-                //
+                result = new DeleteEventCommand();
                 break;
             case EDIT_EVENT:
-                //
+                result = new EditEventCommand();
+                break;
+            case EDIT_EVENT_PAGE:
+                result = new EditEventPageCommand();
                 break;
             case PROFILE:
                 result = new ProfileCommand();
@@ -58,9 +60,6 @@ public class CommandFactory {
                 break;
             case USER_EVENTS:
                 result = new UserEventsCommand();
-                break;
-            case GET_EVENTS:
-                //
                 break;
             case GET_USERS_ON_EVENT:
                 //

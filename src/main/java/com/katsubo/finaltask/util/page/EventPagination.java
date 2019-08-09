@@ -7,6 +7,7 @@ import java.util.List;
 public class EventPagination implements Pagination<Event>{
     private final Integer NOTES_PER_PAGE;
     private long countOfPages;
+    private int page;
 
     public EventPagination(int notesPerPage) {
         NOTES_PER_PAGE = notesPerPage;
@@ -16,8 +17,10 @@ public class EventPagination implements Pagination<Event>{
     public List<Event> getPage(List<Event> items, int page) {
         countOfPages = Math.round(items.size() / NOTES_PER_PAGE.doubleValue());
         if (page > 0 && page <= countOfPages){
+            this.page = page;
             return findItems(items, page);
         } else {
+            this.page = 1;
             return findItems(items, 1);
         }
 
@@ -26,6 +29,11 @@ public class EventPagination implements Pagination<Event>{
     @Override
     public int getCountOfPages() {
         return (int) countOfPages;
+    }
+
+    @Override
+    public int getPage() {
+        return page;
     }
 
     private List<Event> findItems(List<Event> items, int page){

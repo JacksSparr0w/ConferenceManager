@@ -6,4 +6,6 @@ public interface Pagination<T> {
     List<T> getPage(List<T> items, int page);
 
     int getCountOfPages();
+
+    int getPage();
 }

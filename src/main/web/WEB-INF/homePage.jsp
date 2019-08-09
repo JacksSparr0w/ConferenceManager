@@ -17,9 +17,9 @@
                     </h3>
                     <p>Some text some text some text</p>
                     <div class="custom-btn-group mt-4">
-                        <a href="controller?command=home_page" class="btn mr-lg-2 custom-btn">View conferences</a>
+                        <a href="controller?command=all_events" class="btn mr-lg-2 custom-btn">View conferences</a>
                         <c:if test="${user != null}">
-                            <a href="controller?command=add_event" class="btn custom-btn custom-btn-bg custom-btn-link">Create
+                            <a href="controller?command=add_event_page" class="btn custom-btn custom-btn-bg custom-btn-link">Create
                                 new</a>
                         </c:if>
                         <c:if test="${user == null}">

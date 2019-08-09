@@ -71,11 +71,8 @@ public class EditUserPhotoCommand implements Command {
     }
 
     private void validate(UserInfo info) {
-        Validator validator = new UserInfoValidator();
-        Recover recover = new UserInfoRecover();
-        if (!validator.isValid(info)) {
-            info = (UserInfo) recover.recover(info);
-        }
+        new UserInfoRecover().recover(info);
+
 
     }
 

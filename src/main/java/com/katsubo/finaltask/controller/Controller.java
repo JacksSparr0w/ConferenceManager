@@ -49,7 +49,7 @@ public class Controller extends HttpServlet {
         } catch (CommandException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(MessageManager.getProperty("error"), e.getMessage());
-            result = new CommandResult(ResourceManager.getProperty("page.error404"));
+            result = new CommandResult(ResourceManager.getProperty("page.error404"), true);
         }
 
         String page = result.getPage();
