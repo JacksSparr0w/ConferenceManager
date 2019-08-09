@@ -1,5 +1,7 @@
 package com.katsubo.finaltask.command.factory;
 
+import java.util.stream.Stream;
+
 public enum CommandType {
     LOGIN("login"),
     LOGIN_PAGE("login_page"),
@@ -30,5 +32,11 @@ public enum CommandType {
 
     CommandType(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public static CommandType of(String command) {
+        return Stream.of(CommandType.values())
+                .filter(c -> c.fieldName.equalsIgnoreCase(command))
+                .findFirst().orElse(HOME_PAGE);
     }
 }

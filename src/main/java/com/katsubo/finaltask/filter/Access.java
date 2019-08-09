@@ -7,19 +7,18 @@ import com.katsubo.finaltask.entity.enums.Permission;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static com.katsubo.finaltask.command.factory.CommandType.*;
+
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Access {
     private static final Logger logger = LogManager.getLogger(Access.class);
-    private static final Map<Integer, List<CommandType>> commandsAccess = new HashMap<>();
-    private static final List<CommandType> commonRules = new ArrayList<>();
-    private static final List<CommandType> adminRules = new ArrayList<>();
-    private static final List<CommandType> userRules = new ArrayList<>();
-    private static final List<CommandType> guestRules = new ArrayList<>();
+    private static final Map<Integer, Set<CommandType>> commandsAccess = new HashMap<>();
+    private static EnumSet<CommandType> common;
+    private static EnumSet<CommandType> guest;
+    private static EnumSet<CommandType> user;
+    private static EnumSet<CommandType> admin;
 
     private static Access instance;
 
@@ -33,15 +32,14 @@ public class Access {
      */
 
     private Access() {
-
-        commandsAccess.put(Permission.ADMINISTRATOR.getFieldCode(), adminRules);
-        commandsAccess.put(Permission.USER.getFieldCode(), userRules);
-        commandsAccess.put(0, guestRules);
-
         setCommonRules();
         setGuestRules();
         setUserRules();
         setAdminRules();
+
+        commandsAccess.put(Permission.ADMINISTRATOR.getFieldCode(), admin);
+        commandsAccess.put(Permission.USER.getFieldCode(), user);
+        commandsAccess.put(0, guest);
     }
 
     public static Access getInstance() {
@@ -52,45 +50,26 @@ public class Access {
     }
 
     private void setCommonRules() {
-        commonRules.add(CommandType.HOME_PAGE);
-        commonRules.add(CommandType.CHANGE_LANGUAGE);
-        commonRules.add(CommandType.START_PAGE);
-        commonRules.add(CommandType.ALL_EVENTS);
+        common = EnumSet.of(HOME_PAGE, CHANGE_LANGUAGE, START_PAGE, ALL_EVENTS);
     }
 
     private void setGuestRules() {
-        guestRules.addAll(commonRules);
-
-        guestRules.add(CommandType.LOGIN_PAGE);
-        guestRules.add(CommandType.LOGIN);
-        guestRules.add(CommandType.REGISTER_PAGE);
-        guestRules.add(CommandType.REGISTER);
+        guest = EnumSet.of(LOGIN_PAGE, LOGIN, REGISTER, REGISTER_PAGE);
+        guest.addAll(common);
     }
 
     private void setUserRules() {
-        userRules.addAll(commonRules);
+        user = EnumSet.of(LOGOUT, ADD_EVENT_PAGE, ADD_EVENT, EDIT_USER, EDIT_USER_INFO,
+                PROFILE, REGISTER_TO_EVENT, LEAVE_EVENT, USER_EVENTS, EDIT_USER_PHOTO,
+                EDIT_EVENT, EDIT_EVENT_PAGE, REMOVE_EVENT);
 
-        userRules.add(CommandType.LOGOUT);
-        userRules.add(CommandType.ADD_EVENT_PAGE);
-        userRules.add(CommandType.ADD_EVENT);
-        userRules.add(CommandType.EDIT_USER);
-        userRules.add(CommandType.EDIT_USER_INFO);
-        userRules.add(CommandType.PROFILE);
-        userRules.add(CommandType.REGISTER_TO_EVENT);
-        userRules.add(CommandType.LEAVE_EVENT);
-        userRules.add(CommandType.USER_EVENTS);
-        userRules.add(CommandType.EDIT_USER_PHOTO);
-        userRules.add(CommandType.EDIT_EVENT);
-        userRules.add(CommandType.EDIT_EVENT_PAGE);
-        userRules.add(CommandType.REMOVE_EVENT);
+        user.addAll(common);
     }
 
     private void setAdminRules() {
-        adminRules.addAll(userRules);
+        admin = EnumSet.of(GET_USERS_ON_EVENT, ALL_USERS, DELETE_USER);
 
-        adminRules.add(CommandType.GET_USERS_ON_EVENT);
-        adminRules.add(CommandType.ALL_USERS);
-        adminRules.add(CommandType.DELETE_USER);
+        admin.addAll(user);
     }
 
 
@@ -104,7 +83,7 @@ public class Access {
             accessLayer = 0;
         }
 
-        List<CommandType> rules = commandsAccess.get(accessLayer);
+        Set<CommandType> rules = commandsAccess.get(accessLayer);
 
         return rules.contains(commandType);
     }

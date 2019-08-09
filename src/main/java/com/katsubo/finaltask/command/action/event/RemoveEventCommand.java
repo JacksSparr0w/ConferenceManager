@@ -17,8 +17,8 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DeleteEventCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(DeleteEventCommand.class);
+public class RemoveEventCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(RemoveEventCommand.class);
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_DONT_FIND_EVENT = "error_dont_find_event";
     private static final String ERROR_REMOVING_EVENT = "error_removing_event";

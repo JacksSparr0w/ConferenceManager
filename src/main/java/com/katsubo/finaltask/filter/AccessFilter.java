@@ -26,16 +26,13 @@ public class AccessFilter implements Filter {
         try {
             if (command != null && access.can(command, request)) {
                 filterChain.doFilter(servletRequest, servletResponse);
-                return;
             } else {
                 logger.log(Level.WARN, "no access for this user");
                 dispatch(servletRequest, servletResponse, ResourceManager.getProperty("page.error405"));
-                return;
             }
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARN, "illegal command: " + command);
             dispatch(servletRequest, servletResponse, ResourceManager.getProperty("page.error404"));
-            return;
         }
 
     }
