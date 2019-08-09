@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="row">
-        <form class="form-group" action="controller?command=add_event" method="POST" id="addForm"
+        <form class="form-group" action="add_event" method="POST" id="addForm"
               enctype="multipart/form-data">
             <div class="row mb-3">
                 <!--name-->

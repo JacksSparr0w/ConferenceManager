@@ -71,7 +71,7 @@
 
                     <!--Registration form-->
                     <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST"
-                          action="controller?command=register">
+                          action="register">
 					<span class="login100-form-title">
                             ${sign_up}
                     </span>
@@ -120,7 +120,7 @@
                                 ${have_an_account}
                         </span>
 
-                            <a href="controller?command=login_page" class="txt3">
+                            <a href="login_page" class="txt3">
                                     ${sign_in}
                             </a>
                         </div>
@@ -128,7 +128,7 @@
                 </c:when>
                 <c:otherwise>
                     <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST"
-                          action="controller?command=login">
+                          action="login">
 					<span class="login100-form-title">
                             ${sign_in}
                     </span>
@@ -156,7 +156,7 @@
                             </button>
                         </div>
 
-                        <a href="controller?command=home_page" class="txt2 flex-col-c p-t-16">
+                        <a href="home_page" class="txt2 flex-col-c p-t-16">
                                 ${continue_as_guest}
                         </a>
 
@@ -167,7 +167,7 @@
                             <c:url value="login.jsp" var="toRegistr">
                                 <c:param name="register" value="true"/>
                             </c:url>
-                            <a href="controller?command=register_page" class="txt3">
+                            <a href="register_page" class="txt3">
                                     ${sign_up}
                             </a>
                         </div>

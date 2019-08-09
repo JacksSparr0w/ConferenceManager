@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="row">
-        <c:url value="controller?command=edit_event" var="editUrl">
+        <c:url value="edit_event" var="editUrl">
             <c:param name="eventId" value="${event.id}"/>
         </c:url>
         <form class="form-group" action="${editUrl}" method="POST" id="form"

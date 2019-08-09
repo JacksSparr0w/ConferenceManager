@@ -84,23 +84,22 @@
             <p class="text-black">${join_now}</p>
             <div class="container pt-2 pl-2 pr-2 d-inline-flex">
                 <form>
-                    <c:url value="/controller?command=register_to_event" var="registerToEvent">
+                    <c:url value="register_to_event" var="registerToEvent">
                         <c:param name="eventId" value="${event.id}"/>
-                        <c:param name="freePlaces" value="${numberOfFreePlaces}"/>
                     </c:url>
                     <input type="button" class="btn btn-outline-success" value="${join}"
                            onclick="window.location.href='${registerToEvent}'"/>
                 </form>
                 <c:if test="${user.permission == 'ADMINISTRATOR' or user.userId == event.author_id}">
                     <form method="post">
-                        <c:url value="controller?command=edit_event_page" var="editEvent">
+                        <c:url value="edit_event_page" var="editEvent">
                             <c:param name="eventId" value="${event.id}"/>
                         </c:url>
                         <input type="button" class="btn btn-outline-warning ml-3" value="Edit"
                                onclick="window.location.href='${editEvent}'"/>
                     </form>
                     <form method="post">
-                        <c:url value="controller?command=remove_event" var="deleteEvent">
+                        <c:url value="remove_event" var="deleteEvent">
                             <c:param name="eventId" value="${event.id}"/>
                         </c:url>
                         <input type="button" class="btn btn-outline-danger ml-3" value="Remove"
@@ -151,7 +150,7 @@
                 <li class="page-item active"><a class="page-link" href="#!">${i}</a></li>
             </c:when>
             <c:otherwise>
-                <c:url value="controller?command=all_events" var="homeUrl">
+                <c:url value="all_events" var="homeUrl">
                     <c:param name="page" value="${i}"/>
                 </c:url>
                 <li class="page-item"><a class="page-link" href="${homeUrl}">${i}</a></li>

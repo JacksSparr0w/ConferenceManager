@@ -20,11 +20,11 @@
                     <p></p>
                     <c:choose>
                         <c:when test="${user != null}">
-                            <p><a class="m-2 btn btn-lg btn-primary" href="controller?command=add_event_page" role="button">Add
+                            <p><a class="m-2 btn btn-lg btn-primary" href="add_event_page" role="button">Add
                                 conference</a></p>
                         </c:when>
                         <c:otherwise>
-                            <p><a class="m-2 btn btn-lg btn-primary" href="controller?command=login" role="button">Sign up
+                            <p><a class="m-2 btn btn-lg btn-primary" href="login" role="button">Sign up
                                 to start</a></p>
                         </c:otherwise>
                     </c:choose>

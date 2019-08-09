@@ -105,7 +105,7 @@
 
             <div class="tab-content profile-tab" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <form class="form-group" action="controller?command=edit_user" method="POST">
+                    <form class="form-group" action="edit_user" method="POST">
 
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form class="form-group" action="controller?command=edit_user_info" method="POST"
+                    <form class="form-group" action="edit_user_info" method="POST"
                           enctype="multipart/form-data">
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">

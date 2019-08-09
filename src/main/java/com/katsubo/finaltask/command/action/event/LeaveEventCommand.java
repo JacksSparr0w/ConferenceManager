@@ -30,11 +30,15 @@ public class LeaveEventCommand implements Command {
             logger.log(Level.WARN, "can't find event");
             return failure(CANT_FIND_EVENT, request);
         }
-        Integer eventId = Integer.valueOf(request.getParameter(EVENT_ID));
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         Integer userId = user.getUserId();
+        Integer eventId;
         try {
+            eventId = Integer.valueOf(request.getParameter(EVENT_ID));
             unregister(eventId, userId);
+        } catch (NumberFormatException e){
+            logger.log(Level.WARN, CANT_FIND_EVENT);
+            failure(CANT_FIND_EVENT, request);
         } catch (ServiceException e) {
             logger.log(Level.WARN, e);
             return failure(THERES_NO_SUCH_REGISTRAION, request);

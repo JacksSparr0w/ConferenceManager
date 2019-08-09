@@ -2,8 +2,6 @@ package com.katsubo.finaltask.command.action.event;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.util.Constances;
-import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.Registration;
@@ -14,6 +12,8 @@ import com.katsubo.finaltask.service.RegistrationService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
 import com.katsubo.finaltask.service.impl.RegistrationServiceImpl;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,9 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegisterToEventCommand implements Command {
-    public static final String FREE_PLACES = "freePlaces";
-    public static final String NO_FREE_PLACES = "no_free_places";
-    public static final String CANT_FIND_EVENT = "cant_find_event";
+    private static final String NO_FREE_PLACES = "no_free_places";
+    private static final String CANT_FIND_EVENT = "cant_find_event";
     private static final String CANT_FIND_EVENT_ID = "cant_find_event_id";
     private static final Logger logger = LogManager.getLogger(RegisterToEventCommand.class);
     private static final String EVENT_ID = "eventId";
@@ -37,20 +36,18 @@ public class RegisterToEventCommand implements Command {
         Integer eventId;
 
         if (request.getParameter(EVENT_ID) == null) {
-            if (request.getAttribute(EVENT_ID) == null) {
-                logger.log(Level.WARN, "can't find eventId");
-                return failure(CANT_FIND_EVENT_ID, request);
-            } else {
-                eventId = Integer.valueOf((String) request.getAttribute(EVENT_ID));
-            }
-        } else {
-            eventId = Integer.valueOf(request.getParameter(EVENT_ID));
+            logger.log(Level.WARN, "can't find eventId");
+            return failure(CANT_FIND_EVENT_ID, request);
         }
         try {
+            eventId = Integer.valueOf(request.getParameter(EVENT_ID));
             if (isBusy(eventId)) {
                 throw new ServiceException();
             }
-        } catch (ServiceException e){
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARN, CANT_FIND_EVENT);
+            return failure(CANT_FIND_EVENT, request);
+        } catch (ServiceException e) {
             logger.log(Level.WARN, "there's no free places on this conference!");
             return failure(NO_FREE_PLACES, request);
         }
@@ -70,7 +67,7 @@ public class RegisterToEventCommand implements Command {
             return failure(CANT_FIND_EVENT_ID, request);
         }
         request.setAttribute(DONE, true);
-        return new CommandResult(ResourceManager.getProperty("command.home"));
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
 
     }
 
@@ -103,6 +100,6 @@ public class RegisterToEventCommand implements Command {
 
     private CommandResult failure(String error, HttpServletRequest request) {
         request.setAttribute(error, true);
-        return new CommandResult(ResourceManager.getProperty("command.home"));
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
     }
 }

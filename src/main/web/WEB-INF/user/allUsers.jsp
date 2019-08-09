@@ -36,7 +36,7 @@
                     <p class="card-text mb-auto mb-2">${info.about}</p>
                     <div class="text-muted">
                         <form>
-                            <c:url value="controller?command=delete_user" var="deleteUrl">
+                            <c:url value="delete_user" var="deleteUrl">
                                 <c:param name="userId" value="${user.id}"/>
                             </c:url>
                             <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal"

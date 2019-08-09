@@ -36,7 +36,7 @@
         </div>
         <h2>${title}</h2>
         <p>${subtitle}</p>
-        <a href="controller?command=home_page">${back}</a>
+        <a href="home_page">${back}</a>
     </div>
 </div>
 

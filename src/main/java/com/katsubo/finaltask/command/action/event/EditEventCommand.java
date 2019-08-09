@@ -53,7 +53,11 @@ public class EditEventCommand implements Command {
         }
         Event event = null;
         try {
-            event = getEvent(Integer.valueOf(eventIdString));
+            Integer eventId = Integer.valueOf(eventIdString);
+            event = getEvent(eventId);
+        } catch (NumberFormatException e){
+            logger.log(Level.WARN, ERROR_EDIT_EVENT);
+            return failure(ERROR_FIND_EVENT, request);
         } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(e.getMessage(), request);

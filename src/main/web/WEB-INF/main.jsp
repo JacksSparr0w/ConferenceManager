@@ -22,7 +22,7 @@
 <!DOCTYPE html>
 <html lang="${language}">
 <head>
-    <title>Main page</title>
+    <title>${conferences}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -75,12 +75,12 @@
     <div class="container">
         <c:choose>
             <c:when test="${user != null}">
-                <a class="navbar-brand" href="controller?command=profile" style="padding-bottom: 1rem"><i
+                <a class="navbar-brand" href="profile" style="padding-bottom: 1rem"><i
                         class='uil uil-user'></i> ${user.login}</a>
 
             </c:when>
             <c:otherwise>
-                <a class="navbar-brand" href="controller?command=login_page" style="padding-bottom: 1rem"><i
+                <a class="navbar-brand" href="login_page" style="padding-bottom: 1rem"><i
                         class='uil uil-user'></i> ${signin}</a>
             </c:otherwise>
         </c:choose>
@@ -96,16 +96,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav container-fluid">
                 <li class="nav-item">
-                    <a href="controller?command=home_page" class="nav-link"><span
+                    <a href="home_page" class="nav-link"><span
                             data-hover="${home}">${home}</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="controller?command=all_events" class="nav-link"><span
+                    <a href="all_events" class="nav-link"><span
                             data-hover="${conferences}">${conferences}</span></a>
                 </li>
                 <c:if test="${user != null}">
                     <li class="nav-item">
-                        <a href="controller?command=logout" class="nav-link"><span
+                        <a href="logout" class="nav-link"><span
                                 data-hover="${signout}">${signout}</span></a>
                     </li>
                 </c:if>

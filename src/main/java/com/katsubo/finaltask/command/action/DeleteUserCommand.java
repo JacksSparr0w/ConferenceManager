@@ -27,9 +27,13 @@ public class DeleteUserCommand implements Command {
             logger.log(Level.WARN, ERROR_DONT_FIND_USER);
             return failure(ERROR_DONT_FIND_USER, request);
         }
-        Integer userId = Integer.valueOf(request.getParameter(USER_ID));
+        Integer userId;
         try {
+            userId = Integer.valueOf(request.getParameter(USER_ID));
             deleteUser(userId);
+        } catch (NumberFormatException e){
+            logger.log(Level.WARN, ERROR_DONT_FIND_USER);
+            return  failure(ERROR_DONT_FIND_USER, request);
         } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_REMOVING_USER, request);

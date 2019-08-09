@@ -33,7 +33,7 @@
             <h1>4<span></span>5</h1>
         </div>
         <h2>${title}</h2>
-        <a href="controller?command=home_page">${back}</a>
+        <a href="home_page">${back}</a>
     </div>
 </div>
 

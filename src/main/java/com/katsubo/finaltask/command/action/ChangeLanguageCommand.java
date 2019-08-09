@@ -17,10 +17,13 @@ public class ChangeLanguageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String referer = request.getHeader("referer");
+            String referer = request.getHeader("referer");
         String backURI = null;
         try {
-            backURI = referer.substring(referer.indexOf("controller"));
+            backURI = referer.substring(referer.lastIndexOf('/')+1);
+            if (backURI.isEmpty()){
+                backURI = ResourceManager.getProperty("command.home");
+            }
         } catch (StringIndexOutOfBoundsException e) {
             backURI = ResourceManager.getProperty("command.home");
         }

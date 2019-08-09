@@ -25,7 +25,7 @@
                     <p class="card-text mb-auto mb-2">${user.shortDescription}</p>
                     <div class="text-muted">
                         <form>
-                            <c:url value="controller?command=leave_event" var="unregisterToEvent">
+                            <c:url value="leave_event" var="unregisterToEvent">
                                 <c:param name="eventId" value="${user.id}"/>
                             </c:url>
                             <button type="button" class="btn btn-outline-dark"

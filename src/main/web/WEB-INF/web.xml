@@ -11,6 +11,20 @@
         <servlet-name>controller</servlet-name>
         <servlet-class>com.katsubo.finaltask.controller.Controller</servlet-class>
     </servlet>
+    <filter>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+        <init-param>
+            <param-name>statusEnabled</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
     <servlet-mapping>
         <servlet-name>controller</servlet-name>
         <url-pattern>/com.katsubo.finaltask.controller.Controller</url-pattern>
@@ -23,6 +37,7 @@
         <filter-name>AccessFilter</filter-name>
         <url-pattern>/controller</url-pattern>
     </filter-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/error/page404.jsp</location>

@@ -21,7 +21,7 @@ public class EditEventPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditEventPageCommand.class);
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_FIND_EVENT = "error_find_event";
-    public static final String EVENT = "event";
+    private static final String EVENT = "event";
     private Event event;
 
     @Override
@@ -32,7 +32,9 @@ public class EditEventPageCommand implements Command {
             return failure(ERROR_FIND_EVENT, request);
         }
         try {
-            if (checkRules(request)){
+            UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
+            Integer eventId = Integer.valueOf(request.getParameter(EVENT_ID));
+            if (checkRules(user, eventId)) {
                 request.setAttribute(EVENT, event);
                 request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.editEvent"));
                 String page = ResourceManager.getProperty("page.main");
@@ -40,19 +42,24 @@ public class EditEventPageCommand implements Command {
             } else {
                 throw new ServiceException();
             }
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARN, ERROR_FIND_EVENT);
+            return failure(ERROR_FIND_EVENT, request);
         } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(e.getMessage(), request);
         }
 
     }
-    private boolean checkRules(HttpServletRequest request) throws ServiceException {
-        UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
+    private boolean checkRules(UserDto user, Integer eventId) throws ServiceException {
         if (user == null){
             return false;
         }
         EventService service = new EventServiceImpl();
-        event = service.findById(Integer.valueOf(request.getParameter(EVENT_ID)));
+        event = service.findById(eventId);
+        if (event == null){
+            throw new ServiceException(ERROR_FIND_EVENT);
+        }
         return event.getAuthor_id().equals(user.getUserId());
     }
 

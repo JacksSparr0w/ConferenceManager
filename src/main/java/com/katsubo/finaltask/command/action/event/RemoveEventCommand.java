@@ -53,7 +53,16 @@ public class RemoveEventCommand implements Command {
             return false;
         }
         EventService service = new EventServiceImpl();
-        Event event = service.findById(Integer.valueOf(request.getParameter(EVENT_ID)));
+        Integer eventId;
+        try{
+            eventId = Integer.valueOf(request.getParameter(EVENT_ID));
+        } catch (NumberFormatException e){
+            throw new ServiceException(ERROR_DONT_FIND_EVENT);
+        }
+        Event event = service.findById(eventId);
+        if (event == null){
+            throw new ServiceException(ERROR_DONT_FIND_EVENT);
+        }
         return event.getAuthor_id().equals(user.getUserId());
     }
 
