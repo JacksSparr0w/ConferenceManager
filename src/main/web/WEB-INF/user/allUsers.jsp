@@ -9,6 +9,25 @@
 <fmt:message bundle="${textResources}" key="user.date.registration" var="date_of_registration"/>
 <fmt:message bundle="${textResources}" key="user.delete" var="delete"/>
 
+<c:choose>
+    <c:when test="${done != null}">
+        <div class="container alert alert-success fade show m-t-16" role="alert">
+                ${done}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:when>
+    <c:when test="${error != null}">
+        <div class="container alert alert-warning fade show m-t-16" role="alert">
+                ${error}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:when>
+</c:choose>
+
 <div class="container-fluid pb-5 pl-5 pr-5">
     <c:forEach var="user" items="${users}">
         <c:set var="info" value="${users_info.get(user.id)}"/>

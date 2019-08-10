@@ -28,8 +28,10 @@ public class RegisterToEventCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegisterToEventCommand.class);
     private static final String EVENT_ID = "eventId";
     private static final String CANT_SAVE_REGISTRATION = "cant_save_registration";
-    private static final String DONE = "register_done";
+    private static final String DONE = "done";
     private static final String SUCH_REGISTRATION_ALREADY_EXIST = "such_registration_already_exist";
+    public static final String ERROR = "error";
+    public static final String EVENT_REGISTER_SUCCESS = "event.register.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -66,7 +68,7 @@ public class RegisterToEventCommand implements Command {
             logger.log(Level.WARN, e);
             return failure(CANT_FIND_EVENT_ID, request);
         }
-        request.setAttribute(DONE, true);
+        request.setAttribute(DONE, EVENT_REGISTER_SUCCESS);
         return new CommandResult(ResourceManager.getProperty("command.allEvents"));
 
     }
@@ -99,7 +101,7 @@ public class RegisterToEventCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.allEvents"));
     }
 }

@@ -32,6 +32,7 @@ public class AllEventsCommand implements Command {
     private static final Integer NOTES_PER_PAGE = 5;
     private static final String PAGE = "page";
     public static final String INVALID_PAGE = "invalid_page";
+    public static final String ERROR = "error";
 
     private Pagination pagination;
     private Integer page;
@@ -44,7 +45,7 @@ public class AllEventsCommand implements Command {
             events = readAllEvents();
         } catch (DaoException | ServiceException e) {
             logger.log(Level.INFO, e.getMessage());
-            return goWithError(CANT_READ_EVENTS, request);
+            return failure(CANT_READ_EVENTS, request);
         }
         if (events.isEmpty()) {
             logger.log(Level.INFO, "there is not events yet!");
@@ -58,7 +59,7 @@ public class AllEventsCommand implements Command {
                 userEvents = readUserEvents(userDto.getUserId());
             } catch (DaoException | ServiceException e) {
                 logger.log(Level.INFO, e.getMessage());
-                return goWithError(CANT_READ_EVENTS, request);
+                return failure(CANT_READ_EVENTS, request);
             }
             events.removeAll(userEvents);
         }
@@ -69,7 +70,7 @@ public class AllEventsCommand implements Command {
                 filling.put(event.getId(), numberOfUsers);
             } catch (DaoException | ServiceException e) {
                 logger.log(Level.INFO, e.getMessage());
-                return goWithError(CANT_READ_EVENTS, request);
+                return failure(CANT_READ_EVENTS, request);
             }
         }
 
@@ -109,8 +110,8 @@ public class AllEventsCommand implements Command {
 
     }
 
-    private CommandResult goWithError(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+    private CommandResult failure(String error, HttpServletRequest request) {
+        request.setAttribute(ERROR, error);
         request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.eventInfo"));
         return new CommandResult(ResourceManager.getProperty("page.main"));
     }

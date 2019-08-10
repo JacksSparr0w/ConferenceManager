@@ -29,6 +29,8 @@ public class EditUserCommand implements Command {
     private static final String PASSWORD = "password";
     private static final String REPEAT_PASSWORD = "password2";
     private static final String DONE = "done";
+    public static final String ERROR = "error";
+    public static final String USER_EDIT_SUCCESS = "user.edit.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -56,7 +58,7 @@ public class EditUserCommand implements Command {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_UPDATE_USER, request);
         }
-        request.setAttribute(DONE, true);
+        request.setAttribute(DONE, USER_EDIT_SUCCESS);
         HttpSession session = request.getSession();
         userDto = new UserDto(user);
         session.setAttribute(Constances.USER.getFieldName(), userDto);
@@ -88,7 +90,7 @@ public class EditUserCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.profile"));
     }
 }

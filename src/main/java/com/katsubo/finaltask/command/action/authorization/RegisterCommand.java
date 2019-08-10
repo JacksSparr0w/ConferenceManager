@@ -2,6 +2,8 @@ package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
+import com.katsubo.finaltask.command.menu.Menu;
+import com.katsubo.finaltask.command.menu.MenuFactory;
 import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.User;
@@ -13,6 +15,7 @@ import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
+import com.katsubo.finaltask.validate.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +38,8 @@ public class RegisterCommand implements Command {
     private static final String SURNAME = "surname";
     private static final String EMAIL = "email";
     private static final String ERROR_REGISTRATION = "error_registration";
-    private static final String ERROR = "error_";
+    private static final String INVALID = "invalid_";
+    public static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -49,7 +53,7 @@ public class RegisterCommand implements Command {
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
                 logger.log(Level.ERROR, "Invalid " + entry.getKey() + " was received");
-                return failure(request, ERROR + entry.getKey());
+                return failure(request, INVALID + entry.getKey());
             }
         }
 
@@ -68,7 +72,7 @@ public class RegisterCommand implements Command {
             createUser(parameters, request);
             logger.log(Level.INFO, "user registrated and authorized with login - " + parameters.get(LOGIN));
             return new CommandResult(ResourceManager.getProperty("command.home"), true);
-        } catch (ServiceException e) {
+        } catch (ValidatorException | ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(request, e.getMessage());
         }
@@ -81,27 +85,12 @@ public class RegisterCommand implements Command {
         return service.isExist(login);
     }
 
-    private void createUser(Map<String, String> parameters, HttpServletRequest request) throws ServiceException {
+    private void createUser(Map<String, String> parameters, HttpServletRequest request) throws ServiceException, ValidatorException {
         User user = new User();
         user.setLogin(parameters.get(LOGIN));
         user.setPassword(parameters.get(PASSWORD));
         user.setPermission(Permission.USER);
 
-        UserService service = new UserServiceImpl();
-        Integer id = service.save(user);
-        if (id != null) {
-            user.setId(id);
-        } else {
-            throw new ServiceException("Can't save user!");
-        }
-        UserDto userDto = new UserDto(user);
-        HttpSession session = request.getSession();
-        session.setAttribute(USER.getFieldName(), userDto);
-
-        createUserInfo(user, parameters);
-    }
-
-    private void createUserInfo(User user, Map<String, String> parameters) throws ServiceException {
         UserInfo info = new UserInfo();
         info.setUser(user);
         info.setName(parameters.get(NAME));
@@ -109,13 +98,52 @@ public class RegisterCommand implements Command {
         info.setEmail(parameters.get(EMAIL));
         info.setDateOfRegistration(new Date());
 
-        UserInfoService service = new UserInfoServiceImpl();
-        service.save(info);
+        if (userValid(user) && infoValid(info)){
+            UserService userService = new UserServiceImpl();
+            Integer id = userService.save(user);
+            if (id != null) {
+                user.setId(id);
 
+                UserInfoService infoService = new UserInfoServiceImpl();
+                infoService.save(info);
+            } else {
+                throw new ServiceException("Can't save user!");
+            }
+        }
+
+        UserDto userDto = new UserDto(user);
+        HttpSession session = request.getSession();
+        session.setAttribute(USER.getFieldName(), userDto);
+        setMenuForUser(user, request);
+    }
+
+    private boolean userValid(User user) throws ValidatorException{
+        Validator validator = new UserValidator();
+        String error =  validator.isValid(user);
+        if (error != null){
+            throw new ValidatorException(error);
+        } else {
+            return true;
+        }
+    }
+
+    private boolean infoValid(UserInfo info) throws ValidatorException{
+        Validator validator = new UserInfoValidator();
+        String error =  validator.isValid(info);
+        if (error != null){
+            throw new ValidatorException(error);
+        } else {
+            return true;
+        }
+    }
+
+    private void setMenuForUser(User user, HttpServletRequest request) {
+        Menu menu = MenuFactory.getMenu(user.getPermission());
+        request.getSession().setAttribute("menu", menu.getMenuItems());
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.registerPage"));
     }
 }

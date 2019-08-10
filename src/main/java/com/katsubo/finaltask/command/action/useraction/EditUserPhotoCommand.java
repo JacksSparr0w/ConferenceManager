@@ -35,10 +35,13 @@ public class EditUserPhotoCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditUserPhotoCommand.class);
     private static final String USER_PHOTO = "userPhoto";
     private static final String ERROR_UPLOAD_USER_PHOTO = "error_upload_user_photo";
-    private static final String DONE = "success_upload_user_photo";
+    private static final String DONE = "done";
     private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
 
     private static final List<String> formats = new ArrayList<>();
+    public static final String ERROR = "error";
+    public static final String USER_PHOTO_EDIT_SUCCESS = "user.photo.edit.success";
+
     static {
         formats.add("jpg");
         formats.add("jpeg");
@@ -80,7 +83,7 @@ public class EditUserPhotoCommand implements Command {
             logger.log(Level.WARN, ERROR_UPLOAD_USER_PHOTO);
             return failure(ERROR_UPLOAD_USER_PHOTO, request);
         }
-        request.setAttribute(DONE, true);
+        request.setAttribute(DONE, USER_PHOTO_EDIT_SUCCESS);
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
 
@@ -105,7 +108,7 @@ public class EditUserPhotoCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.profile"), true);
     }
 }

@@ -101,9 +101,9 @@
                             <span class="focus-input100"></span>
                         </div>
 
-                        <c:if test="${error_registration eq true}">
+                        <c:if test="${error != null}">
                             <div class="container alert alert-warning alert-dismissible fade show m-t-16" role="alert">
-                                User with this login already exist. Sign in or choose another login.
+                                ${error}
                             </div>
                         </c:if>
 
@@ -143,10 +143,9 @@
                             <span class="focus-input100"></span>
                         </div>
 
-                        <c:if test="${error_authentification eq true}">
+                        <c:if test="${error != null}">
                             <div class="container alert alert-warning alert-dismissible fade show m-t-16" role="alert">
-                                Enter <strong>invalid</strong> login or password. Please try again
-
+                                ${error}
                             </div>
                         </c:if>
 

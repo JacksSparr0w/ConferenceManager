@@ -37,6 +37,8 @@ public class EditUserInfoCommand implements Command {
     private static final String ABOUT = "about";
     private static final String ERROR_UPDATE_USER_INFO = "error_update_user_info";
     private static final String DONE = "done";
+    public static final String ERROR = "error";
+    public static final String INFO_EDIT_SUCCESS = "info.edit.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -74,7 +76,7 @@ public class EditUserInfoCommand implements Command {
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
 
-        request.setAttribute(DONE, true);
+        request.setAttribute(DONE, INFO_EDIT_SUCCESS);
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
 
@@ -103,7 +105,7 @@ public class EditUserInfoCommand implements Command {
 
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.profile"));
 
     }

@@ -33,49 +33,22 @@
 <script src="js/image.js"></script>
 
 <c:choose>
-    <c:when test="${done == true}">
+    <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
-                ${successful_change_profile}
+                ${done}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     </c:when>
-    <c:when test="${error_find_userInfo == true}">
+    <c:when test="${error != null}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
-            <h2>${error_find_user_info}</h2>
+                ${error}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     </c:when>
-    <c:when test="${incorrect_verify_password  == true}">
-        <div class="container alert alert-warning fade show m-t-16" role="alert">
-                ${verify_password_is_incorrect}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:when>
-    <c:when test="${error_upload_user_photo  == true}">
-        <div class="container alert alert-warning fade show m-t-16" role="alert">
-                ${error_photo}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:when>
-    <c:when test="${success_upload_user_photo  == true}">
-        <div class="container alert alert-success fade show m-t-16" role="alert">
-                ${success_photo}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <!---->
-    </c:otherwise>
 </c:choose>
 
 <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>

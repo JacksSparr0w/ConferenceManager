@@ -17,7 +17,6 @@
             <div class="container">
                 <div class="carousel-caption text-left">
                     <h1>Create your own conference!</h1>
-                    <p></p>
                     <c:choose>
                         <c:when test="${user != null}">
                             <p><a class="m-2 btn btn-lg btn-primary" href="add_event_page" role="button">Add
@@ -37,7 +36,6 @@
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Or sign up for existing ones</h1>
-                    <p class="rounded text-dark bg-light">Some text Some text Some text Some text Some text Some text Some text Some text</p>
                 </div>
             </div>
         </div>
@@ -47,8 +45,6 @@
             <div class="container">
                 <div class="carousel-caption text-right">
                     <h1>Group with other people</h1>
-                    <p class="rounded text-dark bg-light">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida
-                        at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
                 </div>
             </div>
         </div>

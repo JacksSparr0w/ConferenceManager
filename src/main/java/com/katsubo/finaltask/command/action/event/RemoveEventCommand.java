@@ -23,6 +23,7 @@ public class RemoveEventCommand implements Command {
     private static final String ERROR_DONT_FIND_EVENT = "error_dont_find_event";
     private static final String ERROR_REMOVING_EVENT = "error_removing_event";
     private static final String DELETE_SUCCESS = "delete_success";
+    public static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -72,7 +73,7 @@ public class RemoveEventCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("page.error405"));
     }
 }

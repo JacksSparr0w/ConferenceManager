@@ -46,6 +46,8 @@ public class EditEventCommand implements Command {
     private static final String PICTURE = "picture";
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_FIND_EVENT = "error_find_event";
+    public static final String ERROR = "error";
+    public static final String EVENT_EDIT_SUCCESS = "event.edit.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -138,7 +140,7 @@ public class EditEventCommand implements Command {
             return failure(ERROR_EDIT_EVENT, request);
         }
 
-        request.setAttribute(DONE, true);
+        request.setAttribute(DONE, EVENT_EDIT_SUCCESS);
         request.setAttribute("event_id", event.getId());
         return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
     }
@@ -174,7 +176,7 @@ public class EditEventCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.allEvents"));
     }
 

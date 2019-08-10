@@ -13,7 +13,6 @@
 
                 <!-- Content -->
                 <h5 class="text-uppercase">Conferences</h5>
-                <p class="text-white">Here you can use rows and columns to organize your footer content.</p>
 
             </div>
             <!-- Grid column -->
@@ -21,9 +20,8 @@
             <hr class="clearfix w-100 d-md-none pb-3">
 
             <!-- Grid column -->
-            <div class="col-md-6 mb-md-0 mb-3">
+            <!--<div class="col-md-6 mb-md-0 mb-3">
 
-                <!-- Links -->
                 <h5 class="text-uppercase">Links</h5>
 
                 <ul class="list-unstyled text-white">
@@ -41,7 +39,7 @@
                     </li>
                 </ul>
 
-            </div>
+            </div>-->
             <!-- Grid column -->
 
         </div>

@@ -17,6 +17,7 @@ public class UserInfoValidator implements Validator<UserInfo> {
         if (entity == null) {
             return ENTITY_IS_NULL;
         }
+        if (entity.getDateOfBirth() == null) return null;
         if (entity.getDateOfBirth().after(new Date()) ||
                 entity.getDateOfBirth().before(new Date(1))) {
             return DATE_OF_BIRTH_IS_INCORRECT;

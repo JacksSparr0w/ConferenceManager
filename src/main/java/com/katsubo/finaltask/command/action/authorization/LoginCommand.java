@@ -28,6 +28,7 @@ public class LoginCommand implements Command {
     private static final String ERROR_LOGIN = "error_login";
     private static final String ERROR_PASSWORD = "error_password";
     private static final String ERROR_AUTHENTIFICATION = "error_authentification";
+    public static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -79,7 +80,7 @@ public class LoginCommand implements Command {
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.loginPage"));
     }
 }

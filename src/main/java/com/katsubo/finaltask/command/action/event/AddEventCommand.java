@@ -49,6 +49,8 @@ public class AddEventCommand implements Command {
     private static final String STREET = "street";
     private static final String BUILDING = "building";
     private static final String PICTURE = "picture";
+    public static final String ERROR = "error";
+    public static final String ADD_EVENT_SUCCESS = "add.event.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -132,7 +134,7 @@ public class AddEventCommand implements Command {
             return failure(ERROR_ADD_EVENT, request);
         }
 
-        request.setAttribute(DONE, true);
+        request.setAttribute(DONE, ADD_EVENT_SUCCESS);
         return new CommandResult(ResourceManager.getProperty("command.allEvents"));
     }
 
@@ -159,7 +161,7 @@ public class AddEventCommand implements Command {
 
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addEvent"));
         return new CommandResult(ResourceManager.getProperty("command.home"));
     }

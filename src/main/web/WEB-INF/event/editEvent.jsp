@@ -26,33 +26,22 @@
 <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"/>
 
 <c:choose>
-    <c:when test="${done == true}">
+    <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
-                ${successful_change_profile}
+                ${done}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     </c:when>
-    <c:when test="${error_add_event == true}">
+    <c:when test="${error != null}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
-                ${error_find_user_info}
+                ${error}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     </c:when>
-    <c:when test="${incorrect_verify_password  == true}">
-        <div class="container alert alert-warning fade show m-t-16" role="alert">
-                ${verify_password_is_incorrect}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <!---->
-    </c:otherwise>
 </c:choose>
 
 <c:set var="event" value="${requestScope.event}"/>

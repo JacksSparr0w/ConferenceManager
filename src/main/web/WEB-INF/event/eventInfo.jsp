@@ -11,51 +11,24 @@
 <fmt:message bundle="${textResources}" key="places_left" var="places_left"/>
 <fmt:message bundle="${textResources}" key="join_now" var="join_now"/>
 
-<div class="container">
-
-    <c:if test="${requestScope.error_dont_find_event eq true}">
-        <div class="container alert alert-danger fade show m-t-16" role="alert">
-            Don't find event!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-
-    <c:if test="${requestScope.register_done eq true}">
+<c:choose>
+    <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
-                ${successful_register_to_event}
+                ${done}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    </c:if>
-    <c:if test="${requestScope.no_free_places eq true}">
+    </c:when>
+    <c:when test="${error != null}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
-            No free places left!
+                ${error}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    </c:if>
-
-    <c:if test="${requestScope.delete_success eq true}">
-        <div class="container alert alert-success fade show m-t-16" role="alert">
-            Successful delete!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-    <c:if test="${requestScope.error_removing_event eq true}">
-        <div class="container alert alert-warning fade show m-t-16" role="alert">
-            Error removing event!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </c:if>
-</div>
+    </c:when>
+</c:choose>
 
 <c:forEach var="event" items="${events}">
     <div class="container-fluid pt-3 pl-3 pr-3">

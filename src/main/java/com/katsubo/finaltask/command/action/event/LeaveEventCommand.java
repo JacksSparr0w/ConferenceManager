@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 public class LeaveEventCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegisterToEventCommand.class);
     private static final String EVENT_ID = "eventId";
-    private static final String DONE = "register_done";
+    private static final String DONE = "done";
     private static final String THERES_NO_SUCH_REGISTRAION = "theres_no_such_registraion";
     private static final String CANT_FIND_EVENT = "cant_find_event";
+    public static final String ERROR = "error";
+    public static final String EVENT_LEAVE_SUCCESS = "event.leave.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -43,7 +45,7 @@ public class LeaveEventCommand implements Command {
             logger.log(Level.WARN, e);
             return failure(THERES_NO_SUCH_REGISTRAION, request);
         }
-        request.setAttribute(DONE, true);
+        request.setAttribute(DONE, EVENT_LEAVE_SUCCESS);
         return new CommandResult(ResourceManager.getProperty("command.userEvents"));
     }
 
@@ -58,7 +60,7 @@ public class LeaveEventCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("command.userEvents"));
     }
 }

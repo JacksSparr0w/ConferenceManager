@@ -28,6 +28,7 @@ public class AllUsersCommand implements Command {
     private static final String USERS_INFO = "users_info";
     private static final String ERROR_FIND_USERS = "error_find_users";
     private static final String ERROR_FIND_USERS_INFO = "error_find_users_info";
+    public static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -54,7 +55,7 @@ public class AllUsersCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.allUsers"));
         return new CommandResult(ResourceManager.getProperty("page.main"));
     }

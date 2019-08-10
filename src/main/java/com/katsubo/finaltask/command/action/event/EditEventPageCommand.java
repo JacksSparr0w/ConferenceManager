@@ -22,6 +22,7 @@ public class EditEventPageCommand implements Command {
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_FIND_EVENT = "error_find_event";
     private static final String EVENT = "event";
+    public static final String ERROR = "error";
     private Event event;
 
     @Override
@@ -64,7 +65,7 @@ public class EditEventPageCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("page.error405"));
     }
 }

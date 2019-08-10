@@ -23,6 +23,7 @@ public class UserEventsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(UserEventsCommand.class);
     private static final String CANT_FIND_USER = "cant_find_user";
     private static final String ERROR_FIND_USER_EVENTS = "error_find_user_events";
+    public static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -57,7 +58,7 @@ public class UserEventsCommand implements Command {
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {
-        request.setAttribute(error, true);
+        request.setAttribute(ERROR, error);
         return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 }
