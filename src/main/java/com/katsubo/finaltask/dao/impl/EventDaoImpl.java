@@ -41,7 +41,6 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getTimestamp("date"));
-                //event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
                 event.setAuthor_id(resultSet.getInt("author_id"));
@@ -79,7 +78,6 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
                 event.setDate(resultSet.getTimestamp("date"));
-                //event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
                 event.setAuthor_id(resultSet.getInt("author_id"));
@@ -154,7 +152,6 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(search);
                 event.setDate(resultSet.getTimestamp("date"));
-                //event.setDate(resultSet.getDate("date"));
                 Address address = new Address(resultSet.getString("address"));
                 event.setAddress(address);
                 event.setAuthor_id(resultSet.getInt("author_id"));
@@ -182,9 +179,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
         try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
-            statement.setString(3,entity.getPictureLink());
+            statement.setString(3, entity.getPictureLink());
             statement.setInt(4, entity.getTheme().getFieldCode());
-            //statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
             statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
             statement.setString(6, entity.getAddress().toString());
             statement.setInt(7, entity.getAuthor_id());
@@ -250,10 +246,9 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
-            statement.setString(3,entity.getPictureLink());
+            statement.setString(3, entity.getPictureLink());
             statement.setInt(4, entity.getTheme().getFieldCode());
             statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
-            //statement.setDate(5, new java.sql.Date(entity.getDate().getTime()));
             statement.setString(6, entity.getAddress().toString());
             statement.setInt(7, entity.getAuthor_id());
             statement.setInt(8, entity.getCapacity());

@@ -10,6 +10,9 @@ import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.validate.EventValidator;
+import com.katsubo.finaltask.validate.Validator;
+import com.katsubo.finaltask.validate.ValidatorException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -55,7 +58,7 @@ public class EditEventCommand implements Command {
         try {
             Integer eventId = Integer.valueOf(eventIdString);
             event = getEvent(eventId);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             logger.log(Level.WARN, ERROR_EDIT_EVENT);
             return failure(ERROR_FIND_EVENT, request);
         } catch (ServiceException e) {
@@ -118,19 +121,36 @@ public class EditEventCommand implements Command {
 
         String capacity = request.getParameter(CAPACITY);
         if (capacity != null && !capacity.isEmpty()) {
-            event.setCapacity(Integer.valueOf(capacity));
+            try {
+                event.setCapacity(Integer.valueOf(capacity));
+            } catch (NumberFormatException e) {
+                logger.log(Level.WARN, e.getMessage());
+                return failure(ERROR_EDIT_EVENT, request);
+            }
         }
 
         try {
-            updateEvent(event);
-        } catch (ServiceException e) {
+            if (valid(event)) {
+                updateEvent(event);
+            }
+        } catch (ValidatorException | ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_EDIT_EVENT, request);
         }
 
         request.setAttribute(DONE, true);
         request.setAttribute("event_id", event.getId());
-        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
+    }
+
+    private boolean valid(Event event) throws ValidatorException {
+        Validator validator = new EventValidator();
+        String error =  validator.isValid(event);
+        if (error != null){
+            throw new ValidatorException(error);
+        } else {
+            return true;
+        }
     }
 
     private void updateEvent(Event event) throws ServiceException {

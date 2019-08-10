@@ -31,6 +31,9 @@ public class UserValidator implements Validator<User> {
             return "login is invalid!";
         }
 
+        if (entity.getPassword() == null){
+            return null;
+        }
         pattern =  Pattern.compile(PASSWORD);
 
         matcher = pattern.matcher(entity.getPassword());

@@ -113,7 +113,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="login" class="form-control" name="login" id="login" value="${user.login}"
-                                       placeholder="${user.login}" title="Edit your login.">
+                                       title="Edit your login.">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -149,15 +149,14 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form class="form-group" action="edit_user_info" method="POST"
-                          enctype="multipart/form-data">
+                    <form class="form-group" action="edit_user_info" method="POST">
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
                                 <label for="name">${first_name}</label>
                             </div>
                             <div class="col-md-6">
                                 <input type="name" class="form-control" name="name" id="name" value="${userInfo.name}"
-                                       placeholder="${userInfo.name}" title="Edit your first name.">
+                                        title="Edit your first name.">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -167,7 +166,7 @@
                             <div class="col-md-6">
                                 <input type="surname" class="form-control" name="surname" id="surname"
                                        value="${userInfo.surname}"
-                                       placeholder="${userInfo.surname}" title="Edit your second name.">
+                                        title="Edit your second name.">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -177,7 +176,7 @@
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" id="email"
                                        value="${userInfo.email}"
-                                       placeholder="${userInfo.email}" title="Edit your email.">
+                                        title="Edit your email.">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -249,7 +248,7 @@
                             <div class="col-md-12">
                                 <label for="about">${about}</label>
                                 <textarea rows="3" class="form-control rounded" name="about" id="about"
-                                          placeholder="${userInfo.about}" title="Edit text about you."></textarea>
+                                          title="Edit text about you.">${userInfo.about}</textarea>
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -257,7 +256,8 @@
                             <button class="btn btn-lg btn-success" type="submit"><i
                                     class="glyphicon glyphicon-ok-sign"></i>${save}
                             </button>
-                            <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i class="glyphicon glyphicon-repeat"></i>
+                            <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i
+                                    class="glyphicon glyphicon-repeat"></i>
                                 ${reset}
                             </button>
                         </div>

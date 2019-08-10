@@ -2,14 +2,17 @@ package com.katsubo.finaltask.command.action.useraction;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.util.Constances;
-import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.validate.UserValidator;
+import com.katsubo.finaltask.validate.Validator;
+import com.katsubo.finaltask.validate.ValidatorException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,16 +50,27 @@ public class EditUserCommand implements Command {
         }
         user.setPermission(userDto.getPermission());
         try {
-            update(user);
-        } catch (ServiceException e) {
+            if (valid(user))
+                update(user);
+        } catch (ValidatorException | ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
-            return failure(e.getMessage(), request);
+            return failure(ERROR_UPDATE_USER, request);
         }
         request.setAttribute(DONE, true);
         HttpSession session = request.getSession();
         userDto = new UserDto(user);
         session.setAttribute(Constances.USER.getFieldName(), userDto);
         return new CommandResult(ResourceManager.getProperty("command.profile"));
+    }
+
+    private boolean valid(User user) throws ValidatorException {
+        Validator validator = new UserValidator();
+        String error = validator.isValid(user);
+        if (error != null) {
+            throw new ValidatorException(error);
+        } else {
+            return true;
+        }
     }
 
     private void clearWarnings(HttpServletRequest request) {

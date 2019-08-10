@@ -63,7 +63,7 @@
         <h6 class="text-right"><fmt:formatDate value="${event.date}" pattern="yyyy-MM-dd HH:mm"/></h6>
         <div class="container">
             <img src="eventImages/${event.pictureLink}" class="rounded" lass="rounded col-md-8" style="
-        width: auto;
+        width: inherit;
         min-width: 15rem;"
                  alt="Event picture">
         </div>

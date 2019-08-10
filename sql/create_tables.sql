@@ -18,7 +18,7 @@ CREATE TABLE `user_info`
   `about`                TEXT,
   `picture_link`         VARCHAR(255) DEFAULT NULL,
   `email`                VARCHAR(255)        NOT NULL,
-  `date_of_birth`        DATE,
+  `date_of_birth`        TIMESTAMP,
   `date_of_registration` DATETIME            NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;

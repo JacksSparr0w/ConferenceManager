@@ -3,6 +3,7 @@ package com.katsubo.finaltask.command.action.useraction;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
+import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
@@ -10,6 +11,10 @@ import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
 import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.util.repair.UserInfoRecover;
+import com.katsubo.finaltask.validate.UserInfoValidator;
+import com.katsubo.finaltask.validate.UserValidator;
+import com.katsubo.finaltask.validate.Validator;
+import com.katsubo.finaltask.validate.ValidatorException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,10 +64,12 @@ public class EditUserInfoCommand implements Command {
         }
         info.setDateOfBirth(parsed);
 
-        validate(info);
+        recover(info);
         try {
-            update(info);
-        } catch (ServiceException e) {
+            if (valid(info)){
+                update(info);
+            }
+        } catch (ValidatorException | ServiceException e) {
             logger.log(Level.WARN, PROFILE_EDIT_ERROR);
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
@@ -75,7 +82,17 @@ public class EditUserInfoCommand implements Command {
 
     }
 
-    private void validate(UserInfo info) {
+    private boolean valid(UserInfo info) throws ValidatorException {
+        Validator validator = new UserInfoValidator();
+        String error =  validator.isValid(info);
+        if (error != null){
+            throw new ValidatorException(error);
+        } else {
+            return true;
+        }
+    }
+
+    private void recover(UserInfo info) {
         new UserInfoRecover().recover(info);
     }
 

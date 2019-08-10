@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="row">
-        <c:url value="edit_event" var="editUrl">
+        <c:url value="controller?command=edit_event" var="editUrl">
             <c:param name="eventId" value="${event.id}"/>
         </c:url>
         <form class="form-group" action="${editUrl}" method="POST" id="form"
@@ -83,7 +83,7 @@
             <div class="row mb-3">
                 <label for="description">${description}</label>
                 <textarea rows="4" class="form-control rounded" name="description" id="description"
-                          value="${event.description}" title="Enter description of the event"></textarea>
+                          title="Enter description of the event">${event.description}</textarea>
             </div>
 
             <div class="row mb-3">
@@ -186,7 +186,8 @@
                 <button class="btn btn-lg btn-success" type="submit"><i
                         class="glyphicon glyphicon-ok-sign"></i>${save}
                 </button>
-                <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i class="glyphicon glyphicon-repeat"></i>
+                <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i
+                        class="glyphicon glyphicon-repeat"></i>
                     ${reset}
                 </button>
             </div>

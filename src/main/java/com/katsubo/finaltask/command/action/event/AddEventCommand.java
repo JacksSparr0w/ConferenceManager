@@ -2,8 +2,6 @@ package com.katsubo.finaltask.command.action.event;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.util.Constances;
-import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
@@ -12,6 +10,11 @@ import com.katsubo.finaltask.entity.enums.Theme;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
+import com.katsubo.finaltask.util.Constances;
+import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.validate.EventValidator;
+import com.katsubo.finaltask.validate.Validator;
+import com.katsubo.finaltask.validate.ValidatorException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -74,7 +77,7 @@ public class AddEventCommand implements Command {
 
         try {
             Part part = request.getPart(PICTURE);
-            if (part != null && part.getSize() > 0){
+            if (part != null && part.getSize() > 0) {
                 String fileName = DigestUtils.md2Hex(parameters.get(NAME)) + "." + "jpg";
                 String path = getPath();
                 File file = new File(path + ResourceManager.getProperty("path.eventImageDirectory") + fileName);
@@ -94,7 +97,7 @@ public class AddEventCommand implements Command {
         try {
             date = format.parse(parameters.get(DATE));
         } catch (ParseException pe) {
-            logger.log(Level.INFO, ERROR_ADD_EVENT);
+            logger.log(Level.WARN, ERROR_ADD_EVENT);
             return failure(ERROR_ADD_EVENT, request);
         }
         event.setDate(date);
@@ -107,25 +110,40 @@ public class AddEventCommand implements Command {
         ));
 
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
-        if (user != null){
+        if (user != null) {
             event.setAuthor_id(user.getUserId());
-        }else{
-            logger.log(Level.INFO, ERROR_ADD_EVENT);
+        } else {
+            logger.log(Level.WARN, ERROR_ADD_EVENT);
             return failure(ERROR_ADD_EVENT, request);
         }
-        event.setCapacity(Integer.valueOf(parameters.get(CAPACITY)));
+
 
         try {
-            add(event);
-        } catch (ServiceException e) {
-            logger.log(Level.INFO, ERROR_ADD_EVENT);
+            Integer capacity = Integer.valueOf(parameters.get(CAPACITY));
+            event.setCapacity(capacity);
+            if (valid(event)) {
+                add(event);
+            }
+        } catch (ValidatorException e){
+            logger.log(Level.WARN, e.getMessage());
+            return failure(ERROR_ADD_EVENT, request);
+        } catch (NumberFormatException | ServiceException e) {
+            logger.log(Level.WARN, ERROR_ADD_EVENT);
             return failure(ERROR_ADD_EVENT, request);
         }
 
         request.setAttribute(DONE, true);
-        //
-        // request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addEvent"));
         return new CommandResult(ResourceManager.getProperty("command.allEvents"));
+    }
+
+    private boolean valid(Event event) throws ValidatorException {
+        Validator validator = new EventValidator();
+        String error =  validator.isValid(event);
+        if (error != null){
+            throw new ValidatorException(error);
+        } else {
+            return true;
+        }
     }
 
     private String getPath() {

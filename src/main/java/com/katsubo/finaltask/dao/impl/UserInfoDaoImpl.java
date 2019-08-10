@@ -11,11 +11,11 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
 public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
-    public static final String READ_BY_USER = "SELECT `id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration` FROM `user_info` WHERE `user_id` = ?";
-    public static final String CREATE = "INSERT INTO `user_info` (`user_id`, `name`, `surname`, `email`, `date_of_registration`) VALUE (?, ?, ?, ?, ?)";
-    public static final String READ = "SELECT `user_id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration` FROM `user_info` WHERE `id` = ?";
-    public static final String UPDATE = "UPDATE `user_info` SET `user_id` = ?, `name` = ?, `surname` = ?, `about` = ?, `picture_link` = ?, `email` = ?, `date_of_birth` = ? WHERE `id` = ?";
-    public static final String DELETE = "DELETE FROM `user_info` WHERE `id` = ?";
+    private static final String READ_BY_USER = "SELECT `id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration` FROM `user_info` WHERE `user_id` = ?";
+    private static final String CREATE = "INSERT INTO `user_info` (`user_id`, `name`, `surname`, `email`, `date_of_registration`) VALUE (?, ?, ?, ?, ?)";
+    private static final String READ = "SELECT `user_id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration` FROM `user_info` WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `user_info` SET `user_id` = ?, `name` = ?, `surname` = ?, `about` = ?, `picture_link` = ?, `email` = ?, `date_of_birth` = ? WHERE `id` = ?";
+    private static final String DELETE = "DELETE FROM `user_info` WHERE `id` = ?";
     private static final Logger logger = LogManager.getLogger(UserInfoDaoImpl.class);
 
     @Override
@@ -34,7 +34,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
                 info.setAbout(resultSet.getString("about"));
                 info.setPictureLink(resultSet.getString("picture_link"));
                 info.setEmail(resultSet.getString("email"));
-                info.setDateOfBirth(resultSet.getDate("date_of_birth"));
+                info.setDateOfBirth(resultSet.getTimestamp("date_of_birth"));
                 info.setDateOfRegistration(resultSet.getDate("date_of_registration"));
             }
             return info;
@@ -60,7 +60,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             statement.setString(2, entity.getName());
             statement.setString(3, entity.getSurname());
             statement.setString(4, entity.getEmail());
-            statement.setDate(5, new Date(entity.getDateOfRegistration().getTime()));
+            statement.setTimestamp(5, new Timestamp(entity.getDateOfRegistration().getTime()));
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -100,7 +100,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
                 info.setAbout(resultSet.getString("about"));
                 info.setPictureLink(resultSet.getString("picture_link"));
                 info.setEmail(resultSet.getString("email"));
-                info.setDateOfBirth(resultSet.getDate("date_of_birth"));
+                info.setDateOfBirth(resultSet.getTimestamp("date_of_birth"));
                 info.setDateOfRegistration(resultSet.getDate("date_of_registration"));
             }
             return info;
@@ -127,7 +127,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             statement.setString(4, entity.getAbout());
             statement.setString(5, entity.getPictureLink());
             statement.setString(6, entity.getEmail());
-            statement.setDate(7, new Date(entity.getDateOfBirth().getTime()));
+            statement.setTimestamp(7, new Timestamp(entity.getDateOfBirth().getTime()));
             statement.setInt(8, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
