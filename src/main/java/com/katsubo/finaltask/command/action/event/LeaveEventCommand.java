@@ -22,7 +22,7 @@ public class LeaveEventCommand implements Command {
     private static final String EVENT_ID = "eventId";
     private static final String DONE = "done";
     private static final String THERES_NO_SUCH_REGISTRAION = "theres_no_such_registraion";
-    private static final String CANT_FIND_EVENT = "cant_find_event";
+    private static final String CANT_FIND_EVENT = "event.notfound";
     public static final String ERROR = "error";
     public static final String EVENT_LEAVE_SUCCESS = "event.leave.success";
 

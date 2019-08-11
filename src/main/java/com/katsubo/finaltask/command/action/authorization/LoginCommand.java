@@ -27,7 +27,7 @@ public class LoginCommand implements Command {
     private static final String PASSWORD = "password";
     private static final String ERROR_LOGIN = "error_login";
     private static final String ERROR_PASSWORD = "error_password";
-    private static final String ERROR_AUTHENTIFICATION = "error_authentification";
+    private static final String ERROR_AUTHENTIFICATION = "authorization.error";
     public static final String ERROR = "error";
 
     @Override

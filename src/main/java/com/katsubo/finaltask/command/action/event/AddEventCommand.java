@@ -42,7 +42,7 @@ public class AddEventCommand implements Command {
     private static final String NAME = "name";
     private static final String DATE = "date";
     private static final String DONE = "done";
-    private static final String ERROR_ADD_EVENT = "error_add_event";
+    private static final String ERROR_ADD_EVENT = "event.add.fail";
     private static final String INVALID_FIELD = "invalid_field";
     private static final String COUNTRY = "country";
     private static final String CITY = "city";
@@ -50,7 +50,7 @@ public class AddEventCommand implements Command {
     private static final String BUILDING = "building";
     private static final String PICTURE = "picture";
     public static final String ERROR = "error";
-    public static final String ADD_EVENT_SUCCESS = "add.event.success";
+    public static final String ADD_EVENT_SUCCESS = "event.add.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

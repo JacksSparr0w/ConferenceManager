@@ -38,7 +38,7 @@ public class EditEventCommand implements Command {
     private static final String NAME = "name";
     private static final String DATE = "date";
     private static final String DONE = "done";
-    private static final String ERROR_EDIT_EVENT = "error_edit_event";
+    private static final String EVENT_EDIT_FAIL = "event.edit.fail";
     private static final String COUNTRY = "country";
     private static final String CITY = "city";
     private static final String STREET = "street";
@@ -61,7 +61,7 @@ public class EditEventCommand implements Command {
             Integer eventId = Integer.valueOf(eventIdString);
             event = getEvent(eventId);
         } catch (NumberFormatException e) {
-            logger.log(Level.WARN, ERROR_EDIT_EVENT);
+            logger.log(Level.WARN, EVENT_EDIT_FAIL);
             return failure(ERROR_FIND_EVENT, request);
         } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
@@ -88,12 +88,12 @@ public class EditEventCommand implements Command {
                 if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
                     event.setPictureLink(fileName);
                 } else {
-                    return failure(ERROR_EDIT_EVENT, request);
+                    return failure(EVENT_EDIT_FAIL, request);
                 }
             }
         } catch (IOException | ServletException | NullPointerException e) {
             logger.log(Level.WARN, e.getMessage());
-            return failure(ERROR_EDIT_EVENT, request);
+            return failure(EVENT_EDIT_FAIL, request);
         }
 
         String theme = request.getParameter(THEME);
@@ -106,8 +106,8 @@ public class EditEventCommand implements Command {
             date = format.parse(request.getParameter(DATE));
             event.setDate(date);
         } catch (ParseException pe) {
-            logger.log(Level.INFO, ERROR_EDIT_EVENT);
-            return failure(ERROR_EDIT_EVENT, request);
+            logger.log(Level.INFO, EVENT_EDIT_FAIL);
+            return failure(EVENT_EDIT_FAIL, request);
         }
 
         String country = request.getParameter(COUNTRY);
@@ -127,7 +127,7 @@ public class EditEventCommand implements Command {
                 event.setCapacity(Integer.valueOf(capacity));
             } catch (NumberFormatException e) {
                 logger.log(Level.WARN, e.getMessage());
-                return failure(ERROR_EDIT_EVENT, request);
+                return failure(EVENT_EDIT_FAIL, request);
             }
         }
 
@@ -137,7 +137,7 @@ public class EditEventCommand implements Command {
             }
         } catch (ValidatorException | ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
-            return failure(ERROR_EDIT_EVENT, request);
+            return failure(EVENT_EDIT_FAIL, request);
         }
 
         request.setAttribute(DONE, EVENT_EDIT_SUCCESS);

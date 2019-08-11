@@ -21,8 +21,8 @@ public class RemoveEventCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RemoveEventCommand.class);
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_DONT_FIND_EVENT = "error_dont_find_event";
-    private static final String ERROR_REMOVING_EVENT = "error_removing_event";
-    private static final String DELETE_SUCCESS = "delete_success";
+    private static final String ERROR_REMOVING_EVENT = "event.delete.fail";
+    private static final String DELETE_SUCCESS = "event.delete.success";
     public static final String ERROR = "error";
 
     @Override

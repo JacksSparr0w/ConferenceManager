@@ -37,7 +37,7 @@ public class RegisterCommand implements Command {
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
     private static final String EMAIL = "email";
-    private static final String ERROR_REGISTRATION = "error_registration";
+    private static final String ERROR_REGISTRATION = "registration.error";
     private static final String INVALID = "invalid_";
     public static final String ERROR = "error";
 

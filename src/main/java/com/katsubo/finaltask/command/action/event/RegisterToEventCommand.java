@@ -27,7 +27,7 @@ public class RegisterToEventCommand implements Command {
     private static final String CANT_FIND_EVENT_ID = "cant_find_event_id";
     private static final Logger logger = LogManager.getLogger(RegisterToEventCommand.class);
     private static final String EVENT_ID = "eventId";
-    private static final String CANT_SAVE_REGISTRATION = "cant_save_registration";
+    private static final String CANT_SAVE_REGISTRATION = "event.register.fail";
     private static final String DONE = "done";
     private static final String SUCH_REGISTRATION_ALREADY_EXIST = "such_registration_already_exist";
     public static final String ERROR = "error";

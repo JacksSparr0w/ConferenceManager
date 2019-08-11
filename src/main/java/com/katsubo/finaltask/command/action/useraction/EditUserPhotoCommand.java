@@ -63,7 +63,7 @@ public class EditUserPhotoCommand implements Command {
                     return failure(INVALID_TYPE_OF_FILE, request);
                 }
                 File file = new File(path + ResourceManager.getProperty("path.userImageDirectory") + fileName);
-                if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
+                if (ImageIO.write(ImageIO.read(part.getInputStream()), format, file)) {
                     info.setPictureLink(fileName);
                 } else {
                     return failure(ERROR_UPLOAD_USER_PHOTO, request);
