@@ -27,7 +27,7 @@ import java.util.Date;
 public class EditUserInfoCommand implements Command {
     private static final String ERROR = "error";
     private static final String INFO_EDIT_SUCCESS = "info.edit.success";
-    private static final String PROFILE_EDIT_ERROR = "Profile edit error";
+    private static final String ERROR_UPDATE_USER_INFO = "info.edit.fail";
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static final String NAME = "name";
@@ -35,7 +35,6 @@ public class EditUserInfoCommand implements Command {
     private static final String EMAIL = "email";
     private static final String DATE_OF_BIRTH = "dateOfBirth";
     private static final String ABOUT = "about";
-    private static final String ERROR_UPDATE_USER_INFO = "error_update_user_info";
     private static final String DONE = "done";
 
     @Override
@@ -52,14 +51,14 @@ public class EditUserInfoCommand implements Command {
         String date = request.getParameter(DATE_OF_BIRTH);
 
         if (date == null || date.isEmpty()) {
-            logger.log(Level.WARN, PROFILE_EDIT_ERROR);
+            logger.log(Level.WARN, ERROR_UPDATE_USER_INFO);
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
         Date parsed;
         try {
             parsed = format.parse(request.getParameter(DATE_OF_BIRTH));
         } catch (ParseException pe) {
-            logger.log(Level.WARN, PROFILE_EDIT_ERROR);
+            logger.log(Level.WARN, ERROR_UPDATE_USER_INFO);
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
         info.setDateOfBirth(parsed);
@@ -70,7 +69,7 @@ public class EditUserInfoCommand implements Command {
                 update(info);
             }
         } catch (ValidatorException | ServiceException e) {
-            logger.log(Level.WARN, PROFILE_EDIT_ERROR);
+            logger.log(Level.WARN, ERROR_UPDATE_USER_INFO);
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
 

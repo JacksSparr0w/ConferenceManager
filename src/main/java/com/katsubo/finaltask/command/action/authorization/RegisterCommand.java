@@ -40,7 +40,7 @@ public class RegisterCommand implements Command {
     private static final String SURNAME = "surname";
     private static final String EMAIL = "email";
     private static final String ERROR_REGISTRATION = "registration.error";
-    private static final String INVALID = "invalid_";
+    private static final String INVALID_FIELD = "invalid_field";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -54,7 +54,7 @@ public class RegisterCommand implements Command {
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
                 logger.log(Level.ERROR, "Invalid " + entry.getKey() + " was received");
-                return failure(request, INVALID + entry.getKey());
+                return failure(request, INVALID_FIELD);
             }
         }
 

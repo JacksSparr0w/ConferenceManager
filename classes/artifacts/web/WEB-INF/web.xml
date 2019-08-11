@@ -4,9 +4,11 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <display-name>FirstJspServletJsp</display-name>
+
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
+
     <servlet>
         <servlet-name>controller</servlet-name>
         <servlet-class>com.katsubo.finaltask.controller.Controller</servlet-class>
@@ -15,6 +17,16 @@
         <servlet-name>controller</servlet-name>
         <url-pattern>/com.katsubo.finaltask.controller.Controller</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>XSSFilter</filter-name>
+        <filter-class>com.katsubo.finaltask.filter.xss.XSSFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>XSSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
         <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
@@ -36,9 +48,9 @@
     </filter>
     <filter-mapping>
         <filter-name>AccessFilter</filter-name>
+        <url-pattern>/controller</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
-        <url-pattern>/controller</url-pattern>
     </filter-mapping>
 
     <error-page>

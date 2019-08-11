@@ -8,6 +8,10 @@
 <fmt:message bundle="${textResources}" key="user.date.birth" var="date_of_bitrh"/>
 <fmt:message bundle="${textResources}" key="user.date.registration" var="date_of_registration"/>
 <fmt:message bundle="${textResources}" key="user.delete" var="delete"/>
+<fmt:message bundle="${textResources}" key="user.delete.sure" var="sure"/>
+<fmt:message bundle="${textResources}" key="yes" var="yes"/>
+<fmt:message bundle="${textResources}" key="no" var="no"/>
+
 
 <c:choose>
     <c:when test="${done != null}">
@@ -85,11 +89,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                You are sure to delete user?
+                ${sure}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="window.location.href='${deleteUrl}'">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">${no}</button>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='${deleteUrl}'">${yes}</button>
             </div>
         </div>
     </div>

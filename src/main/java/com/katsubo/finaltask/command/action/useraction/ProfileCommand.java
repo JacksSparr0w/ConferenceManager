@@ -45,7 +45,7 @@ public class ProfileCommand implements Command {
             return new CommandResult(ResourceManager.getProperty("page.main"));
         } else {
             logger.log(Level.WARN, ERROR_FIND_USER_DTO);
-            return failure(request, ERROR_FIND_USER_DTO);
+            return new CommandResult(ResourceManager.getProperty("command.logout"), true);
         }
 
     }

@@ -20,7 +20,10 @@
 
             <div class="col-lg-7 col-md-12 col-12 d-flex align-items-center">
                 <div class="about-text">
-                    <small class="small-text">${welcome} <span class="mobile-block"><a href="home_page">Conferences.com site!</a></span></small>
+                    <a href="home_page">
+                        <small class="small-text">${welcome} <span class="mobile-block">Conferences.com site!</span>
+                        </small>
+                    </a>
                     <h3 class="animated animated-text">
                         <span class="mr-2">${hey}</span>
                         <div class="animated-info" style="height: 4rem;">

@@ -129,7 +129,6 @@
         </c:if>
 
         <div class="col">
-            <!--//todo create forToken-->
             <c:choose>
                 <c:when test="${includeView != null}">
                     <jsp:include page="${includeView}"/>

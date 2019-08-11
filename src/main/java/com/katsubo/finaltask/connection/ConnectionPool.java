@@ -61,7 +61,7 @@ public class ConnectionPool {
     }
 
     private void init() throws PoolException{
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(ResourceManager.getProperty("database"));
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(ResourceManager.getProperty("path.database"));
         String connectionURL = resourceBundle.getString("db.url");
         String initialCapacityString = resourceBundle.getString("db.poolsize");
         Integer initialCapacity = Integer.valueOf(initialCapacityString);

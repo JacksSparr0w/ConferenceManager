@@ -24,7 +24,7 @@ public class EditUserCommand implements Command {
     private static final String ERROR = "error";
     private static final String USER_EDIT_SUCCESS = "user.edit.success";
     private static final String ERROR_UPDATE_USER = "error_update_user";
-    private static final String INCORRECT_VERIFY_PASSWORD = "incorrect_verify_password";
+    private static final String VERIFY_PASSWORD_IS_INCORRECT = "verify_password_is_incorrect";
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
@@ -44,7 +44,7 @@ public class EditUserCommand implements Command {
 
         if (!password.equals(repeatPassword)) {
             logger.log(Level.WARN, "Verify password is incorrect");
-            return failure(INCORRECT_VERIFY_PASSWORD, request);
+            return failure(VERIFY_PASSWORD_IS_INCORRECT, request);
         } else if (!password.isEmpty()) {
             user.setPassword(password);
         }

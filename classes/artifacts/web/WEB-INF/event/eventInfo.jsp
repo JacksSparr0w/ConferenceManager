@@ -8,8 +8,13 @@
 <fmt:message bundle="${textResources}" key="new_conferences" var="new_conferences"/>
 <fmt:message bundle="${textResources}" key="event.register.success" var="successful_register_to_event"/>
 <fmt:message bundle="${textResources}" key="event.join" var="join"/>
+<fmt:message bundle="${textResources}" key="edit" var="edit"/>
+<fmt:message bundle="${textResources}" key="user.delete" var="delete"/>
 <fmt:message bundle="${textResources}" key="places_left" var="places_left"/>
 <fmt:message bundle="${textResources}" key="join_now" var="join_now"/>
+<fmt:message bundle="${textResources}" key="event.delete.sure" var="sure"/>
+<fmt:message bundle="${textResources}" key="yes" var="yes"/>
+<fmt:message bundle="${textResources}" key="no" var="no"/>
 
 <c:choose>
     <c:when test="${done != null}">
@@ -31,98 +36,70 @@
         </div>
     </c:when>
 </c:choose>
-
-<c:forEach var="event" items="${events}">
-    <div class="container-fluid pt-3 pl-3 pr-3">
-        <strong class="d-inline-block mb-2 ml-2 text-primary">${event.theme}</strong>
-        <h3 class="text-black justify-content-center">${event.name}</h3>
-        <h6 class="text-right"><fmt:formatDate value="${event.date}" pattern="yyyy-MM-dd HH:mm"/></h6>
-        <div class="container">
-            <img src="eventImages/${event.pictureLink}" class="rounded"
-                 style="
+<div class="container-fluid pb-5 pl-5 pr-5">
+    <c:forEach var="event" items="${events}">
+        <div class="container-fluid pt-3 pl-3 pr-3">
+            <strong class="d-inline-block mb-2 ml-2 text-primary">${event.theme}</strong>
+            <h3 class="text-black justify-content-center">${event.name}</h3>
+            <h6 class="text-right"><fmt:formatDate value="${event.date}" pattern="yyyy-MM-dd HH:mm"/></h6>
+            <div class="container">
+                <img src="eventImages/${event.pictureLink}" class="rounded"
+                     style="
                     width: inherit;
                     min-width: 15rem;
                     max-width: 75%;"
-                 alt="Event picture">
-        </div>
-        <p class="text-dark text-right">${event.address}</p>
+                     alt="Event picture">
+            </div>
+            <p class="text-dark text-right">${event.address}</p>
 
-        <span class="text-black text-justify pt-2 pl-2 pr-2">${event.description}</span>
-        <div class="w-75 pt-2 pl-2 pr-2">
-            <div class="progress">
-                <c:set value="${event.capacity - filling.get(event.id)}" var="numberOfFreePlaces"/>
-                <div class="progress-bar bg-success align-content-center text-white"
-                     style="height:25px; width:${(numberOfFreePlaces / event.capacity)*100}%">
-                    <h6>${places_left}
-                            ${numberOfFreePlaces}/${event.capacity}</h6>
+            <span class="text-black text-justify pt-2 pl-2 pr-2">${event.description}</span>
+            <div class="w-75 pt-2 pl-2 pr-2">
+                <div class="progress">
+                    <c:set value="${event.capacity - filling.get(event.id)}" var="numberOfFreePlaces"/>
+                    <div class="progress-bar bg-success align-content-center text-white"
+                         style="height:25px; width:${(numberOfFreePlaces / event.capacity)*100}%">
+                        <h6>${places_left}
+                                ${numberOfFreePlaces}/${event.capacity}</h6>
+                    </div>
                 </div>
             </div>
+            <c:if test="${user != null}">
+                <p class="text-black">${join_now}</p>
+                <div class="container pt-2 pl-2 pr-2 d-inline-flex">
+                    <form>
+                        <c:url value="controller" var="registerToEvent">
+                            <c:param name="command" value="register_to_event"/>
+                            <c:param name="eventId" value="${event.id}"/>
+                        </c:url>
+                        <input type="button" class="btn btn-outline-success" value="${join}"
+                               onclick="window.location.href='${registerToEvent}'"/>
+                    </form>
+                    <c:if test="${user.permission == 'ADMINISTRATOR' or user.userId == event.author_id}">
+                        <form method="post">
+                            <c:url value="controller" var="editEvent">
+                                <c:param name="command" value="edit_event_page"/>
+                                <c:param name="eventId" value="${event.id}"/>
+                            </c:url>
+                            <input type="button" class="btn btn-outline-warning ml-3" value="${edit}"
+                                   onclick="window.location.href='${editEvent}'"/>
+                        </form>
+                        <form>
+                            <c:url value="controller" var="deleteUrl">
+                                <c:param name="command" value="remove_event"/>
+                                <c:param name="eventId" value="${event.id}"/>
+                            </c:url>
+                            <button type="button" class="btn btn-outline-dark ml-3" data-toggle="modal"
+                                    data-target="#exampleModal" onclick="window.location.href='${deleteUrl}'"
+                            >${delete}</button>
+                        </form>
+                    </c:if>
+                </div>
+            </c:if>
+            <hr>
+            <br>
         </div>
-        <c:if test="${user != null}">
-            <p class="text-black">${join_now}</p>
-            <div class="container pt-2 pl-2 pr-2 d-inline-flex">
-                <form>
-                    <c:url value="controller" var="registerToEvent">
-                        <c:param name="command" value="register_to_event"/>
-                        <c:param name="eventId" value="${event.id}"/>
-                    </c:url>
-                    <input type="button" class="btn btn-outline-success" value="${join}"
-                           onclick="window.location.href='${registerToEvent}'"/>
-                </form>
-                <c:if test="${user.permission == 'ADMINISTRATOR' or user.userId == event.author_id}">
-                    <form method="post">
-                        <c:url value="controller" var="editEvent">
-                            <c:param name="command" value="edit_event_page"/>
-                            <c:param name="eventId" value="${event.id}"/>
-                        </c:url>
-                        <input type="button" class="btn btn-outline-warning ml-3" value="Edit"
-                               onclick="window.location.href='${editEvent}'"/>
-                    </form>
-                    <form method="post">
-                        <c:url value="controller" var="deleteEvent">
-                            <c:param name="command" value="remove_event"/>
-                            <c:param name="eventId" value="${event.id}"/>
-                        </c:url>
-                        <input type="button" class="btn btn-outline-danger ml-3" value="Remove"
-                               onclick="window.location.href='${deleteEvent}'"/>
-                        <!--
-                    <input type="button" class="btn btn-outline-danger ml-3" value="Remove"
-                               data-toggle="modal" data-target="#exampleModal"/>
-
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        You are sure to delete event?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="window.location.href='${deleteEvent}'">Yes
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    -->
-                    </form>
-                </c:if>
-            </div>
-        </c:if>
-        <hr>
-        <br>
-    </div>
-</c:forEach>
-
+    </c:forEach>
+</div>
 
 <ul class="pagination justify-content-center">
     <c:forEach var="i" begin="${1}" end="${countOfPages}">
