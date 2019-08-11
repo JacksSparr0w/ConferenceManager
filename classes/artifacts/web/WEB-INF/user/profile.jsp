@@ -36,7 +36,8 @@
     <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${done}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Click to remove"
+                    onclick="<c:remove var="done" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -44,7 +45,8 @@
     <c:when test="${error != null}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${error}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                    onclick="<c:remove var="error" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -78,7 +80,7 @@
 
             <div class="tab-content profile-tab" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <form class="form-group" action="edit_user" method="POST">
+                    <form class="form-group" action="controller?command=edit_user" method="POST">
 
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-6">
@@ -129,7 +131,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="name" class="form-control" name="name" id="name" value="${userInfo.name}"
-                                        title="Edit your first name.">
+                                       title="Edit your first name.">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -139,7 +141,7 @@
                             <div class="col-md-6">
                                 <input type="surname" class="form-control" name="surname" id="surname"
                                        value="${userInfo.surname}"
-                                        title="Edit your second name.">
+                                       title="Edit your second name.">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -149,7 +151,7 @@
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" id="email"
                                        value="${userInfo.email}"
-                                        title="Edit your email.">
+                                       title="Edit your email.">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">

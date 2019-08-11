@@ -18,8 +18,10 @@ public class DeleteUserCommand implements Command {
 
     private static final String USER_ID = "userId";
     private static final String ERROR_DONT_FIND_USER = "error_dont_find_user";
-    private static final String ERROR_REMOVING_USER = "error_removing_user";
-    private static final String DELETE_SUCCESS = "delete_success";
+    private static final String DELETE_SUCCESS = "user.delete.success";
+    private static final String DELETE_FAIL = "user.delete.fail";
+    private static final String DONE = "done";
+
     public static final String ERROR = "error";
 
     @Override
@@ -37,10 +39,10 @@ public class DeleteUserCommand implements Command {
             return  failure(ERROR_DONT_FIND_USER, request);
         } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
-            return failure(ERROR_REMOVING_USER, request);
+            return failure(DELETE_FAIL, request);
         }
-        request.setAttribute(DELETE_SUCCESS, true);
-        return new CommandResult(ResourceManager.getProperty("command.allUsers"));
+        request.getSession().setAttribute(DONE, DELETE_SUCCESS);
+        return new CommandResult(ResourceManager.getProperty("command.allUsers"), true);
 
 
     }
@@ -51,7 +53,7 @@ public class DeleteUserCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("command.allUsers"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.allUsers"), true);
     }
 }

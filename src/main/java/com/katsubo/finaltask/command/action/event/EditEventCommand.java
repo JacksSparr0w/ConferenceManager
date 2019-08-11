@@ -27,7 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EditEventCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditEventCommand.class);
@@ -46,8 +48,16 @@ public class EditEventCommand implements Command {
     private static final String PICTURE = "picture";
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_FIND_EVENT = "error_find_event";
-    public static final String ERROR = "error";
-    public static final String EVENT_EDIT_SUCCESS = "event.edit.success";
+    private static final String ERROR = "error";
+    private static final String EVENT_EDIT_SUCCESS = "event.edit.success";
+    private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
+    private static final List<String> formats = new ArrayList<>();
+
+    static {
+        formats.add("jpg");
+        formats.add("jpeg");
+        formats.add("png");
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -81,11 +91,16 @@ public class EditEventCommand implements Command {
 
         try {
             Part part = request.getPart(PICTURE);
-            if (part != null && part.getSize() > 0) {
-                String fileName = DigestUtils.md2Hex(event.getName() + event.getDate()) + "." + "jpg";
+            if (part.getSize() > 0) {
                 String path = getPath();
+                String format = part.getContentType().substring(part.getContentType().lastIndexOf('/') + 1);
+                String fileName = DigestUtils.md2Hex(event.getName()+event.getDate() + "." + format);
+                if (!formats.contains(format.toLowerCase())) {
+                    logger.log(Level.WARN, INVALID_TYPE_OF_FILE);
+                    return failure(INVALID_TYPE_OF_FILE, request);
+                }
                 File file = new File(path + ResourceManager.getProperty("path.eventImageDirectory") + fileName);
-                if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
+                if (ImageIO.write(ImageIO.read(part.getInputStream()), format, file)) {
                     event.setPictureLink(fileName);
                 } else {
                     return failure(EVENT_EDIT_FAIL, request);
@@ -140,8 +155,8 @@ public class EditEventCommand implements Command {
             return failure(EVENT_EDIT_FAIL, request);
         }
 
-        request.setAttribute(DONE, EVENT_EDIT_SUCCESS);
-        request.setAttribute("event_id", event.getId());
+        request.getSession().setAttribute(DONE, EVENT_EDIT_SUCCESS);
+        //request.setAttribute("event_id", event.getId());
         return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
     }
 
@@ -176,8 +191,8 @@ public class EditEventCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
     }
 
 }

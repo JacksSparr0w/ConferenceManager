@@ -17,6 +17,11 @@
 <fmt:message bundle="${textResources}" key="profile.reset" var="reset"/>
 <fmt:message bundle="${textResources}" key="profile.save" var="save"/>
 <fmt:message bundle="${textResources}" key="event.image.edit" var="edit_image"/>
+<fmt:message bundle="${textResources}" key="theme.advertising" var="advertising"/>
+<fmt:message bundle="${textResources}" key="theme.business" var="business"/>
+<fmt:message bundle="${textResources}" key="theme.design" var="design"/>
+<fmt:message bundle="${textResources}" key="theme.science" var="science"/>
+
 
 <link rel="stylesheet" type="text/css" href="css/image.css">
 <script src="js/image.js"></script>
@@ -29,7 +34,8 @@
     <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${done}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Click to remove"
+                    onclick="<c:remove var="done" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -37,7 +43,8 @@
     <c:when test="${error != null}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${error}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                    onclick="<c:remove var="error" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -56,7 +63,7 @@
         </div>
     </div>
     <div class="row">
-        <form class="form-group" action="add_event" method="POST" id="addForm"
+        <form class="form-group" action="controller?command=add_event" method="POST" id="addForm"
               enctype="multipart/form-data">
             <div class="row mb-3">
                 <!--name-->
@@ -75,10 +82,10 @@
                 <div class="form-group">
                     <label for="selectTheme">${theme}</label>
                     <select class="form-control" id="selectTheme" name="theme">
-                        <option>Business</option>
-                        <option>Advertising</option>
-                        <option>Science</option>
-                        <option>Design</option>
+                        <option>${business}</option>
+                        <option>${advertising}</option>
+                        <option>${science}</option>
+                        <option>${design}</option>
                     </select>
                 </div>
             </div>

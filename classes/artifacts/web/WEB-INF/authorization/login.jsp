@@ -102,8 +102,12 @@
                         </div>
 
                         <c:if test="${error != null}">
-                            <div class="container alert alert-warning alert-dismissible fade show m-t-16" role="alert">
+                            <div class="container alert alert-warning fade show m-t-16" role="alert">
                                 <fmt:message bundle="${textResources}" key="${error}"/>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                                        onclick="<c:remove var="error" scope="session"/>">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                         </c:if>
 
@@ -144,10 +148,16 @@
                         </div>
 
                         <c:if test="${error != null}">
-                            <div class="container alert alert-warning alert-dismissible fade show m-t-16" role="alert">
+                            <div class="container alert alert-warning fade show m-t-16" role="alert">
                                 <fmt:message bundle="${textResources}" key="${error}"/>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                                        onclick="<c:remove var="error" scope="session"/>">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                         </c:if>
+
+
 
                         <div class="container-login100-form-btn">
                             <button type="submit" class="login100-form-btn">

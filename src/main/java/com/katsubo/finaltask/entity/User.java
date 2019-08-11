@@ -5,7 +5,6 @@ import com.katsubo.finaltask.entity.enums.Permission;
 import java.util.Objects;
 
 public class User extends Entity {
-    //todo create builder
     private String login;
     private String password;
     private Permission permission;

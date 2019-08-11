@@ -3,7 +3,6 @@ package com.katsubo.finaltask.command.action.useraction;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
@@ -12,7 +11,6 @@ import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.util.repair.UserInfoRecover;
 import com.katsubo.finaltask.validate.UserInfoValidator;
-import com.katsubo.finaltask.validate.UserValidator;
 import com.katsubo.finaltask.validate.Validator;
 import com.katsubo.finaltask.validate.ValidatorException;
 import org.apache.logging.log4j.Level;
@@ -27,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EditUserInfoCommand implements Command {
+    private static final String ERROR = "error";
+    private static final String INFO_EDIT_SUCCESS = "info.edit.success";
     private static final String PROFILE_EDIT_ERROR = "Profile edit error";
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -37,8 +37,6 @@ public class EditUserInfoCommand implements Command {
     private static final String ABOUT = "about";
     private static final String ERROR_UPDATE_USER_INFO = "error_update_user_info";
     private static final String DONE = "done";
-    public static final String ERROR = "error";
-    public static final String INFO_EDIT_SUCCESS = "info.edit.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -68,7 +66,7 @@ public class EditUserInfoCommand implements Command {
 
         recover(info);
         try {
-            if (valid(info)){
+            if (valid(info)) {
                 update(info);
             }
         } catch (ValidatorException | ServiceException e) {
@@ -76,18 +74,18 @@ public class EditUserInfoCommand implements Command {
             return failure(ERROR_UPDATE_USER_INFO, request);
         }
 
-        request.setAttribute(DONE, INFO_EDIT_SUCCESS);
+        request.getSession().setAttribute(DONE, INFO_EDIT_SUCCESS);
         HttpSession session = request.getSession();
         session.setAttribute(Constances.USER_INFO.getFieldName(), info);
 
-        return new CommandResult(ResourceManager.getProperty("command.profile"));
+        return new CommandResult(ResourceManager.getProperty("command.profile"), true);
 
     }
 
     private boolean valid(UserInfo info) throws ValidatorException {
         Validator validator = new UserInfoValidator();
-        String error =  validator.isValid(info);
-        if (error != null){
+        String error = validator.isValid(info);
+        if (error != null) {
             throw new ValidatorException(error);
         } else {
             return true;
@@ -105,8 +103,8 @@ public class EditUserInfoCommand implements Command {
 
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("command.profile"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.profile"), true);
 
     }
 }

@@ -1,7 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" pageEncoding="UTF-8" %>
 
-<fmt:message bundle="${textResources}" key="header.title" var="title"/>
-<fmt:message bundle="${textResources}" key="header.subtitle" var="subtitle"/>
+<fmt:message bundle="${textResources}" key="header.slide.1.title" var="title1"/>
+<fmt:message bundle="${textResources}" key="header.slide.2.title" var="title2"/>
+<fmt:message bundle="${textResources}" key="header.slide.3.title" var="title3"/>
+<fmt:message bundle="${textResources}" key="header.sign.up" var="signup"/>
+<fmt:message bundle="${textResources}" key="menu.add_conference" var="add"/>
+
+
+
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -16,15 +22,15 @@
 
             <div class="container">
                 <div class="carousel-caption text-left">
-                    <h1>Create your own conference!</h1>
+                    <h1>${title1}</h1>
                     <c:choose>
                         <c:when test="${user != null}">
-                            <p><a class="m-2 btn btn-lg btn-primary" href="add_event_page" role="button">Add
-                                conference</a></p>
+                            <p><a class="m-2 btn btn-lg btn-primary" href="add_event_page" role="button">
+                                ${add}</a></p>
                         </c:when>
                         <c:otherwise>
-                            <p><a class="m-2 btn btn-lg btn-primary" href="login" role="button">Sign up
-                                to start</a></p>
+                            <p><a class="m-2 btn btn-lg btn-primary" href="login" role="button">
+                                ${signup}</a></p>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -35,7 +41,7 @@
             background-size: cover; height: 300px"></div>
             <div class="container">
                 <div class="carousel-caption">
-                    <h1>Or sign up for existing ones</h1>
+                    <h1>${title2}</h1>
                 </div>
             </div>
         </div>
@@ -44,7 +50,7 @@
             background-size: cover; height: 300px"></div>
             <div class="container">
                 <div class="carousel-caption text-right">
-                    <h1>Group with other people</h1>
+                    <h1>${title3}</h1>
                 </div>
             </div>
         </div>

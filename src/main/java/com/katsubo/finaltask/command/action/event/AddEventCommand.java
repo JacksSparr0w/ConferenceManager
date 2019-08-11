@@ -29,11 +29,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AddEventCommand implements Command {
+    private static final String ERROR = "error";
+    private static final String ADD_EVENT_SUCCESS = "event.add.success";
     private static final Logger logger = LogManager.getLogger(AddEventCommand.class);
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private static final String DESCRIPTION = "description";
@@ -49,8 +49,14 @@ public class AddEventCommand implements Command {
     private static final String STREET = "street";
     private static final String BUILDING = "building";
     private static final String PICTURE = "picture";
-    public static final String ERROR = "error";
-    public static final String ADD_EVENT_SUCCESS = "event.add.success";
+    private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
+    private static final List<String> formats = new ArrayList<>();
+
+    static {
+        formats.add("jpg");
+        formats.add("jpeg");
+        formats.add("png");
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -79,11 +85,16 @@ public class AddEventCommand implements Command {
 
         try {
             Part part = request.getPart(PICTURE);
-            if (part != null && part.getSize() > 0) {
-                String fileName = DigestUtils.md2Hex(parameters.get(NAME)) + "." + "jpg";
+            if (part.getSize() > 0) {
                 String path = getPath();
+                String format = part.getContentType().substring(part.getContentType().lastIndexOf('/') + 1);
+                String fileName = DigestUtils.md2Hex(event.getName()+event.getDate() + "." + format);
+                if (!formats.contains(format.toLowerCase())) {
+                    logger.log(Level.WARN, INVALID_TYPE_OF_FILE);
+                    return failure(INVALID_TYPE_OF_FILE, request);
+                }
                 File file = new File(path + ResourceManager.getProperty("path.eventImageDirectory") + fileName);
-                if (ImageIO.write(ImageIO.read(part.getInputStream()), "jpg", file)) {
+                if (ImageIO.write(ImageIO.read(part.getInputStream()), format, file)) {
                     event.setPictureLink(fileName);
                 } else {
                     return failure(ERROR_ADD_EVENT, request);
@@ -126,7 +137,7 @@ public class AddEventCommand implements Command {
             if (valid(event)) {
                 add(event);
             }
-        } catch (ValidatorException e){
+        } catch (ValidatorException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_ADD_EVENT, request);
         } catch (NumberFormatException | ServiceException e) {
@@ -134,14 +145,14 @@ public class AddEventCommand implements Command {
             return failure(ERROR_ADD_EVENT, request);
         }
 
-        request.setAttribute(DONE, ADD_EVENT_SUCCESS);
-        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
+        request.getSession().setAttribute(DONE, ADD_EVENT_SUCCESS);
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
     }
 
     private boolean valid(Event event) throws ValidatorException {
         Validator validator = new EventValidator();
-        String error =  validator.isValid(event);
-        if (error != null){
+        String error = validator.isValid(event);
+        if (error != null) {
             throw new ValidatorException(error);
         } else {
             return true;
@@ -161,9 +172,8 @@ public class AddEventCommand implements Command {
 
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addEvent"));
-        return new CommandResult(ResourceManager.getProperty("command.home"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.addEventPage"), true);
     }
 
 }

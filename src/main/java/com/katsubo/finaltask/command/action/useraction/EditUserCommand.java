@@ -19,9 +19,10 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class EditUserCommand implements Command {
+    private static final String ERROR = "error";
+    private static final String USER_EDIT_SUCCESS = "user.edit.success";
     private static final String ERROR_UPDATE_USER = "error_update_user";
     private static final String INCORRECT_VERIFY_PASSWORD = "incorrect_verify_password";
     private static final Logger logger = LogManager.getLogger(EditUserCommand.class);
@@ -29,12 +30,9 @@ public class EditUserCommand implements Command {
     private static final String PASSWORD = "password";
     private static final String REPEAT_PASSWORD = "password2";
     private static final String DONE = "done";
-    public static final String ERROR = "error";
-    public static final String USER_EDIT_SUCCESS = "user.edit.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        clearWarnings(request);
         UserDto userDto = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
@@ -58,11 +56,10 @@ public class EditUserCommand implements Command {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_UPDATE_USER, request);
         }
-        request.setAttribute(DONE, USER_EDIT_SUCCESS);
-        HttpSession session = request.getSession();
+        request.getSession().setAttribute(DONE, USER_EDIT_SUCCESS);
         userDto = new UserDto(user);
-        session.setAttribute(Constances.USER.getFieldName(), userDto);
-        return new CommandResult(ResourceManager.getProperty("command.profile"));
+        request.getSession().setAttribute(Constances.USER.getFieldName(), userDto);
+        return new CommandResult(ResourceManager.getProperty("command.profile"), true);
     }
 
     private boolean valid(User user) throws ValidatorException {
@@ -75,12 +72,6 @@ public class EditUserCommand implements Command {
         }
     }
 
-    private void clearWarnings(HttpServletRequest request) {
-        request.removeAttribute(DONE);
-        request.removeAttribute(ERROR_UPDATE_USER);
-        request.removeAttribute(INCORRECT_VERIFY_PASSWORD);
-    }
-
     private void update(User user) throws ServiceException {
         UserService service = new UserServiceImpl();
         Integer id = service.save(user);
@@ -90,7 +81,7 @@ public class EditUserCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("command.profile"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.profile"), true);
     }
 }

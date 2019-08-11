@@ -18,12 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RemoveEventCommand implements Command {
+    private static final String ERROR = "error";
+    private static final String DONE = "done";
     private static final Logger logger = LogManager.getLogger(RemoveEventCommand.class);
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_DONT_FIND_EVENT = "error_dont_find_event";
     private static final String ERROR_REMOVING_EVENT = "event.delete.fail";
     private static final String DELETE_SUCCESS = "event.delete.success";
-    public static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -33,7 +34,7 @@ public class RemoveEventCommand implements Command {
         }
         Integer eventId = Integer.valueOf(request.getParameter(EVENT_ID));
         try {
-            if (checkRules(request)){
+            if (checkRules(request)) {
                 deleteEvent(eventId);
             } else {
                 throw new ServiceException();
@@ -42,26 +43,24 @@ public class RemoveEventCommand implements Command {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_REMOVING_EVENT, request);
         }
-        request.setAttribute(DELETE_SUCCESS, true);
-        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
-
-
+        request.getSession().setAttribute(DONE, DELETE_SUCCESS);
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
     }
 
     private boolean checkRules(HttpServletRequest request) throws ServiceException {
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
-        if (user == null){
+        if (user == null) {
             return false;
         }
         EventService service = new EventServiceImpl();
         Integer eventId;
-        try{
+        try {
             eventId = Integer.valueOf(request.getParameter(EVENT_ID));
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new ServiceException(ERROR_DONT_FIND_EVENT);
         }
         Event event = service.findById(eventId);
-        if (event == null){
+        if (event == null) {
             throw new ServiceException(ERROR_DONT_FIND_EVENT);
         }
         return event.getAuthor_id().equals(user.getUserId());
@@ -73,7 +72,7 @@ public class RemoveEventCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("page.error405"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("page.error405"), true);
     }
 }

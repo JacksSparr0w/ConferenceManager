@@ -2,10 +2,9 @@ package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
+import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.menu.Menu;
 import com.katsubo.finaltask.command.menu.MenuFactory;
-import com.katsubo.finaltask.util.ResourceManager;
-import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.UserInfo;
@@ -15,14 +14,17 @@ import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
-import com.katsubo.finaltask.validate.*;
+import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.validate.UserInfoValidator;
+import com.katsubo.finaltask.validate.UserValidator;
+import com.katsubo.finaltask.validate.Validator;
+import com.katsubo.finaltask.validate.ValidatorException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +32,8 @@ import java.util.Map;
 import static com.katsubo.finaltask.util.Constances.USER;
 
 public class RegisterCommand implements Command {
+    public static final String ERROR = "error";
     private static final Logger logger = LogManager.getLogger(RegisterCommand.class);
-
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
     private static final String NAME = "name";
@@ -39,7 +41,6 @@ public class RegisterCommand implements Command {
     private static final String EMAIL = "email";
     private static final String ERROR_REGISTRATION = "registration.error";
     private static final String INVALID = "invalid_";
-    public static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -98,7 +99,7 @@ public class RegisterCommand implements Command {
         info.setEmail(parameters.get(EMAIL));
         info.setDateOfRegistration(new Date());
 
-        if (userValid(user) && infoValid(info)){
+        if (userValid(user) && infoValid(info)) {
             UserService userService = new UserServiceImpl();
             Integer id = userService.save(user);
             if (id != null) {
@@ -112,25 +113,24 @@ public class RegisterCommand implements Command {
         }
 
         UserDto userDto = new UserDto(user);
-        HttpSession session = request.getSession();
-        session.setAttribute(USER.getFieldName(), userDto);
+        request.getSession().setAttribute(USER.getFieldName(), userDto);
         setMenuForUser(user, request);
     }
 
-    private boolean userValid(User user) throws ValidatorException{
+    private boolean userValid(User user) throws ValidatorException {
         Validator validator = new UserValidator();
-        String error =  validator.isValid(user);
-        if (error != null){
+        String error = validator.isValid(user);
+        if (error != null) {
             throw new ValidatorException(error);
         } else {
             return true;
         }
     }
 
-    private boolean infoValid(UserInfo info) throws ValidatorException{
+    private boolean infoValid(UserInfo info) throws ValidatorException {
         Validator validator = new UserInfoValidator();
-        String error =  validator.isValid(info);
-        if (error != null){
+        String error = validator.isValid(info);
+        if (error != null) {
             throw new ValidatorException(error);
         } else {
             return true;
@@ -143,7 +143,7 @@ public class RegisterCommand implements Command {
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("command.registerPage"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.registerPage"), true);
     }
 }

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegisterToEventCommand implements Command {
+    public static final String ERROR = "error";
     private static final String NO_FREE_PLACES = "no_free_places";
     private static final String CANT_FIND_EVENT = "cant_find_event";
     private static final String CANT_FIND_EVENT_ID = "cant_find_event_id";
@@ -30,11 +31,11 @@ public class RegisterToEventCommand implements Command {
     private static final String CANT_SAVE_REGISTRATION = "event.register.fail";
     private static final String DONE = "done";
     private static final String SUCH_REGISTRATION_ALREADY_EXIST = "such_registration_already_exist";
-    public static final String ERROR = "error";
-    public static final String EVENT_REGISTER_SUCCESS = "event.register.success";
+    private static final String EVENT_REGISTER_SUCCESS = "event.register.success";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        clearNotification(request);
         Integer eventId;
 
         if (request.getParameter(EVENT_ID) == null) {
@@ -68,9 +69,14 @@ public class RegisterToEventCommand implements Command {
             logger.log(Level.WARN, e);
             return failure(CANT_FIND_EVENT_ID, request);
         }
-        request.setAttribute(DONE, EVENT_REGISTER_SUCCESS);
-        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
+        request.getSession().setAttribute(DONE, EVENT_REGISTER_SUCCESS);
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
 
+    }
+
+    private void clearNotification(HttpServletRequest request) {
+        request.getSession().removeAttribute(DONE);
+        request.getSession().removeAttribute(ERROR);
     }
 
     private boolean isBusy(Integer eventId) throws ServiceException {
@@ -101,7 +107,7 @@ public class RegisterToEventCommand implements Command {
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("command.allEvents"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
     }
 }

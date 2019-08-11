@@ -54,12 +54,6 @@ public class AllUsersCommand implements Command {
         return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 
-    private CommandResult failure(String error, HttpServletRequest request) {
-        request.setAttribute(ERROR, error);
-        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.allUsers"));
-        return new CommandResult(ResourceManager.getProperty("page.main"));
-    }
-
     private Map<Integer, UserInfo> giveUsersInfo(List<User> users) throws ServiceException {
         Map<Integer, UserInfo> usersInfo = new HashMap<>();
         UserInfoService service = new UserInfoServiceImpl();
@@ -72,5 +66,11 @@ public class AllUsersCommand implements Command {
     private List<User> giveUsers() throws ServiceException {
         UserService service = new UserServiceImpl();
         return service.findAll();
+    }
+
+    private CommandResult failure(String error, HttpServletRequest request) {
+        request.setAttribute(ERROR, error);
+        request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.allUsers"));
+        return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 }

@@ -14,7 +14,6 @@ public class Address {
         this.city = strings[1];
         this.street = strings[2];
         this.building = Integer.valueOf(strings[3]);
-        //todo add table
     }
 
     public Address(String country, String city, String street, int building) {

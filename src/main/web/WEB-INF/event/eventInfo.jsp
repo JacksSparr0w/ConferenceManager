@@ -15,7 +15,8 @@
     <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${done}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Click to remove"
+                    onclick="<c:remove var="done" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -23,7 +24,8 @@
     <c:when test="${error != null}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${error}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                    onclick="<c:remove var="error" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -32,12 +34,15 @@
 
 <c:forEach var="event" items="${events}">
     <div class="container-fluid pt-3 pl-3 pr-3">
-        <h3 class="text-black">${event.name}</h3>
+        <strong class="d-inline-block mb-2 ml-2 text-primary">${event.theme}</strong>
+        <h3 class="text-black justify-content-center">${event.name}</h3>
         <h6 class="text-right"><fmt:formatDate value="${event.date}" pattern="yyyy-MM-dd HH:mm"/></h6>
         <div class="container">
-            <img src="eventImages/${event.pictureLink}" class="rounded" lass="rounded col-md-8" style="
-        width: inherit;
-        min-width: 15rem;"
+            <img src="eventImages/${event.pictureLink}" class="rounded"
+                 style="
+                    width: inherit;
+                    min-width: 15rem;
+                    max-width: 75%;"
                  alt="Event picture">
         </div>
         <p class="text-dark text-right">${event.address}</p>
@@ -57,7 +62,8 @@
             <p class="text-black">${join_now}</p>
             <div class="container pt-2 pl-2 pr-2 d-inline-flex">
                 <form>
-                    <c:url value="register_to_event" var="registerToEvent">
+                    <c:url value="controller" var="registerToEvent">
+                        <c:param name="command" value="register_to_event"/>
                         <c:param name="eventId" value="${event.id}"/>
                     </c:url>
                     <input type="button" class="btn btn-outline-success" value="${join}"
@@ -65,14 +71,16 @@
                 </form>
                 <c:if test="${user.permission == 'ADMINISTRATOR' or user.userId == event.author_id}">
                     <form method="post">
-                        <c:url value="edit_event_page" var="editEvent">
+                        <c:url value="controller" var="editEvent">
+                            <c:param name="command" value="edit_event_page"/>
                             <c:param name="eventId" value="${event.id}"/>
                         </c:url>
                         <input type="button" class="btn btn-outline-warning ml-3" value="Edit"
                                onclick="window.location.href='${editEvent}'"/>
                     </form>
                     <form method="post">
-                        <c:url value="remove_event" var="deleteEvent">
+                        <c:url value="controller" var="deleteEvent">
+                            <c:param name="command" value="remove_event"/>
                             <c:param name="eventId" value="${event.id}"/>
                         </c:url>
                         <input type="button" class="btn btn-outline-danger ml-3" value="Remove"

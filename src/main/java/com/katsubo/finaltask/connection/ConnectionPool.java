@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.connection;
 
+import com.katsubo.finaltask.util.ResourceManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,9 +24,6 @@ public class ConnectionPool {
     private static Lock lock = new ReentrantLock();
     private BlockingQueue<Connection> freeConnections = new ArrayBlockingQueue<>(INITIAL_CAPACITY);
     private BlockingQueue<Connection> takenConnections = new ArrayBlockingQueue<>(INITIAL_CAPACITY);
-
-    private static final String PROPERTY_PATH = "database";
-
 
     private ConnectionPool() throws PoolException {
 
@@ -62,8 +60,8 @@ public class ConnectionPool {
         return connectionPool;
     }
 
-    private void init() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(PROPERTY_PATH);
+    private void init() throws PoolException{
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(ResourceManager.getProperty("database"));
         String connectionURL = resourceBundle.getString("db.url");
         String initialCapacityString = resourceBundle.getString("db.poolsize");
         Integer initialCapacity = Integer.valueOf(initialCapacityString);
@@ -74,9 +72,8 @@ public class ConnectionPool {
                 Connection connection = new PoolConnection(DriverManager.getConnection(connectionURL, login, password));
                 freeConnections.add(connection);
             } catch (SQLException e) {
-                logger.log(Level.ERROR, "Pool can't initialize", e);
-                //todo create another exception, not runtime!;
-                throw new RuntimeException("Pool can't initialize", e);
+                logger.log(Level.ERROR, "Connection can't initialize", e);
+                throw new PoolException("Connection can't initialize", e);
             }
         }
 
@@ -108,10 +105,8 @@ public class ConnectionPool {
                 connection.realClose();
             } catch (InterruptedException e) {
                 logger.log(Level.ERROR, "Connection close exception", e);
-                //throw new PoolException(e + "Connection close exception");
             }
         }
-        //todo destroy all connections
         Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();

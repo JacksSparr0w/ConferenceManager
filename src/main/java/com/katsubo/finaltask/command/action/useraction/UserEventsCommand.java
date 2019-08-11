@@ -28,7 +28,6 @@ public class UserEventsCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserDto userDto = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
-        UserInfo info = null;
         List<Event> events = null;
         if (userDto != null) {
             try {
@@ -58,7 +57,7 @@ public class UserEventsCommand implements Command {
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("page.main"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("page.main"), true);
     }
 }

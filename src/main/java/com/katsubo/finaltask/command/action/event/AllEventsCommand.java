@@ -31,11 +31,10 @@ public class AllEventsCommand implements Command {
     private static final String CANT_READ_EVENTS = "cant_read_events";
     private static final Integer NOTES_PER_PAGE = 5;
     private static final String PAGE = "page";
-    public static final String INVALID_PAGE = "invalid_page";
-    public static final String ERROR = "error";
+    private static final String INVALID_PAGE = "invalid_page";
+    private static final String ERROR = "error";
 
     private Pagination pagination;
-    private Integer page;
 
 
     @Override
@@ -94,7 +93,7 @@ public class AllEventsCommand implements Command {
                 logger.log(Level.WARN, INVALID_PAGE);
             }
         }
-        this.page = 1;
+        Integer page1 = 1;
         return pagination.getPage(events, 1);
 
 

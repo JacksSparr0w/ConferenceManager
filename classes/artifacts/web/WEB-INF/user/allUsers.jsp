@@ -13,7 +13,8 @@
     <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${done}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Click to remove"
+                    onclick="<c:remove var="done" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -21,7 +22,8 @@
     <c:when test="${error != null}">
         <div class="container alert alert-warning fade show m-t-16" role="alert">
             <fmt:message bundle="${textResources}" key="${error}"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                    onclick="<c:remove var="error" scope="session"/>">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -45,6 +47,9 @@
                         <h3 class="text-black">${info.name} ${info.surname}</h3>
                     </div>
                     <div class="mb-1 text-muted">
+                        <h6 class="card-text mb-auto mb-2"><a href="mailto:${info.email}">${info.email}</a></h6>
+                    </div>
+                    <div class="mb-1 text-muted">
                             <label class="card-text mb-auto mb-2">${date_of_bitrh}: </label>
                             <fmt:formatDate value="${info.dateOfBirth}" pattern="yyyy-MM-dd"/>
                     </div>
@@ -55,7 +60,8 @@
                     <p class="card-text mb-auto mb-2">${info.about}</p>
                     <div class="text-muted">
                         <form>
-                            <c:url value="delete_user" var="deleteUrl">
+                            <c:url value="controller" var="deleteUrl">
+                                <c:param name="command" value="delete_user"/>
                                 <c:param name="userId" value="${user.id}"/>
                             </c:url>
                             <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal"

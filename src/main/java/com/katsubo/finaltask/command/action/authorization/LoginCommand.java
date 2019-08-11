@@ -80,7 +80,7 @@ public class LoginCommand implements Command {
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {
-        request.setAttribute(ERROR, error);
-        return new CommandResult(ResourceManager.getProperty("command.loginPage"));
+        request.getSession().setAttribute(ERROR, error);
+        return new CommandResult(ResourceManager.getProperty("command.loginPage"), true);
     }
 }
