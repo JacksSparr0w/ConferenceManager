@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xml>
-<Configuration status="WARN">
+<Configuration status="warn">
+
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </Console>
-        <File name="File" fileName="E:\\DEVELOPMENT\\JAVA\\web-logs\\web-college-administration\\applicationLogs.log">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </File>
+        <RollingFile name="AppRollingFileAppender" fileName="${web:rootDir}/WEB-INF/logs/app.txt"
+                     filePattern="${web:rootDir}/WEB-INF/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.txt">
+            <PatternLayout>
+                <Pattern>%d [%t] %p %c - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="5 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="3" />
+        </RollingFile>
+        <RollingFile name="WebRollingFileAppender" fileName="${web:rootDir}/WEB-INF/logs/web.txt"
+                     filePattern="${web:rootDir}/WEB-INF/logs/$${date:yyyy-MM}/web-%d{MM-dd-yyyy}-%i.txt">
+            <PatternLayout>
+                <Pattern>%d [%t] %p %c - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="5 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="3" />
+        </RollingFile>
     </Appenders>
+
     <Loggers>
-        <Root level="debug">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="File"/>
+        <Root level="info" additivity="false">
+            <appender-ref ref="AppRollingFileAppender" />
         </Root>
+        <Logger name="by.epam.events.controller.filter" level="info" additivity="false">
+            <AppenderRef ref="WebRollingFileAppender"/>
+        </Logger>
     </Loggers>
+
 </Configuration>

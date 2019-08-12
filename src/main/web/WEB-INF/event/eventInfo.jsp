@@ -76,8 +76,7 @@
                     </form>
                     <c:if test="${user.permission == 'ADMINISTRATOR' or user.userId == event.author_id}">
                         <form method="post">
-                            <c:url value="controller" var="editEvent">
-                                <c:param name="command" value="edit_event_page"/>
+                            <c:url value="edit_event_page" var="editEvent">
                                 <c:param name="eventId" value="${event.id}"/>
                             </c:url>
                             <input type="button" class="btn btn-outline-warning ml-3" value="${edit}"
