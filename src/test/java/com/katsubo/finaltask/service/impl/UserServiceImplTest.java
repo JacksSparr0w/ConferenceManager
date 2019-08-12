@@ -1,6 +1,5 @@
 package com.katsubo.finaltask.service.impl;
 
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.enums.Permission;
 import com.katsubo.finaltask.service.ServiceException;
@@ -26,10 +25,17 @@ public class UserServiceImplTest {
     @BeforeClass
     public static void prepareService() throws ServiceException {
         service = new UserServiceImpl();
+
+        List<User> users = service.findAll();
+        for (User user : users) {
+            if (service.isExist(user.getLogin())) {
+                service.delete(user.getId());
+            }
+        }
     }
 
     @Before
-    public void prepareUsers(){
+    public void prepareUsers() {
         user1 = new User();
         user1.setLogin(LOGIN_1);
         user1.setPassword(PASSWORD_1);
@@ -47,6 +53,7 @@ public class UserServiceImplTest {
 
         Assert.assertNotNull(id);
     }
+
     @Test
     public void createAndFindByLoginAndPassword() throws ServiceException {
         User expected = user1;
@@ -104,11 +111,10 @@ public class UserServiceImplTest {
     @After
     public void clean() throws ServiceException {
         List<User> users = service.findAll();
-        for (User user : users){
-            if (service.isExist(user.getLogin())){
+        for (User user : users) {
+            if (service.isExist(user.getLogin())) {
                 service.delete(user.getId());
             }
         }
-
     }
 }

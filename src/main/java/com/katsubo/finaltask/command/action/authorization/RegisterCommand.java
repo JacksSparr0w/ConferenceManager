@@ -98,6 +98,7 @@ public class RegisterCommand implements Command {
         info.setSurname(parameters.get(SURNAME));
         info.setEmail(parameters.get(EMAIL));
         info.setDateOfRegistration(new Date());
+        info.setDateOfBirth(new Date());
 
         if (userValid(user) && infoValid(info)) {
             UserService userService = new UserServiceImpl();

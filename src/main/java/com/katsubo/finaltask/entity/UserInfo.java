@@ -108,8 +108,8 @@ public class UserInfo extends Entity {
                 ", about='" + about + '\'' +
                 ", pictureLink='" + pictureLink + '\'' +
                 ", email='" + email + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", dateOfRegistration=" + dateOfRegistration +
+                ", dateOfBirth=" + new Date(dateOfBirth.getTime()) +
+                ", dateOfRegistration=" + new Date(dateOfRegistration.getTime()) +
                 '}';
     }
 }

@@ -34,14 +34,16 @@ public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService 
     }
 
     @Override
-    public void save(UserInfo userInfo) throws ServiceException {
+    public Integer save(UserInfo userInfo) throws ServiceException {
         if (userInfo != null) {
+            Integer id;
             UserInfoDao dao = transaction.getUserInfoDao();
             try {
                 if (userInfo.getId() != null) {
+                    id = userInfo.getId();
                     dao.update(userInfo);
                 } else {
-                    dao.create(userInfo);
+                    id = dao.create(userInfo);
                 }
                 transaction.commit();
             } catch (DaoException e) {
@@ -52,6 +54,7 @@ public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService 
                 }
                 throw new ServiceException(e);
             }
+            return id;
         } else {
             logger.log(Level.ERROR, "Parameter - USER_INFO is invalid");
             throw new ServiceException("Parameter - USER_INFO is invalid");
@@ -60,7 +63,7 @@ public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService 
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        if (id >= 0) {
+        if (id != null && id > 0) {
             UserInfoDao dao = transaction.getUserInfoDao();
             try {
                 dao.delete(id);

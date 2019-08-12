@@ -120,7 +120,7 @@ public class Event extends Entity {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", theme=" + theme +
-                ", date=" + date +
+                ", date=" + new Date(date.getTime()) +
                 ", address=" + address +
                 ", capacity=" + capacity +
                 '}';

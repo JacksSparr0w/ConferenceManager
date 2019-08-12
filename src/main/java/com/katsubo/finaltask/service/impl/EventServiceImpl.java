@@ -32,7 +32,7 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
 
     @Override
     public Event findById(Integer id) throws ServiceException {
-        if (id >= 0) {
+        if (id != null && id > 0) {
             Event event = null;
             EventDao dao = transaction.getEventDao();
             try {
@@ -49,14 +49,16 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
     }
 
     @Override
-    public void save(Event event) throws ServiceException {
+    public Integer save(Event event) throws ServiceException {
         if (event != null) {
+            Integer id;
             EventDao dao = transaction.getEventDao();
             try {
                 if (event.getId() != null) {
+                    id = event.getId();
                     dao.update(event);
                 } else {
-                    dao.create(event);
+                    id = dao.create(event);
                 }
                 transaction.commit();
             } catch (DaoException e) {
@@ -67,6 +69,7 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
                 }
                 throw new ServiceException(e);
             }
+            return id;
         } else {
             logger.log(Level.ERROR, "Parameter - EVENT is invalid");
             throw new ServiceException("Parameter - EVENT is invalid");
@@ -75,7 +78,7 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        if (id >= 0) {
+        if (id != null && id > 0) {
             EventDao dao = transaction.getEventDao();
             try {
                 dao.delete(id);

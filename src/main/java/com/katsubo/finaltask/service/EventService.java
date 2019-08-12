@@ -9,7 +9,7 @@ public interface EventService extends Service {
 
     Event findById(Integer id) throws ServiceException;
 
-    void save(Event event) throws ServiceException;
+    Integer save(Event event) throws ServiceException;
 
     void delete(Integer id) throws ServiceException;
 }
