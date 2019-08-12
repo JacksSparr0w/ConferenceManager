@@ -34,7 +34,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
     @Override
     public User findById(Integer id) throws ServiceException {
-        if (id >= 0) {
+        if (id != null && id > 0) {
             User user = null;
             UserDao dao = transaction.getUserDao();
             try {
@@ -128,7 +128,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        if (id >= 0) {
+        if (id != null && id > 0) {
             UserDao dao = transaction.getUserDao();
             try {
                 dao.delete(id);
