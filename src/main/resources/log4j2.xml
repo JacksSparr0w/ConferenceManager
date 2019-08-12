@@ -1,31 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
-    <!-- Секция аппендеров -->
+<!DOCTYPE xml>
+<Configuration status="WARN">
     <Appenders>
-        <!-- Файловый аппендер -->
-        <File name="file" fileName="log.log">
-            <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
-            </PatternLayout>
-        </File>
-        <!-- Файловый аппендер -->
-        <File name="file2" fileName="log2.log">
-            <!-- Фильтр по маркеру -->
-            <MarkerFilter marker="fileonly" onMatch="DENY" onMismatch="ACCEPT"/>
-            <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
-            </PatternLayout>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <File name="File" fileName="E:\\DEVELOPMENT\\JAVA\\web-logs\\web-college-administration\\applicationLogs.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
-    <!-- Секция логгеров -->
     <Loggers>
-        <!-- Корневой логгер -->
-        <Root level="trace">
-            <AppenderRef ref="file" level="DEBUG"/>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
         </Root>
-        <!-- Логгер нашего класса -->
-        <Logger name="logging.log4j.LoggingLog4j" level="info" additivity="false">
-            <AppenderRef ref="file2" level="INFO"/>
-        </Logger>
     </Loggers>
 </Configuration>

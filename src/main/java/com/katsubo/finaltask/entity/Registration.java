@@ -57,4 +57,13 @@ public class Registration extends Entity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), userId, eventId, role);
     }
+
+    @Override
+    public String toString() {
+        return "Registration{" +
+                "userId=" + userId +
+                ", eventId=" + eventId +
+                ", role=" + role +
+                '}';
+    }
 }

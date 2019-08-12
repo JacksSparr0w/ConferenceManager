@@ -72,7 +72,7 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
 
     @Override
     public Registration read(Integer id) throws ServiceException {
-        if (id >= 0) {
+        if (id != null && id > 0) {
             Registration registration = null;
             RegistrationDao dao = transaction.getRegistrationDao();
             try {
@@ -120,7 +120,7 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        if (id >= 0) {
+        if (id != null && id > 0) {
             RegistrationDao dao = transaction.getRegistrationDao();
             try {
                 dao.delete(id);
