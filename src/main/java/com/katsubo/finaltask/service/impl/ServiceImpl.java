@@ -10,7 +10,7 @@ import com.katsubo.finaltask.service.ServiceException;
 public class ServiceImpl implements Service {
     Transaction transaction;
 
-    ServiceImpl() throws ServiceException {
+    public ServiceImpl() throws ServiceException {
         try {
             this.transaction = TransactionFactoryImpl.getInstance().getTransaction();
         } catch (DaoException e) {

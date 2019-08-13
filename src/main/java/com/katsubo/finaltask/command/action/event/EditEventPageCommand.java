@@ -18,6 +18,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Edit event page command.
+ */
 public class EditEventPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditEventPageCommand.class);
     private static final String EVENT_ID = "eventId";

@@ -2,6 +2,8 @@ package com.katsubo.finaltask.controller;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
+import com.katsubo.finaltask.service.ServiceException;
+import com.katsubo.finaltask.service.impl.ServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.util.MessageManager;
 import com.katsubo.finaltask.command.action.Command;
@@ -29,6 +31,17 @@ public class Controller extends HttpServlet {
     @Override
     public void destroy() {
         ConnectionPool.getInstance().destroy();
+    }
+
+    @Override
+    public void init(){
+            try {
+                new ServiceImpl();
+            } catch (ServiceException e) {
+                logger.log(Level.WARN, "ops, optimize fail");
+            }
+
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
