@@ -82,10 +82,10 @@
                 <div class="form-group">
                     <label for="selectTheme">${theme}</label>
                     <select class="form-control" id="selectTheme" name="theme">
-                        <option>${business}</option>
-                        <option>${advertising}</option>
-                        <option>${science}</option>
-                        <option>${design}</option>
+                        <option value="business">${business}</option>
+                        <option value="advertising">${advertising}</option>
+                        <option value="science">${science}</option>
+                        <option value="design">${design}</option>
                     </select>
                 </div>
             </div>
@@ -158,8 +158,16 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="building">${building}</label>
-                    <input type="text" maxlength="5" class="form-control" name="building" id="building"
+                    <input type="number" class="form-control" name="building" id="building"
                            placeholder="${building}" title="Enter building">
+                    <script>
+                        $("#building").on("keypress", function (evt) {
+                            var keycode = evt.charCode || evt.keyCode;
+                            if (keycode == 46 || this.value.length == 3) {
+                                return false;
+                            }
+                        });
+                    </script>
                 </div>
             </div>
 

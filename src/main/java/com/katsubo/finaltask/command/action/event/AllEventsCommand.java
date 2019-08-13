@@ -3,7 +3,6 @@ package com.katsubo.finaltask.command.action.event;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.service.EventService;
@@ -29,10 +28,12 @@ public class AllEventsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AllEventsCommand.class);
     private static final String THERE_NOT_EVENTS = "there_not_events";
     private static final String CANT_READ_EVENTS = "cant_read_events";
-    private static final Integer NOTES_PER_PAGE = 5;
+    private static final Integer NOTES_PER_PAGE = 3;
     private static final String PAGE = "page";
     private static final String INVALID_PAGE = "invalid_page";
     private static final String ERROR = "error";
+    private static final String SHOW_PAGES = "showPages";
+    private static final String ZERO_EVENTS = "zero_events";
 
     private Pagination pagination;
 
@@ -42,7 +43,7 @@ public class AllEventsCommand implements Command {
         List<Event> events = null;
         try {
             events = readAllEvents();
-        } catch (DaoException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.INFO, e.getMessage());
             return failure(CANT_READ_EVENTS, request);
         }
@@ -56,7 +57,7 @@ public class AllEventsCommand implements Command {
         if (userDto != null) {
             try {
                 userEvents = readUserEvents(userDto.getUserId());
-            } catch (DaoException | ServiceException e) {
+            } catch (ServiceException e) {
                 logger.log(Level.INFO, e.getMessage());
                 return failure(CANT_READ_EVENTS, request);
             }
@@ -67,16 +68,24 @@ public class AllEventsCommand implements Command {
             try {
                 Integer numberOfUsers = readUsersOnEvent(event);
                 filling.put(event.getId(), numberOfUsers);
-            } catch (DaoException | ServiceException e) {
+            } catch (ServiceException e) {
                 logger.log(Level.INFO, e.getMessage());
                 return failure(CANT_READ_EVENTS, request);
             }
         }
 
 
+        if (events.isEmpty()) {
+            request.getSession().setAttribute(ERROR, ZERO_EVENTS);
+        }
         request.setAttribute("events", getPage(events, request));
         request.setAttribute("countOfPages", pagination.getCountOfPages());
         request.setAttribute(PAGE, pagination.getPage());
+        if (NOTES_PER_PAGE >= events.size()) {
+            request.setAttribute(SHOW_PAGES, false);
+        } else {
+            request.setAttribute(SHOW_PAGES, true);
+        }
         request.setAttribute("filling", filling);
         request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.eventInfo"));
         return new CommandResult(ResourceManager.getProperty("page.main"));
@@ -87,7 +96,7 @@ public class AllEventsCommand implements Command {
         pagination = new EventPagination(NOTES_PER_PAGE);
         if (pageString != null) {
             try {
-                int page = Integer.valueOf(pageString);
+                int page = Integer.parseInt(pageString);
                 return pagination.getPage(events, page);
             } catch (NumberFormatException e) {
                 logger.log(Level.WARN, INVALID_PAGE);
@@ -99,11 +108,11 @@ public class AllEventsCommand implements Command {
 
     }
 
-    private Integer readUsersOnEvent(Event event) throws DaoException, ServiceException {
+    private Integer readUsersOnEvent(Event event) throws ServiceException {
         RegistrationService service = new RegistrationServiceImpl();
         Integer integer = service.findUsersOnEvent(event.getId()).size();
         if (integer == null) {
-            throw new DaoException();
+            throw new ServiceException();
         }
         return integer;
 
@@ -115,15 +124,13 @@ public class AllEventsCommand implements Command {
         return new CommandResult(ResourceManager.getProperty("page.main"));
     }
 
-    private List<Event> readUserEvents(Integer userId) throws DaoException, ServiceException {
+    private List<Event> readUserEvents(Integer userId) throws ServiceException {
         RegistrationService service = new RegistrationServiceImpl();
-        List<Event> events = service.findUserEvents(userId);
-        return events;
+        return service.findUserEvents(userId);
     }
 
-    private List<Event> readAllEvents() throws ServiceException, DaoException {
+    private List<Event> readAllEvents() throws ServiceException {
         EventService service = new EventServiceImpl();
-        List<Event> events = service.findAll();
-        return events;
+        return service.findAll();
     }
 }

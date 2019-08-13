@@ -18,8 +18,8 @@ CREATE TABLE `user_info`
   `about`                TEXT,
   `picture_link`         VARCHAR(255) DEFAULT NULL,
   `email`                VARCHAR(255)        NOT NULL,
-  `date_of_birth`        TIMESTAMP,
-  `date_of_registration` DATETIME            NOT NULL
+  `date_of_birth`        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `date_of_registration` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 
@@ -31,7 +31,7 @@ CREATE TABLE `event_info`
   `description`  TEXT,
   `picture_link` VARCHAR(255)                                          DEFAULT NULL,
   `theme`        ENUM ('business', 'advertising', 'science', 'design') DEFAULT NULL,
-  `date`         DATETIME            NOT NULL,
+  `date`         TIMESTAMP           NOT NULL,
   `address`      VARCHAR(255),
   `author_id`    INTEGER             NOT NULL,
   `capacity`     INTEGER

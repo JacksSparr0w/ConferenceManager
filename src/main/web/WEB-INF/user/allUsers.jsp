@@ -54,12 +54,12 @@
                         <h6 class="card-text mb-auto mb-2"><a href="mailto:${info.email}">${info.email}</a></h6>
                     </div>
                     <div class="mb-1 text-muted">
-                            <label class="card-text mb-auto mb-2">${date_of_bitrh}: </label>
-                            <fmt:formatDate value="${info.dateOfBirth}" pattern="yyyy-MM-dd"/>
+                        <label class="card-text mb-auto mb-2">${date_of_bitrh}: </label>
+                        <fmt:formatDate value="${info.dateOfBirth}" pattern="yyyy-MM-dd"/>
                     </div>
                     <div class="mb-1 text-muted">
-                            <label class="card-text mb-auto mb-2">${date_of_registration}: </label>
-                            <fmt:formatDate value="${info.dateOfRegistration}" pattern="yyyy-MM-dd"/>
+                        <label class="card-text mb-auto mb-2">${date_of_registration}: </label>
+                        <fmt:formatDate value="${info.dateOfRegistration}" pattern="yyyy-MM-dd"/>
                     </div>
                     <p class="card-text mb-auto mb-2">${info.about}</p>
                     <div class="text-muted">
@@ -68,8 +68,9 @@
                                 <c:param name="command" value="delete_user"/>
                                 <c:param name="userId" value="${user.id}"/>
                             </c:url>
-                            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal"
-                                    >${delete}</button>
+                            <button type="button" class="btn btn-outline-dark"
+                                    onclick="window.location.href='${deleteUrl}'"
+                            >${delete}</button>
                         </form>
                     </div>
                 </div>
@@ -77,24 +78,4 @@
             </div>
         </div>
     </c:forEach>
-</div>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ${sure}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">${no}</button>
-                <button type="button" class="btn btn-primary" onclick="window.location.href='${deleteUrl}'">${yes}</button>
-            </div>
-        </div>
-    </div>
 </div>

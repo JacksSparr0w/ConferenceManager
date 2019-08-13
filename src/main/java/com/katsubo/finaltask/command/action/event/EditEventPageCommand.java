@@ -5,6 +5,7 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
+import com.katsubo.finaltask.entity.enums.Permission;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
@@ -22,13 +23,13 @@ public class EditEventPageCommand implements Command {
     private static final String EVENT_ID = "eventId";
     private static final String ERROR_FIND_EVENT = "error_find_event";
     private static final String EVENT = "event";
-    public static final String ERROR = "error";
+    private static final String ERROR = "error";
     private Event event;
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String eventIdString = request.getParameter(EVENT_ID);
-        if (eventIdString == null){
+        if (eventIdString == null) {
             logger.log(Level.WARN, ERROR_FIND_EVENT);
             return failure(ERROR_FIND_EVENT, request);
         }
@@ -52,13 +53,18 @@ public class EditEventPageCommand implements Command {
         }
 
     }
+
     private boolean checkRules(UserDto user, Integer eventId) throws ServiceException {
-        if (user == null){
+        if (user == null) {
             return false;
         }
         EventService service = new EventServiceImpl();
         event = service.findById(eventId);
-        if (event == null){
+        if (user.getPermission() == Permission.ADMINISTRATOR) {
+            return true;
+        }
+
+        if (event == null) {
             throw new ServiceException(ERROR_FIND_EVENT);
         }
         return event.getAuthor_id().equals(user.getUserId());

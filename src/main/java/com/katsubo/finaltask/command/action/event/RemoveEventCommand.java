@@ -5,6 +5,7 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
+import com.katsubo.finaltask.entity.enums.Permission;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
@@ -51,6 +52,9 @@ public class RemoveEventCommand implements Command {
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         if (user == null) {
             return false;
+        }
+        if (user.getPermission() == Permission.ADMINISTRATOR) {
+            return true;
         }
         EventService service = new EventServiceImpl();
         Integer eventId;

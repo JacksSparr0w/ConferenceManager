@@ -99,23 +99,24 @@
         </div>
     </c:forEach>
 </div>
+<c:if test="${showPages eq true}">
+    <ul class="pagination justify-content-center p-b-10">
+        <c:forEach var="i" begin="${1}" end="${countOfPages}">
+            <c:choose>
+                <c:when test="${i == page}">
+                    <li class="page-item active"><a class="page-link" href="#!">${i}</a></li>
+                </c:when>
+                <c:otherwise>
+                    <c:url value="all_events" var="homeUrl">
+                        <c:param name="page" value="${i}"/>
+                    </c:url>
+                    <li class="page-item"><a class="page-link" href="${homeUrl}">${i}</a></li>
 
-<ul class="pagination justify-content-center">
-    <c:forEach var="i" begin="${1}" end="${countOfPages}">
-        <c:choose>
-            <c:when test="${i == page}">
-                <li class="page-item active"><a class="page-link" href="#!">${i}</a></li>
-            </c:when>
-            <c:otherwise>
-                <c:url value="all_events" var="homeUrl">
-                    <c:param name="page" value="${i}"/>
-                </c:url>
-                <li class="page-item"><a class="page-link" href="${homeUrl}">${i}</a></li>
-
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
-</ul>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+    </ul>
+</c:if>
 
 
 

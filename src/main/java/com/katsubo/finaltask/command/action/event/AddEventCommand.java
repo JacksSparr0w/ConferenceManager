@@ -85,7 +85,7 @@ public class AddEventCommand implements Command {
 
         try {
             Part part = request.getPart(PICTURE);
-            if (part.getSize() > 0) {
+            if (part != null && part.getSize() > 0) {
                 String path = getPath();
                 String format = part.getContentType().substring(part.getContentType().lastIndexOf('/') + 1);
                 String fileName = DigestUtils.md2Hex(event.getName()+event.getDate() + "." + format);
