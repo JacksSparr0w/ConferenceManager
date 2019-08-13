@@ -31,6 +31,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * The type Add event command.
+ */
 public class AddEventCommand implements Command {
     private static final String ERROR = "error";
     private static final String ADD_EVENT_SUCCESS = "event.add.success";

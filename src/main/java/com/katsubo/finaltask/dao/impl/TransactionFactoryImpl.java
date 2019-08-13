@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * The type Transaction factory.
+ */
 public class TransactionFactoryImpl implements TransactionFactory {
     private static final Logger logger = LogManager.getLogger(TransactionFactoryImpl.class);
     private static TransactionFactoryImpl instance;
@@ -28,6 +31,12 @@ public class TransactionFactoryImpl implements TransactionFactory {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws DaoException the dao exception
+     */
     public static TransactionFactoryImpl getInstance() throws DaoException {
         if (instance == null) {
             instance = new TransactionFactoryImpl();

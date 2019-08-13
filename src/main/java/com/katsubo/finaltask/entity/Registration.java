@@ -4,40 +4,83 @@ import com.katsubo.finaltask.entity.enums.Role;
 
 import java.util.Objects;
 
+/**
+ * The type Registration.
+ */
 public class Registration extends Entity {
     private Integer userId;
     private Integer eventId;
     private Role role;
 
+    /**
+     * Instantiates a new Registration.
+     */
     public Registration() {
     }
 
+    /**
+     * Instantiates a new Registration.
+     *
+     * @param userId  the user id
+     * @param eventId the event id
+     * @param role    the role
+     */
     public Registration(Integer userId, Integer eventId, Role role) {
         this.userId = userId;
         this.eventId = eventId;
         this.role = role;
     }
 
+    /**
+     * Gets user id.
+     *
+     * @return the user id
+     */
     public Integer getUserId() {
         return userId;
     }
 
+    /**
+     * Sets user id.
+     *
+     * @param userId the user id
+     */
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
+    /**
+     * Gets event id.
+     *
+     * @return the event id
+     */
     public Integer getEventId() {
         return eventId;
     }
 
+    /**
+     * Sets event id.
+     *
+     * @param eventId the event id
+     */
     public void setEventId(Integer eventId) {
         this.eventId = eventId;
     }
 
+    /**
+     * Gets role.
+     *
+     * @return the role
+     */
     public Role getRole() {
         return role;
     }
 
+    /**
+     * Sets role.
+     *
+     * @param role the role
+     */
     public void setRole(Role role) {
         this.role = role;
     }

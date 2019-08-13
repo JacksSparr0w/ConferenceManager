@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Edit user photo command.
+ */
 public class EditUserPhotoCommand implements Command {
     private static final String ERROR = "error";
     private static final String USER_PHOTO_EDIT_SUCCESS = "user.photo.edit.success";

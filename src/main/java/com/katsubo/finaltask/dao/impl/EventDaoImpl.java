@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The type Event dao.
+ */
 public class EventDaoImpl extends BaseDaoImpl implements EventDao {
     private static final String READ_ALL = "SELECT `id`, `name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` ORDER BY `id`";
     private static final String READ_BY_NAME = "SELECT `id`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `name` LIKE ? ORDER BY `name`";

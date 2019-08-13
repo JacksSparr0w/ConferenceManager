@@ -4,7 +4,14 @@ import com.katsubo.finaltask.util.menu.impl.AdministratorMenu;
 import com.katsubo.finaltask.util.menu.impl.UserMenu;
 import com.katsubo.finaltask.entity.enums.Permission;
 
+/**
+ * Class factory to return specific menu items
+ */
 public abstract class MenuFactory {
+    /**
+     * @param permission of the user
+     * @return get menu item for user according to his permission
+     */
     public static Menu getMenu(Permission permission){
         Menu result = null;
         switch (permission){

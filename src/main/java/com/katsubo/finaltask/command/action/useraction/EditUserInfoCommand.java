@@ -24,6 +24,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * The type Edit user info command.
+ */
 public class EditUserInfoCommand implements Command {
     private static final String ERROR = "error";
     private static final String INFO_EDIT_SUCCESS = "info.edit.success";

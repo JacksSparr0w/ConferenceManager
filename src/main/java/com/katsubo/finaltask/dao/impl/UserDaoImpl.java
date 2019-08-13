@@ -15,7 +15,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type User dao.
+ */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
+    /**
+     * The constant READ_BY_LOGIN.
+     */
     public static final String READ_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
     private static final String READ_BY_LOGIN_AND_PASSWORD = "SELECT `id`, `login`, `password`, `permission` FROM `user` WHERE `login` = ? AND `password` = ?";
     private static final String READ_ALL = "SELECT `id`, `login`, `password`, `permission` FROM `user` ORDER BY `login`";

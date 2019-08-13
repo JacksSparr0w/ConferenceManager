@@ -9,6 +9,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * The type Access filter.
+ */
 public class AccessFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(AccessFilter.class);
     private static final String COMMAND = "command";

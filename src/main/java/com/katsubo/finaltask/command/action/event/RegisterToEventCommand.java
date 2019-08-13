@@ -21,7 +21,13 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Register to event command.
+ */
 public class RegisterToEventCommand implements Command {
+    /**
+     * The constant ERROR.
+     */
     public static final String ERROR = "error";
     private static final String NO_FREE_PLACES = "no_free_places";
     private static final String CANT_FIND_EVENT = "cant_find_event";

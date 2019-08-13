@@ -13,6 +13,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Delete user command.
+ */
 public class DeleteUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteUserCommand.class);
 
@@ -21,8 +24,7 @@ public class DeleteUserCommand implements Command {
     private static final String DELETE_SUCCESS = "user.delete.success";
     private static final String DELETE_FAIL = "user.delete.fail";
     private static final String DONE = "done";
-
-    public static final String ERROR = "error";
+    private static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

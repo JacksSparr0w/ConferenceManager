@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * The type User events command.
+ */
 public class UserEventsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(UserEventsCommand.class);
     private static final String ERROR = "error";

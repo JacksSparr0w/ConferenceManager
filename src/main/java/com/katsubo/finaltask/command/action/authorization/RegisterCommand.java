@@ -3,8 +3,6 @@ package com.katsubo.finaltask.command.action.authorization;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.command.menu.Menu;
-import com.katsubo.finaltask.command.menu.MenuFactory;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.UserInfo;
@@ -15,6 +13,8 @@ import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.util.menu.Menu;
+import com.katsubo.finaltask.util.menu.MenuFactory;
 import com.katsubo.finaltask.validate.UserInfoValidator;
 import com.katsubo.finaltask.validate.UserValidator;
 import com.katsubo.finaltask.validate.Validator;
@@ -31,8 +31,11 @@ import java.util.Map;
 
 import static com.katsubo.finaltask.util.Constances.USER;
 
+/**
+ * The type Register command.
+ */
 public class RegisterCommand implements Command {
-    public static final String ERROR = "error";
+    private static final String ERROR = "error";
     private static final Logger logger = LogManager.getLogger(RegisterCommand.class);
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";

@@ -16,9 +16,17 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Registration service.
+ */
 public class RegistrationServiceImpl extends ServiceImpl implements RegistrationService {
     private static final Logger logger = LogManager.getLogger(RegistrationServiceImpl.class);
 
+    /**
+     * Instantiates a new Registration service.
+     *
+     * @throws ServiceException the service exception
+     */
     public RegistrationServiceImpl() throws ServiceException {
     }
 

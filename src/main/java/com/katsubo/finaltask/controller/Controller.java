@@ -5,7 +5,6 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.ServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
-import com.katsubo.finaltask.util.MessageManager;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.command.factory.CommandFactory;
 import com.katsubo.finaltask.connection.ConnectionPool;
@@ -22,11 +21,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Controller.
+ */
 @WebServlet("/controller")
 @MultipartConfig
 public class Controller extends HttpServlet {
     private static final String COMMAND = "command";
     private static final Logger logger = LogManager.getLogger(Controller.class);
+    /**
+     * The constant ERROR.
+     */
+    public static final String ERROR = "error";
 
     @Override
     public void destroy() {
@@ -61,7 +67,7 @@ public class Controller extends HttpServlet {
             result = action.execute(request, response);
         } catch (CommandException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
-            request.setAttribute(MessageManager.getProperty("error"), e.getMessage());
+            request.setAttribute(ERROR, e.getMessage());
             result = new CommandResult(ResourceManager.getProperty("page.error404"), true);
         }
 

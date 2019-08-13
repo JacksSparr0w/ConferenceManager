@@ -4,7 +4,14 @@ import com.katsubo.finaltask.entity.UserInfo;
 
 import java.util.Date;
 
+/**
+ * UserInfoRecover convert null fields info empty fields
+ */
 public class UserInfoRecover implements Recover<UserInfo> {
+    /**
+     * @param entity to recover
+     * @return recovered entity
+     */
     @Override
     public UserInfo recover(UserInfo entity) {
         if (entity == null) {

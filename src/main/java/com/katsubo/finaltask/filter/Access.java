@@ -12,6 +12,9 @@ import static com.katsubo.finaltask.command.factory.CommandType.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+/**
+ * The type Access.
+ */
 public class Access {
     private static final Logger logger = LogManager.getLogger(Access.class);
     private static final Map<Integer, Set<CommandType>> commandsAccess = new HashMap<>();
@@ -42,6 +45,11 @@ public class Access {
         commandsAccess.put(0, guest);
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static Access getInstance() {
         if (instance == null) {
             instance = new Access();
@@ -73,6 +81,14 @@ public class Access {
     }
 
 
+    /**
+     * Get list of commands that can do user and check if command contains in list
+     *
+     * @param command the command
+     * @param request the request
+     * @return the boolean
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public boolean can(String command, HttpServletRequest request) throws IllegalArgumentException {
         CommandType commandType = CommandType.valueOf(command.toUpperCase());
         Integer accessLayer;

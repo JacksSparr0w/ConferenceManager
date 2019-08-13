@@ -16,6 +16,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * The type Connection pool.
+ */
 public class ConnectionPool {
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
 
@@ -43,6 +46,11 @@ public class ConnectionPool {
         init();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static ConnectionPool getInstance() {
         if (connectionPool == null) {
             try {
@@ -79,6 +87,12 @@ public class ConnectionPool {
 
     }
 
+    /**
+     * Gets connection.
+     *
+     * @return the connection
+     * @throws PoolException the pool exception
+     */
     public Connection getConnection() throws PoolException {
         try {
             Connection connection = freeConnections.take();
@@ -91,11 +105,19 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Release connection.
+     *
+     * @param connection the connection
+     */
     public void releaseConnection(Connection connection) {
         takenConnections.remove(connection);
         freeConnections.offer(connection);
     }
 
+    /**
+     * Destroy.
+     */
     public void destroy() {
         freeConnections.addAll(takenConnections);
         takenConnections.clear();

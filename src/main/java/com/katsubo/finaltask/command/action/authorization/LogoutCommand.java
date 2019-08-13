@@ -14,6 +14,9 @@ import javax.servlet.http.HttpSession;
 
 import static com.katsubo.finaltask.util.Constances.*;
 
+/**
+ * The type Logout command.
+ */
 public class LogoutCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LogoutCommand.class);
 

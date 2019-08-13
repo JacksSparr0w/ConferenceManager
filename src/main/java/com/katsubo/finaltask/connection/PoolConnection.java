@@ -8,12 +8,20 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+/**
+ * The type Pool connection.
+ */
 public class PoolConnection implements Connection, AutoCloseable {
 
     private static final Logger LOGGER = LogManager.getLogger(PoolConnection.class);
 
     private Connection connection;
 
+    /**
+     * Instantiates a new Pool connection.
+     *
+     * @param connection the connection
+     */
     PoolConnection(Connection connection) {
         this.connection = connection;
     }
@@ -69,6 +77,9 @@ public class PoolConnection implements Connection, AutoCloseable {
         ConnectionPool.getInstance().releaseConnection(this);
     }
 
+    /**
+     * Real close.
+     */
     public void realClose() {
         try {
             connection.close();

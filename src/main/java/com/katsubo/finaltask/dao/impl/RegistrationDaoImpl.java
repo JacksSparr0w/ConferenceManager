@@ -16,6 +16,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Registration dao.
+ */
 public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao {
     private static final Logger logger = LogManager.getLogger(RegistrationDaoImpl.class);
     private static final String READ_USERS_ON_EVENT = "SELECT `user_id`, `user_role` FROM `registrations` WHERE `event_id` = ?";

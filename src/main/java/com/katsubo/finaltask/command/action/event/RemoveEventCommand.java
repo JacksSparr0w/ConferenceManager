@@ -18,6 +18,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Remove event command.
+ */
 public class RemoveEventCommand implements Command {
     private static final String ERROR = "error";
     private static final String DONE = "done";

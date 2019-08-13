@@ -20,6 +20,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Edit user command.
+ */
 public class EditUserCommand implements Command {
     private static final String ERROR = "error";
     private static final String USER_EDIT_SUCCESS = "user.edit.success";

@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type All users command.
+ */
 public class AllUsersCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AllUsersCommand.class);
 
@@ -28,7 +31,7 @@ public class AllUsersCommand implements Command {
     private static final String USERS_INFO = "users_info";
     private static final String ERROR_FIND_USERS = "error_find_users";
     private static final String ERROR_FIND_USERS_INFO = "error_find_users_info";
-    public static final String ERROR = "error";
+    private static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

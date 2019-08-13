@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The type Edit event command.
+ */
 public class EditEventCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditEventCommand.class);
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");

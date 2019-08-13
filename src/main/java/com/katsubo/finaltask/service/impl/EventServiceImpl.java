@@ -11,9 +11,17 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The type Event service.
+ */
 public class EventServiceImpl extends ServiceImpl implements EventService {
     private static final Logger logger = LogManager.getLogger(EventServiceImpl.class);
 
+    /**
+     * Instantiates a new Event service.
+     *
+     * @throws ServiceException the service exception
+     */
     public EventServiceImpl() throws ServiceException {
     }
 

@@ -7,9 +7,15 @@ import com.katsubo.finaltask.util.menu.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class provides menu for users
+ */
 public class UserMenu implements Menu {
     private List<MenuItem> items;
 
+    /**
+     * Initialize user menu by menu items
+     */
     public UserMenu() {
         items = new ArrayList<>();
         items.add(new MenuItem("menu.my_conferences", ResourceManager.getProperty("command.userEvents")));
@@ -17,6 +23,9 @@ public class UserMenu implements Menu {
         items.add(new MenuItem("menu.add_conference", ResourceManager.getProperty("command.addEventPage")));
     }
 
+    /**
+     * @return list of menu items
+     */
     @Override
     public List<MenuItem> getMenuItems() {
         return items;

@@ -20,13 +20,16 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Profile command.
+ */
 public class ProfileCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ProfileCommand.class);
     private static final String ERROR_FIND_USER_DTO = "error_find_user_dto";
     private static final String ERROR_FIND_USER = "error_find_user";
     private static final String ERROR_FIND_USER_INFO = "error_find_userInfo";
-    public static final String ERROR = "error";
-    public static final String DONE = "done";
+    private static final String ERROR = "error";
+    private static final String DONE = "done";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

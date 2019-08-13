@@ -1,5 +1,8 @@
 package com.katsubo.finaltask.service;
 
+/**
+ * The type Service exception.
+ */
 public class ServiceException extends Exception {
     public ServiceException() {
     }

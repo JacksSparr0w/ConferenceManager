@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type All events command.
+ */
 public class AllEventsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AllEventsCommand.class);
     private static final String THERE_NOT_EVENTS = "there_not_events";

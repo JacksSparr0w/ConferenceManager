@@ -2,15 +2,15 @@ package com.katsubo.finaltask.command.action.authorization;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
-import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.command.menu.Menu;
-import com.katsubo.finaltask.command.menu.MenuFactory;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
+import com.katsubo.finaltask.util.ResourceManager;
+import com.katsubo.finaltask.util.menu.Menu;
+import com.katsubo.finaltask.util.menu.MenuFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static com.katsubo.finaltask.util.Constances.*;
+import static com.katsubo.finaltask.util.Constances.USER;
 
+/**
+ * The type Login command.
+ */
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
     private static final String LOGIN = "login";
@@ -28,7 +31,7 @@ public class LoginCommand implements Command {
     private static final String ERROR_LOGIN = "error_login";
     private static final String ERROR_PASSWORD = "error_password";
     private static final String ERROR_AUTHENTIFICATION = "authorization.error";
-    public static final String ERROR = "error";
+    private static final String ERROR = "error";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

@@ -10,6 +10,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Change language command.
+ */
 public class ChangeLanguageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeLanguageCommand.class);
 

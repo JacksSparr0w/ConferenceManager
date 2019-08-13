@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Home page command.
+ */
 public class HomePageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(HomePageCommand.class);
     private static final String LANGUAGE = "language";

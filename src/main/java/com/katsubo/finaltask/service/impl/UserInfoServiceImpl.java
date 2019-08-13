@@ -10,9 +10,17 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The type User info service.
+ */
 public class UserInfoServiceImpl extends ServiceImpl implements UserInfoService {
     private static final Logger logger = LogManager.getLogger(UserInfoServiceImpl.class);
 
+    /**
+     * Instantiates a new User info service.
+     *
+     * @throws ServiceException the service exception
+     */
     public UserInfoServiceImpl() throws ServiceException {
     }
 

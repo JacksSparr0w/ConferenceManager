@@ -10,6 +10,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
+/**
+ * The type User info dao.
+ */
 public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
     private static final String READ_BY_USER = "SELECT `id`, `name`, `surname`, `about`, `picture_link`, `email`, `date_of_birth`, `date_of_registration` FROM `user_info` WHERE `user_id` = ?";
     private static final String CREATE = "INSERT INTO `user_info` (`user_id`, `name`, `surname`, `email`, `date_of_birth`, `date_of_registration`) VALUE (?, ?, ?, ?, ?, ?)";

@@ -12,9 +12,17 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The type User service.
+ */
 public class UserServiceImpl extends ServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @throws ServiceException the service exception
+     */
     public UserServiceImpl() throws ServiceException {
     }
 

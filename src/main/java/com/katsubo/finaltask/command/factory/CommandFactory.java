@@ -12,6 +12,9 @@ import com.katsubo.finaltask.command.action.useraction.*;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * The type Command factory.
+ */
 public class CommandFactory {
     private static Map<CommandType, Command> commands = new EnumMap<>(CommandType.class);
     static {
@@ -39,6 +42,13 @@ public class CommandFactory {
         commands.put(CommandType.START_PAGE, new HomePageCommand());
         commands.put(CommandType.ALL_EVENTS, new AllEventsCommand());
     }
+
+    /**
+     * Create command.
+     *
+     * @param command the command
+     * @return the command
+     */
     public static Command create(String command){
         return commands.get(CommandType.of(command));
     }

@@ -7,9 +7,15 @@ import com.katsubo.finaltask.util.menu.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class provides menu for administrators
+ */
 public class AdministratorMenu implements Menu {
     private List<MenuItem> items;
 
+    /**
+     * Initialize administrator menu by menu items
+     */
     public AdministratorMenu() {
         items = new ArrayList<>();
         items.add(new MenuItem("menu.my_conferences", ResourceManager.getProperty("command.userEvents")));
@@ -19,6 +25,9 @@ public class AdministratorMenu implements Menu {
 
     }
 
+    /**
+     * @return list of menu items
+     */
     @Override
     public List<MenuItem> getMenuItems() {
         return items;

@@ -17,8 +17,17 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Leave event command.
+ */
 public class LeaveEventCommand implements Command {
+    /**
+     * The constant ERROR.
+     */
     public static final String ERROR = "error";
+    /**
+     * The constant EVENT_LEAVE_SUCCESS.
+     */
     public static final String EVENT_LEAVE_SUCCESS = "event.leave.success";
     private static final Logger logger = LogManager.getLogger(RegisterToEventCommand.class);
     private static final String EVENT_ID = "eventId";
