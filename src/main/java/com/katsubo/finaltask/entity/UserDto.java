@@ -1,7 +1,5 @@
 package com.katsubo.finaltask.entity;
 
-import com.katsubo.finaltask.entity.enums.Permission;
-
 import java.util.Objects;
 
 /**
@@ -10,7 +8,7 @@ import java.util.Objects;
 public class UserDto {
     private Integer userId;
     private String login;
-    private Permission permission;
+    private Value permission;
 
     /**
      * Instantiates a new User dto.
@@ -71,7 +69,7 @@ public class UserDto {
      *
      * @return the permission
      */
-    public Permission getPermission() {
+    public Value getPermission() {
         return permission;
     }
 
@@ -80,7 +78,7 @@ public class UserDto {
      *
      * @param permission the permission
      */
-    public void setPermission(Permission permission) {
+    public void setPermission(Value permission) {
         this.permission = permission;
     }
 

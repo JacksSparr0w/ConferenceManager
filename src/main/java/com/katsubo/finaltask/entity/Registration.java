@@ -1,7 +1,5 @@
 package com.katsubo.finaltask.entity;
 
-import com.katsubo.finaltask.entity.enums.Role;
-
 import java.util.Objects;
 
 /**
@@ -10,7 +8,7 @@ import java.util.Objects;
 public class Registration extends Entity {
     private Integer userId;
     private Integer eventId;
-    private Role role;
+    private Value role;
 
     /**
      * Instantiates a new Registration.
@@ -25,7 +23,7 @@ public class Registration extends Entity {
      * @param eventId the event id
      * @param role    the role
      */
-    public Registration(Integer userId, Integer eventId, Role role) {
+    public Registration(Integer userId, Integer eventId, Value role) {
         this.userId = userId;
         this.eventId = eventId;
         this.role = role;
@@ -72,7 +70,7 @@ public class Registration extends Entity {
      *
      * @return the role
      */
-    public Role getRole() {
+    public Value getRole() {
         return role;
     }
 
@@ -81,7 +79,7 @@ public class Registration extends Entity {
      *
      * @param role the role
      */
-    public void setRole(Role role) {
+    public void setRole(Value role) {
         this.role = role;
     }
 

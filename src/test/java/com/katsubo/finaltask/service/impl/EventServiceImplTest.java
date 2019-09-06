@@ -4,7 +4,6 @@ import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.enums.Permission;
-import com.katsubo.finaltask.entity.enums.Theme;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;

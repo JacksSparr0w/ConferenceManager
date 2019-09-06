@@ -1,7 +1,5 @@
 package com.katsubo.finaltask.entity;
 
-import com.katsubo.finaltask.entity.enums.Permission;
-
 import java.util.Objects;
 
 /**
@@ -10,7 +8,7 @@ import java.util.Objects;
 public class User extends Entity {
     private String login;
     private String password;
-    private Permission permission;
+    private Value permission;
 
     /**
      * Gets login.
@@ -53,7 +51,7 @@ public class User extends Entity {
      *
      * @return the permission
      */
-    public Permission getPermission() {
+    public Value getPermission() {
         return permission;
     }
 
@@ -62,7 +60,7 @@ public class User extends Entity {
      *
      * @param permission the permission
      */
-    public void setPermission(Permission permission) {
+    public void setPermission(Value permission) {
         this.permission = permission;
     }
 

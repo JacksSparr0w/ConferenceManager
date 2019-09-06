@@ -1,7 +1,6 @@
 package com.katsubo.finaltask.entity;
 
-import com.katsubo.finaltask.entity.enums.Theme;
-
+import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 
@@ -12,11 +11,12 @@ public class Event extends Entity {
     private String name;
     private String description;
     private String pictureLink;
-    private Theme theme;
+    private Value theme;
     private Date date;
     private Address address;
     private Integer author_id;
     private Integer capacity;
+    private Date duration;
     private String shortDescription;
 
     /**
@@ -80,7 +80,7 @@ public class Event extends Entity {
      *
      * @return the theme
      */
-    public Theme getTheme() {
+    public Value getTheme() {
         return theme;
     }
 
@@ -89,7 +89,7 @@ public class Event extends Entity {
      *
      * @param theme the theme
      */
-    public void setTheme(Theme theme) {
+    public void setTheme(Value theme) {
         this.theme = theme;
     }
 
@@ -183,6 +183,14 @@ public class Event extends Entity {
         this.author_id = author_id;
     }
 
+    public Date getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Date duration) {
+        this.duration = duration;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -191,15 +199,18 @@ public class Event extends Entity {
         Event event = (Event) o;
         return Objects.equals(name, event.name) &&
                 Objects.equals(description, event.description) &&
-                theme == event.theme &&
+                Objects.equals(pictureLink, event.pictureLink) &&
+                Objects.equals(theme, event.theme) &&
                 Objects.equals(date, event.date) &&
                 Objects.equals(address, event.address) &&
-                Objects.equals(capacity, event.capacity);
+                Objects.equals(author_id, event.author_id) &&
+                Objects.equals(capacity, event.capacity) &&
+                Objects.equals(duration, event.duration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, theme, date, address, capacity);
+        return Objects.hash(super.hashCode(), name, description, pictureLink, theme, date, address, author_id, capacity, duration);
     }
 
     @Override
@@ -207,10 +218,13 @@ public class Event extends Entity {
         return "Event{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", pictureLink='" + pictureLink + '\'' +
                 ", theme=" + theme +
-                ", date=" + new Date(date.getTime()) +
+                ", date=" + date +
                 ", address=" + address +
+                ", author_id=" + author_id +
                 ", capacity=" + capacity +
+                ", duration=" + duration +
                 '}';
     }
 }

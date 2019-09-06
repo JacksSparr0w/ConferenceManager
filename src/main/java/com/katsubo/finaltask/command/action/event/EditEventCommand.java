@@ -5,7 +5,6 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
-import com.katsubo.finaltask.entity.enums.Theme;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;

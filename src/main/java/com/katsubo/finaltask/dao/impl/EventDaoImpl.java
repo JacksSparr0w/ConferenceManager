@@ -4,7 +4,6 @@ import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
-import com.katsubo.finaltask.entity.enums.Theme;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

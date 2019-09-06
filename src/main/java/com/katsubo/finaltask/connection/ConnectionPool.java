@@ -13,6 +13,7 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -22,7 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConnectionPool {
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
 
-    private volatile static ConnectionPool connectionPool;
+    private static AtomicReference<ConnectionPool> connectionPoolReference = new AtomicReference<>();
     private static final int INITIAL_CAPACITY = 15;
     private static Lock lock = new ReentrantLock();
     private BlockingQueue<Connection> freeConnections = new ArrayBlockingQueue<>(INITIAL_CAPACITY);
@@ -32,7 +33,7 @@ public class ConnectionPool {
 
         try {
             lock.lock();
-            if (connectionPool != null) {
+            if (connectionPoolReference.get() != null) {
                 throw new UnsupportedOperationException();
             } else {
                 DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
@@ -52,11 +53,11 @@ public class ConnectionPool {
      * @return the instance
      */
     public static ConnectionPool getInstance() {
-        if (connectionPool == null) {
+        if (connectionPoolReference.get() == null) {
             try {
                 lock.lock();
-                if (connectionPool == null) {
-                    connectionPool = new ConnectionPool();
+                if (connectionPoolReference.get() == null) {
+                    connectionPoolReference.set(new ConnectionPool());
                 }
             } catch (PoolException e) {
                 logger.log(Level.ERROR, "Can't get instance", e);
@@ -65,7 +66,7 @@ public class ConnectionPool {
                 lock.unlock();
             }
         }
-        return connectionPool;
+        return connectionPoolReference.get();
     }
 
     private void init() throws PoolException{

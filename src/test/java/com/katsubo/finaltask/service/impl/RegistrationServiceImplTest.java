@@ -6,7 +6,6 @@ import com.katsubo.finaltask.entity.Registration;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.enums.Permission;
 import com.katsubo.finaltask.entity.enums.Role;
-import com.katsubo.finaltask.entity.enums.Theme;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.RegistrationService;
 import com.katsubo.finaltask.service.ServiceException;

@@ -5,24 +5,11 @@ import java.util.Objects;
 /**
  * The type Address.
  */
-public class Address {
+public class Address extends Entity{
     private String country;
     private String city;
     private String street;
-    private int building;
-
-    /**
-     * Instantiates a new Address.
-     *
-     * @param address the address
-     */
-    public Address(String address) {
-        String[] strings = address.split(", ");
-        this.country = strings[0];
-        this.city = strings[1];
-        this.street = strings[2];
-        this.building = Integer.valueOf(strings[3]);
-    }
+    private String building;
 
     /**
      * Instantiates a new Address.
@@ -32,7 +19,7 @@ public class Address {
      * @param street   the street
      * @param building the building
      */
-    public Address(String country, String city, String street, int building) {
+    public Address(String country, String city, String street, String building) {
         this.country = country;
         this.city = city;
         this.street = street;
@@ -98,7 +85,7 @@ public class Address {
      *
      * @return the building
      */
-    public int getBuilding() {
+    public String getBuilding() {
         return building;
     }
 
@@ -107,7 +94,7 @@ public class Address {
      *
      * @param building the building
      */
-    public void setBuilding(int building) {
+    public void setBuilding(String building) {
         this.building = building;
     }
 
@@ -115,11 +102,11 @@ public class Address {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Address adress = (Address) o;
-        return building == adress.building &&
-                Objects.equals(country, adress.country) &&
-                Objects.equals(city, adress.city) &&
-                Objects.equals(street, adress.street);
+        Address address = (Address) o;
+        return Objects.equals(country, address.country) &&
+                Objects.equals(city, address.city) &&
+                Objects.equals(street, address.street) &&
+                Objects.equals(building, address.building);
     }
 
     @Override
