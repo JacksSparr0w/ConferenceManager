@@ -1,11 +1,6 @@
 package com.katsubo.finaltask.service.impl;
 
-import com.katsubo.finaltask.entity.Address;
-import com.katsubo.finaltask.entity.Event;
-import com.katsubo.finaltask.entity.Registration;
-import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.enums.Permission;
-import com.katsubo.finaltask.entity.enums.Role;
+import com.katsubo.finaltask.entity.*;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.RegistrationService;
 import com.katsubo.finaltask.service.ServiceException;
@@ -19,16 +14,16 @@ import java.util.List;
 public class RegistrationServiceImplTest {
     private static final String LOGIN_1 = "test1";
     private static final String DESCRIPTION_1 = "description";
-    private static final Permission PERMISSION_1 = Permission.USER;
+    private static final Value PERMISSION_1 = new Value(1);
     private static final String PASSWORD_1 = "pass";
     private static final String EVENT_NAME_1 = "event1";
-    private static final Theme THEME_1 = Theme.BUSINESS;
+    private static final Value THEME_1 = new Value(1);
     private static final String DESCRIPTION_2 = "description";
     private static final String LOGIN_2 = "test2";
-    private static final Permission PERMISSION_2 = Permission.USER;
+    private static final Value PERMISSION_2 = new Value(1);
     private static final String PASSWORD_2 = "pass";
     private static final String EVENT_NAME_2 = "event1";
-    private static final Theme THEME_2 = Theme.BUSINESS;
+    private static final Value THEME_2 = new Value(1);
 
 
     private static User user1;
@@ -70,9 +65,10 @@ public class RegistrationServiceImplTest {
         event1.setDescription(DESCRIPTION_1);
         event1.setTheme(THEME_1);
         event1.setPictureLink("");
-        event1.setAddress(new Address("country", "city", "street", 100));
+        event1.setAddress(new Address("country", "city", "street", "100a"));
         event1.setDate(new Date(1565625305000L));
         event1.setCapacity(100);
+        event1.setDuration(new Date(3600000));
         event1.setAuthor_id(user1.getId());
         event1.setId(eventService.save(event1));
 
@@ -81,9 +77,10 @@ public class RegistrationServiceImplTest {
         event2.setDescription(DESCRIPTION_2);
         event2.setTheme(THEME_2);
         event2.setPictureLink("");
-        event2.setAddress(new Address("country", "city", "street", 200));
+        event2.setAddress(new Address("country", "city", "street", "200"));
         event2.setDate(new Date(1565625305000L));
         event2.setCapacity(200);
+        event1.setDuration(new Date(3600000));
         event2.setAuthor_id(user2.getId());
         event2.setId(eventService.save(event2));
     }
@@ -98,7 +95,7 @@ public class RegistrationServiceImplTest {
 
     @Test
     public void findUserEvents() throws ServiceException {
-        Registration registration = new Registration(user1.getId(), event1.getId(), Role.LISTENER);
+        Registration registration = new Registration(user1.getId(), event1.getId(), new Value(1));
         service.save(registration);
         registration.setEventId(event2.getId());
         service.save(registration);
@@ -114,7 +111,7 @@ public class RegistrationServiceImplTest {
 
     @Test
     public void findUsersOnEvent() throws ServiceException {
-        Registration registration = new Registration(user1.getId(), event1.getId(), Role.LISTENER);
+        Registration registration = new Registration(user1.getId(), event1.getId(), new Value(1));
         service.save(registration);
         registration.setUserId(user2.getId());
         service.save(registration);
@@ -129,10 +126,9 @@ public class RegistrationServiceImplTest {
     }
 
 
-
     @Test
     public void readByUserIdAndEventId() throws ServiceException {
-        Registration expected = new Registration(user1.getId(), event1.getId(), Role.LISTENER);
+        Registration expected = new Registration(user1.getId(), event1.getId(), new Value(1));
         service.save(expected);
         Registration actual = service.readByUserAndEvent(event1.getId(), user1.getId());
 
@@ -154,9 +150,9 @@ public class RegistrationServiceImplTest {
     @After
     public void clean() throws ServiceException {
         List<User> users = userService.findAll();
-        for (User user : users){
+        for (User user : users) {
             List<Event> userEvents = service.findUserEvents(user.getId());
-            for (Event event : userEvents){
+            for (Event event : userEvents) {
                 Registration registration = service.readByUserAndEvent(event.getId(), user.getId());
                 service.delete(registration.getId());
             }

@@ -2,9 +2,8 @@ package com.katsubo.finaltask.dao.impl;
 
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.RegistrationDao;
-import com.katsubo.finaltask.entity.Entity;
 import com.katsubo.finaltask.entity.Registration;
-import com.katsubo.finaltask.entity.enums.Role;
+import com.katsubo.finaltask.entity.Value;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,14 +19,15 @@ import java.util.List;
  * The type Registration dao.
  */
 public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao {
-    private static final Logger logger = LogManager.getLogger(RegistrationDaoImpl.class);
-    private static final String READ_USERS_ON_EVENT = "SELECT `user_id`, `user_role` FROM `registrations` WHERE `event_id` = ?";
-    private static final String READ_USER_EVENTS = "SELECT `event_id`, `user_role` FROM `registrations` WHERE `user_id` = ?";
+
+    private static final String READ_USERS_ON_EVENT = "SELECT `id`, `user_id`, `user_role` FROM `registrations` WHERE `event_id` = ?";
+    private static final String READ_USER_EVENTS = "SELECT `id`, `event_id`, `user_role` FROM `registrations` WHERE `user_id` = ?";
     private static final String CREATE = "INSERT INTO `registrations` (`user_id`, `event_id`, `user_role`) VALUE (?, ?, ?)";
     private static final String READ = "SELECT `user_id`, `event_id`, `user_role` FROM `registrations` WHERE `id` = ?";
     private static final String READ_BY_USER_AND_EVENT = "SELECT `id`, `user_role` FROM `registrations` WHERE `event_id` = ? AND `user_id` = ?";
     private static final String UPDATE = "UPDATE `registrations` SET `user_id` = ?, `event_id` = ?, `user_role` = ? WHERE `id` = ?";
     private static final String DELETE = "DELETE FROM `registrations` WHERE `id` = ?";
+    private static final Logger logger = LogManager.getLogger(RegistrationDaoImpl.class);
 
 
     @Override
@@ -39,7 +39,7 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             List<Registration> registrations = new ArrayList<>();
             while (resultSet.next()) {
                 Integer userId = resultSet.getInt("user_id");
-                Role role = Role.valueOf(resultSet.getString("user_role").toUpperCase());
+                Value role = new Value(resultSet.getInt("user_role"));
                 Registration registration = new Registration(userId, eventId, role);
                 registrations.add(registration);
             }
@@ -67,8 +67,10 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             List<Registration> registrations = new ArrayList<>();
             while (resultSet.next()) {
                 Integer eventId = resultSet.getInt("event_id");
-                Role role = Role.valueOf(resultSet.getString("user_role").toUpperCase());
+                Value role = new Value(resultSet.getInt("user_role"));
                 Registration registration = new Registration(userId, eventId, role);
+                registration.setId(resultSet.getInt("id"));
+
                 registrations.add(registration);
             }
             return registrations;
@@ -95,11 +97,9 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             resultSet = statement.executeQuery();
             Registration registration = null;
             if (resultSet.next()) {
-                registration = new Registration();
+                Value role = new Value(resultSet.getInt("user_role"));
+                registration = new Registration(userId, eventId, role);
                 registration.setId(resultSet.getInt("id"));
-                registration.setUserId(userId);
-                registration.setEventId(eventId);
-                registration.setRole(Role.valueOf(resultSet.getString("user_role").toUpperCase()));
             }
             return registration;
         } catch (SQLException e) {
@@ -122,7 +122,7 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
         try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, entity.getUserId());
             statement.setInt(2, entity.getEventId());
-            statement.setInt(3, entity.getRole().getFieldCode());
+            statement.setInt(3, entity.getRole().getId());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -154,11 +154,11 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             resultSet = statement.executeQuery();
             Registration registration = null;
             if (resultSet.next()) {
-                registration = new Registration();
-                registration.setId(id);
-                registration.setUserId(resultSet.getInt("user_id"));
-                registration.setEventId(resultSet.getInt("event_id"));
-                registration.setRole(Role.valueOf(resultSet.getString("user_role").toUpperCase()));
+                Integer eventId = resultSet.getInt("event_id");
+                Integer userId = resultSet.getInt("user_id");
+                Value role = new Value(resultSet.getInt("user_role"));
+                registration = new Registration(userId, eventId, role);
+                registration.setId(resultSet.getInt("id"));
             }
             return registration;
         } catch (SQLException e) {
@@ -180,7 +180,7 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setInt(1, entity.getUserId());
             statement.setInt(2, entity.getEventId());
-            statement.setInt(3, entity.getRole().getFieldCode());
+            statement.setInt(3, entity.getRole().getId());
             statement.setInt(4, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {

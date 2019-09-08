@@ -14,6 +14,15 @@ public class Address extends Entity{
     /**
      * Instantiates a new Address.
      *
+     * @param id the id
+     */
+    public Address(Integer id) {
+        setId(id);
+    }
+
+    /**
+     * Instantiates a new Address.
+     *
      * @param country  the country
      * @param city     the city
      * @param street   the street

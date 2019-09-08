@@ -3,8 +3,22 @@ package com.katsubo.finaltask.dao.impl;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.ThemeDao;
 import com.katsubo.finaltask.entity.Value;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class ThemeDaoImpl implements ThemeDao {
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class ThemeDaoImpl extends BaseDaoImpl implements ThemeDao {
+
+    private static final String CREATE = "INSERT INTO `theme` (`value`) VALUE (?)";
+    private static final String READ = "SELECT `value` FROM `theme` WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `theme` SET `value` = ? WHERE `id` = ?";
+    private static final String DELETE = "DELETE FROM `theme` WHERE `id` = ?";
+    private static final Logger logger = LogManager.getLogger(ThemeDaoImpl.class);
     /**
      * Create integer.
      *
@@ -14,7 +28,28 @@ public class ThemeDaoImpl implements ThemeDao {
      */
     @Override
     public Integer create(Value entity) throws DaoException {
-        return null;
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, entity.getValue());
+            statement.executeUpdate();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()){
+                return resultSet.getInt(1);
+            } else {
+                throw new SQLException();
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't create new theme");
+            throw new DaoException(e + "Can't create new theme");
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
     }
 
     /**
@@ -26,7 +61,29 @@ public class ThemeDaoImpl implements ThemeDao {
      */
     @Override
     public Value read(Integer id) throws DaoException {
-        return null;
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            Value theme = null;
+            if (resultSet.next()) {
+                theme = new Value();
+                theme.setId(id);
+                theme.setValue(resultSet.getString("value"));
+            }
+            return theme;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't read theme by id" + id);
+            throw new DaoException(e + "Can't read theme by id = " + id);
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
     }
 
     /**
@@ -37,7 +94,14 @@ public class ThemeDaoImpl implements ThemeDao {
      */
     @Override
     public void update(Value entity) throws DaoException {
-
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            statement.setString(1, entity.getValue());
+            statement.setInt(2, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't update theme");
+            throw new DaoException(e + "Can't update theme");
+        }
     }
 
     /**
@@ -48,6 +112,12 @@ public class ThemeDaoImpl implements ThemeDao {
      */
     @Override
     public void delete(Integer id) throws DaoException {
-
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't delete theme with id = " + id);
+            throw new DaoException(e + "Can't delete theme with id = " + id);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.katsubo.finaltask.dao;
 
 import com.katsubo.finaltask.entity.Event;
+import com.katsubo.finaltask.entity.Value;
 
 import java.util.Date;
 import java.util.List;
@@ -42,5 +43,5 @@ public interface EventDao extends Dao<Event> {
      * @return the list
      * @throws DaoException the dao exception
      */
-    List<Event> readByTheme(Theme search) throws DaoException;
+    List<Event> readByTheme(Value search) throws DaoException;
 }

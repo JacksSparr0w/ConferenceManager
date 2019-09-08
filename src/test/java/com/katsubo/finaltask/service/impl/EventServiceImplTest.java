@@ -3,7 +3,7 @@ package com.katsubo.finaltask.service.impl;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.enums.Permission;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
@@ -15,11 +15,11 @@ import java.util.List;
 
 public class EventServiceImplTest {
     private static final String DESCRIPTION = "description";
-    private static final Permission PERMISSION = Permission.USER;
+    private static final Value PERMISSION = new Value(1);
     private static final String PASSWORD = "pass";
     private static final String LOGIN = "test";
     private static final String EVENT_NAME = "event1";
-    private static final Theme THEME = Theme.BUSINESS;
+    private static final Value THEME = new Value(1);
     private static User user;
     private static Event event1;
     private static Event event2;
@@ -38,7 +38,7 @@ public class EventServiceImplTest {
         }
 
         List<User> users = userService.findAll();
-        for (User user : users){
+        for (User user : users) {
             userService.delete(user.getId());
         }
 
@@ -55,7 +55,7 @@ public class EventServiceImplTest {
     @AfterClass
     public static void cleanUser() throws ServiceException {
         List<User> users = userService.findAll();
-        for (User user : users){
+        for (User user : users) {
             userService.delete(user.getId());
         }
     }
@@ -69,9 +69,10 @@ public class EventServiceImplTest {
         event1.setDescription(DESCRIPTION);
         event1.setTheme(THEME);
         event1.setPictureLink("");
-        event1.setAddress(new Address("country", "city", "street", 100));
+        event1.setAddress(new Address("country", "city", "street", "100"));
         event1.setDate(new Date(1565625305000L));
         event1.setCapacity(100);
+        event1.setDuration(new Date(3600000));
 
         event1.setAuthor_id(user.getId());
 

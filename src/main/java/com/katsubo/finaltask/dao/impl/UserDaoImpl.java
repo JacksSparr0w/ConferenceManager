@@ -3,7 +3,7 @@ package com.katsubo.finaltask.dao.impl;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.UserDao;
 import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.enums.Permission;
+import com.katsubo.finaltask.entity.Value;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,10 +19,8 @@ import java.util.List;
  * The type User dao.
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
-    /**
-     * The constant READ_BY_LOGIN.
-     */
-    public static final String READ_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
+
+    private static final String READ_BY_LOGIN = "SELECT `id`, `login` FROM `user` WHERE `login` = ?";
     private static final String READ_BY_LOGIN_AND_PASSWORD = "SELECT `id`, `login`, `password`, `permission` FROM `user` WHERE `login` = ? AND `password` = ?";
     private static final String READ_ALL = "SELECT `id`, `login`, `password`, `permission` FROM `user` ORDER BY `login`";
     private static final String CREATE = "INSERT INTO `user` (`login`, `password`, `permission`) VALUE (?, ?, ?)";
@@ -44,7 +42,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.valueOf(resultSet.getString("permission").toUpperCase()));
+                user.setPermission(new Value(resultSet.getInt("permission")));
             }
             return user;
         } catch (SQLException e) {
@@ -98,7 +96,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.valueOf(resultSet.getString("permission").toUpperCase()));
+                user.setPermission(new Value(resultSet.getInt("permission")));
                 users.add(user);
             }
             return users;
@@ -122,7 +120,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
-            statement.setInt(3, entity.getPermission().getFieldCode());
+            statement.setInt(3, entity.getPermission().getId());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -157,7 +155,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(id);
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(Permission.valueOf(resultSet.getString("permission").toUpperCase()));
+                user.setPermission(new Value(resultSet.getInt("permission")));
             }
             return user;
         } catch (SQLException e) {
@@ -179,7 +177,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
-            statement.setInt(3, entity.getPermission().getFieldCode());
+            statement.setInt(3, entity.getPermission().getId());
             statement.setInt(4, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {

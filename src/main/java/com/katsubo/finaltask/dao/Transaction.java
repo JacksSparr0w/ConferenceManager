@@ -33,6 +33,34 @@ public interface Transaction {
     RegistrationDao getRegistrationDao();
 
     /**
+     * Gets address dao.
+     *
+     * @return the address dao
+     */
+    AddressDao getAddressDao();
+
+    /**
+     * Gets permission dao.
+     *
+     * @return the permission dao
+     */
+    PermissionDao getPermissionDao();
+
+    /**
+     * Gets theme dao.
+     *
+     * @return the theme dao
+     */
+    ThemeDao getThemeDao();
+
+    /**
+     * Gets role dao.
+     *
+     * @return the role dao
+     */
+    RoleDao getRoleDao();
+
+    /**
      * Commit.
      *
      * @throws DaoException the dao exception

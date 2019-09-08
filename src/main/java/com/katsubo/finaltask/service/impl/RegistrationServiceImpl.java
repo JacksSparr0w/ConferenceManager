@@ -1,12 +1,10 @@
 package com.katsubo.finaltask.service.impl;
 
-import com.katsubo.finaltask.dao.DaoException;
-import com.katsubo.finaltask.dao.EventDao;
-import com.katsubo.finaltask.dao.RegistrationDao;
-import com.katsubo.finaltask.dao.UserDao;
+import com.katsubo.finaltask.dao.*;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.Registration;
 import com.katsubo.finaltask.entity.User;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.RegistrationService;
 import com.katsubo.finaltask.service.ServiceException;
 import org.apache.logging.log4j.Level;
@@ -85,6 +83,7 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
             RegistrationDao dao = transaction.getRegistrationDao();
             try {
                 registration = dao.read(id);
+                setRole(registration);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
@@ -163,5 +162,11 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
             logger.log(Level.ERROR, "Parameter - userId or eventId is inalid");
             throw new ServiceException("Parameter - userId or eventId is invalid");
         }
+    }
+
+    private void setRole(Registration registration) throws DaoException {
+        RoleDao roleDao = transaction.getRoleDao();
+        Value role = roleDao.read(registration.getRole().getId());
+        registration.setRole(role);
     }
 }

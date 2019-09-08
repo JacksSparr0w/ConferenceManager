@@ -3,8 +3,23 @@ package com.katsubo.finaltask.dao.impl;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.RoleDao;
 import com.katsubo.finaltask.entity.Value;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class RoleDaoImpl implements RoleDao {
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class RoleDaoImpl extends BaseDaoImpl implements RoleDao {
+
+    private static final String CREATE = "INSERT INTO `user_role` (`value`) VALUE (?)";
+    private static final String READ = "SELECT `value` FROM `user_role` WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `user_role` SET `value` = ? WHERE `id` = ?";
+    private static final String DELETE = "DELETE FROM `user_role` WHERE `id` = ?";
+    private static final Logger logger = LogManager.getLogger(RoleDaoImpl.class);
+
     /**
      * Create integer.
      *
@@ -14,7 +29,28 @@ public class RoleDaoImpl implements RoleDao {
      */
     @Override
     public Integer create(Value entity) throws DaoException {
-        return null;
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, entity.getValue());
+            statement.executeUpdate();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new SQLException();
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't create new role");
+            throw new DaoException(e + "Can't create new role");
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
     }
 
     /**
@@ -26,7 +62,29 @@ public class RoleDaoImpl implements RoleDao {
      */
     @Override
     public Value read(Integer id) throws DaoException {
-        return null;
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            Value role = null;
+            if (resultSet.next()) {
+                role = new Value();
+                role.setId(id);
+                role.setValue(resultSet.getString("value"));
+            }
+            return role;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't read role by id" + id);
+            throw new DaoException(e + "Can't read role by id = " + id);
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
     }
 
     /**
@@ -37,7 +95,14 @@ public class RoleDaoImpl implements RoleDao {
      */
     @Override
     public void update(Value entity) throws DaoException {
-
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            statement.setString(1, entity.getValue());
+            statement.setInt(2, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't update role");
+            throw new DaoException(e + "Can't update role");
+        }
     }
 
     /**
@@ -48,6 +113,12 @@ public class RoleDaoImpl implements RoleDao {
      */
     @Override
     public void delete(Integer id) throws DaoException {
-
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't delete role with id = " + id);
+            throw new DaoException(e + "Can't delete role with id = " + id);
+        }
     }
 }

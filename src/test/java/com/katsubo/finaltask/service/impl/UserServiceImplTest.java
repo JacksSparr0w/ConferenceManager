@@ -1,7 +1,7 @@
 package com.katsubo.finaltask.service.impl;
 
 import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.enums.Permission;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
 import org.junit.*;
@@ -12,11 +12,11 @@ import java.util.List;
 public class UserServiceImplTest {
     private static final String LOGIN_1 = "test1";
     private static final String PASSWORD_1 = "pass1";
-    private static final Permission PERMISSION_1 = Permission.USER;
+    private static final Value PERMISSION_1 = new Value(1);
 
     private static final String LOGIN_2 = "test2";
     private static final String PASSWORD_2 = "pass2";
-    private static final Permission PERMISSION_2 = Permission.USER;
+    private static final Value PERMISSION_2 = new Value(1);
 
     private static User user1;
     private static User user2;

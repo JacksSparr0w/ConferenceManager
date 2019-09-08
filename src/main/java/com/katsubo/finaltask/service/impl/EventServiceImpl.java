@@ -1,8 +1,11 @@
 package com.katsubo.finaltask.service.impl;
 
+import com.katsubo.finaltask.dao.AddressDao;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
+import com.katsubo.finaltask.dao.ThemeDao;
 import com.katsubo.finaltask.entity.Event;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import org.apache.logging.log4j.Level;
@@ -31,6 +34,10 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
         EventDao dao = transaction.getEventDao();
         try {
             events = dao.read();
+            for (Event event : events) {
+                setTheme(event);
+            }
+
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -45,6 +52,7 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
             EventDao dao = transaction.getEventDao();
             try {
                 event = dao.read(id);
+                setTheme(event);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
@@ -61,11 +69,14 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
         if (event != null) {
             Integer id;
             EventDao dao = transaction.getEventDao();
+            AddressDao addressDao = transaction.getAddressDao();
             try {
                 if (event.getId() != null) {
                     id = event.getId();
                     dao.update(event);
+                    addressDao.update(event.getAddress());
                 } else {
+                    event.getAddress().setId(addressDao.create(event.getAddress()));
                     id = dao.create(event);
                 }
                 transaction.commit();
@@ -103,5 +114,11 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
             logger.log(Level.ERROR, "Parameter - ID is inalid");
             throw new ServiceException("Parameter - ID is invalid");
         }
+    }
+
+    private void setTheme(Event event) throws DaoException {
+        ThemeDao themeDao = transaction.getThemeDao();
+        Value theme = themeDao.read(event.getTheme().getId());
+        event.setTheme(theme);
     }
 }

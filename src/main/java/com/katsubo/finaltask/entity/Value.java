@@ -5,6 +5,10 @@ import java.util.Objects;
 public class Value extends Entity {
     private String value;
 
+    public Value(Integer id) {
+        setId(id);
+    }
+
     public String getValue() {
         return value;
     }

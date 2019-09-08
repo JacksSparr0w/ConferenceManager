@@ -2,7 +2,7 @@ package com.katsubo.finaltask.service.impl;
 
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserInfo;
-import com.katsubo.finaltask.entity.enums.Permission;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.UserService;
@@ -15,7 +15,7 @@ public class UserInfoServiceImplTest {
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
     private static final String SOME_MAIL_COM = "some@mail.com";
-    private static final Permission PERMISSION = Permission.USER;
+    private static final Value PERMISSION = new Value(1);
     private static final String PASSWORD = "pass";
     private static final String LOGIN = "test";
     private static User user;
@@ -31,7 +31,7 @@ public class UserInfoServiceImplTest {
         userService = new UserServiceImpl();
 
         List<User> users = userService.findAll();
-        for (User user : users){
+        for (User user : users) {
             userService.delete(user.getId());
         }
 
@@ -46,7 +46,7 @@ public class UserInfoServiceImplTest {
     @AfterClass
     public static void cleanUser() throws ServiceException {
         List<User> users = userService.findAll();
-        for (User user : users){
+        for (User user : users) {
             userService.delete(user.getId());
         }
     }

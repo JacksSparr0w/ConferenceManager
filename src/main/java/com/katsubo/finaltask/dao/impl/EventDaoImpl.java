@@ -4,6 +4,7 @@ import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
+import com.katsubo.finaltask.entity.Value;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,13 +18,13 @@ import java.util.List;
  * The type Event dao.
  */
 public class EventDaoImpl extends BaseDaoImpl implements EventDao {
-    private static final String READ_ALL = "SELECT `id`, `name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` ORDER BY `id`";
-    private static final String READ_BY_NAME = "SELECT `id`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `name` LIKE ? ORDER BY `name`";
-    private static final String READ_BY_DATE = "SELECT `id`, `name`, `description`, `picture_link`, `theme`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `date` LIKE ? ORDER BY `date`";
-    private static final String READ_BY_THEME = "SELECT `id`, `name`, `description`, `picture_link`, `date`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `theme` LIKE ? ORDER BY `theme`";
-    private static final String CREATE = "INSERT INTO `event_info` (`name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity`) VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String READ = "SELECT `name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity` FROM `event_info` WHERE `id` = ?";
-    private static final String UPDATE = "UPDATE `event_info` SET `name` = ?, `description` = ?, `picture_link` = ?, `theme` = ?, `date` = ?, `address` = ?, `author_id` = ?, `capacity` = ? WHERE `id` = ?";
+    private static final String READ_ALL = "SELECT `id`, `name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity`, `duration` FROM `event_info` ORDER BY `id`";
+    private static final String READ_BY_NAME = "SELECT `id`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity`, `duration` FROM `event_info` WHERE `name` LIKE ? ORDER BY `name`";
+    private static final String READ_BY_DATE = "SELECT `id`, `name`, `description`, `picture_link`, `theme`, `address`, `author_id`, `capacity`, `duration` FROM `event_info` WHERE `date` LIKE ? ORDER BY `date`";
+    private static final String READ_BY_THEME = "SELECT `id`, `name`, `description`, `picture_link`, `date`, `address`, `author_id`, `capacity`, `duration` FROM `event_info` WHERE `theme` LIKE ? ORDER BY `theme`";
+    private static final String CREATE = "INSERT INTO `event_info` (`name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity`, `duration`) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String READ = "SELECT `name`, `description`, `picture_link`, `theme`, `date`, `address`, `author_id`, `capacity`, `duration` FROM `event_info` WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `event_info` SET `name` = ?, `description` = ?, `picture_link` = ?, `theme` = ?, `date` = ?, `address` = ?, `author_id` = ?, `capacity` = ?, `duration` = ? WHERE `id` = ?";
     private static final String DELETE = "DELETE FROM `event_info` WHERE `id` = ?";
 
     private static final Logger logger = LogManager.getLogger(EventDaoImpl.class);
@@ -41,12 +42,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
-                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
+                event.setTheme(new Value(resultSet.getInt("theme")));
                 event.setDate(resultSet.getTimestamp("date"));
-                Address address = new Address(resultSet.getString("address"));
-                event.setAddress(address);
+                event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
+                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
                 events.add(event);
             }
             return events;
@@ -78,12 +79,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setName(search);
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
-                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
+                event.setTheme(new Value(resultSet.getInt("theme")));
                 event.setDate(resultSet.getTimestamp("date"));
-                Address address = new Address(resultSet.getString("address"));
-                event.setAddress(address);
+                event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
+                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
                 events.add(event);
             }
             return events;
@@ -115,12 +116,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
-                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
-                event.setDate(search);
-                Address address = new Address(resultSet.getString("address"));
-                event.setAddress(address);
+                event.setTheme(new Value(resultSet.getInt("theme")));
+                event.setDate(resultSet.getTimestamp("date"));
+                event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
+                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
                 events.add(event);
             }
             return events;
@@ -139,10 +140,10 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
     }
 
     @Override
-    public List<Event> readByTheme(Theme search) throws DaoException {
+    public List<Event> readByTheme(Value search) throws DaoException {
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(READ_BY_THEME)) {
-            statement.setInt(1, search.getFieldCode());
+            statement.setInt(1, search.getId());
             resultSet = statement.executeQuery();
             List<Event> events = new ArrayList<>();
             Event event = null;
@@ -154,10 +155,10 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setPictureLink(resultSet.getString("picture_link"));
                 event.setTheme(search);
                 event.setDate(resultSet.getTimestamp("date"));
-                Address address = new Address(resultSet.getString("address"));
-                event.setAddress(address);
+                event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
+                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
                 events.add(event);
             }
             return events;
@@ -182,7 +183,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
             statement.setString(3, entity.getPictureLink());
-            statement.setInt(4, entity.getTheme().getFieldCode());
+            statement.setInt(4, entity.getTheme().getId());
             statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
             statement.setString(6, entity.getAddress().toString());
             statement.setInt(7, entity.getAuthor_id());
@@ -221,12 +222,12 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setName(resultSet.getString("name"));
                 event.setDescription(resultSet.getString("description"));
                 event.setPictureLink(resultSet.getString("picture_link"));
-                event.setTheme(Theme.valueOf(resultSet.getString("theme").toUpperCase()));
+                event.setTheme(new Value(resultSet.getInt("theme")));
                 event.setDate(resultSet.getTimestamp("date"));
-                Address address = new Address(resultSet.getString("address"));
-                event.setAddress(address);
+                event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
+                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
             }
             return event;
         } catch (SQLException e) {
@@ -249,7 +250,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getDescription());
             statement.setString(3, entity.getPictureLink());
-            statement.setInt(4, entity.getTheme().getFieldCode());
+            statement.setInt(4, entity.getTheme().getId());
             statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
             statement.setString(6, entity.getAddress().toString());
             statement.setInt(7, entity.getAuthor_id());
