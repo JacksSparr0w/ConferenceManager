@@ -11,9 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoleDaoImpl extends BaseDaoImpl implements RoleDao {
 
+    private static final String READ_ALL = "SELECT `id`, `value` FROM `user_role` ORDER BY `id`";
     private static final String CREATE = "INSERT INTO `user_role` (`value`) VALUE (?)";
     private static final String READ = "SELECT `value` FROM `user_role` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `user_role` SET `value` = ? WHERE `id` = ?";
@@ -68,7 +71,7 @@ public class RoleDaoImpl extends BaseDaoImpl implements RoleDao {
             resultSet = statement.executeQuery();
             Value role = null;
             if (resultSet.next()) {
-                role = new Value();
+                role = new Value(id);
                 role.setId(id);
                 role.setValue(resultSet.getString("value"));
             }
@@ -119,6 +122,33 @@ public class RoleDaoImpl extends BaseDaoImpl implements RoleDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't delete role with id = " + id);
             throw new DaoException(e + "Can't delete role with id = " + id);
+        }
+    }
+
+    @Override
+    public List<Value> read() throws DaoException {
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(READ_ALL)) {
+            resultSet = statement.executeQuery();
+            List<Value> roles = new ArrayList<>();
+            Value role = null;
+            while (resultSet.next()) {
+                role = new Value(resultSet.getInt("id"));
+                role.setValue(resultSet.getString("value"));
+                roles.add(role);
+            }
+            return roles;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't read all roles");
+            throw new DaoException(e + "Can't read all roles");
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
         }
     }
 }

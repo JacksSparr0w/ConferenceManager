@@ -6,6 +6,7 @@ import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
@@ -90,7 +91,7 @@ public class AddEventCommand implements Command {
             if (part != null && part.getSize() > 0) {
                 String path = getPath();
                 String format = part.getContentType().substring(part.getContentType().lastIndexOf('/') + 1);
-                String fileName = DigestUtils.md2Hex(event.getName()+event.getDate() + "." + format);
+                String fileName = DigestUtils.md2Hex(event.getName() + event.getDate() + "." + format);
                 if (!formats.contains(format.toLowerCase())) {
                     logger.log(Level.WARN, INVALID_TYPE_OF_FILE);
                     return failure(INVALID_TYPE_OF_FILE, request);
@@ -107,7 +108,7 @@ public class AddEventCommand implements Command {
             return failure(ERROR_ADD_EVENT, request);
         }
 
-        event.setTheme(Theme.valueOf(parameters.get(THEME).toUpperCase()));
+        event.setTheme(new Value(Integer.valueOf(THEME)));
         Date date;
         try {
             date = format.parse(parameters.get(DATE));
@@ -121,7 +122,7 @@ public class AddEventCommand implements Command {
                 parameters.get(COUNTRY),
                 parameters.get(CITY),
                 parameters.get(STREET),
-                Integer.valueOf(parameters.get(BUILDING))
+                parameters.get(BUILDING)
         ));
 
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());

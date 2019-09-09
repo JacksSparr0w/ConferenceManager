@@ -3,10 +3,7 @@ package com.katsubo.finaltask.command.action.authorization;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.UserDto;
-import com.katsubo.finaltask.entity.UserInfo;
-import com.katsubo.finaltask.entity.enums.Permission;
+import com.katsubo.finaltask.entity.*;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.UserService;
@@ -93,7 +90,7 @@ public class RegisterCommand implements Command {
         User user = new User();
         user.setLogin(parameters.get(LOGIN));
         user.setPassword(parameters.get(PASSWORD));
-        user.setPermission(Permission.USER);
+        user.setPermission(new Value(BasePermission.USER));
 
         UserInfo info = new UserInfo();
         info.setUser(user);

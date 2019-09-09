@@ -82,10 +82,9 @@
                 <div class="form-group">
                     <label for="selectTheme">${theme}</label>
                     <select class="form-control" id="selectTheme" name="theme">
-                        <option value="business">${business}</option>
-                        <option value="advertising">${advertising}</option>
-                        <option value="science">${science}</option>
-                        <option value="design">${design}</option>
+                        <c:forEach var="theme" items="${themes}">
+                            <option value="${theme.id}">${theme.value}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>

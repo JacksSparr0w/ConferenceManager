@@ -3,12 +3,15 @@ package com.katsubo.finaltask.command.action.event;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
+import com.katsubo.finaltask.entity.BasePermission;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
-import com.katsubo.finaltask.entity.enums.Permission;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
+import com.katsubo.finaltask.service.ThemeService;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
+import com.katsubo.finaltask.service.impl.ThemeServiceImpl;
 import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.util.ResourceManager;
 import org.apache.logging.log4j.Level;
@@ -17,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * The type Edit event page command.
@@ -27,6 +31,7 @@ public class EditEventPageCommand implements Command {
     private static final String ERROR_FIND_EVENT = "error_find_event";
     private static final String EVENT = "event";
     private static final String ERROR = "error";
+    public static final String THEMES = "themes";
     private Event event;
 
     @Override
@@ -39,14 +44,19 @@ public class EditEventPageCommand implements Command {
         try {
             UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
             Integer eventId = Integer.valueOf(request.getParameter(EVENT_ID));
-            if (checkRules(user, eventId)) {
-                request.setAttribute(EVENT, event);
-                request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.editEvent"));
-                String page = ResourceManager.getProperty("page.main");
-                return new CommandResult(page);
-            } else {
-                throw new ServiceException();
+            if (!checkRules(user, eventId)) {
+                throw new ServiceException("Not access");
+
             }
+
+            List<Value> themes = getThemes();
+            request.setAttribute(THEMES, themes);
+
+            request.setAttribute(EVENT, event);
+            request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.editEvent"));
+            String page = ResourceManager.getProperty("page.main");
+            return new CommandResult(page);
+
         } catch (NumberFormatException e) {
             logger.log(Level.WARN, ERROR_FIND_EVENT);
             return failure(ERROR_FIND_EVENT, request);
@@ -63,7 +73,7 @@ public class EditEventPageCommand implements Command {
         }
         EventService service = new EventServiceImpl();
         event = service.findById(eventId);
-        if (user.getPermission() == Permission.ADMINISTRATOR) {
+        if (user.getPermission().getId() == BasePermission.ADMINISTRATOR) {
             return true;
         }
 
@@ -71,6 +81,11 @@ public class EditEventPageCommand implements Command {
             throw new ServiceException(ERROR_FIND_EVENT);
         }
         return event.getAuthor_id().equals(user.getUserId());
+    }
+
+    private List<Value> getThemes() throws ServiceException {
+        ThemeService service = new ThemeServiceImpl();
+        return service.findAll();
     }
 
     private CommandResult failure(String error, HttpServletRequest request) {

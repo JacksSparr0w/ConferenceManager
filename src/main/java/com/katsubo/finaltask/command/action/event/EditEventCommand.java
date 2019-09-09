@@ -5,6 +5,7 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
@@ -96,7 +97,7 @@ public class EditEventCommand implements Command {
             if (part.getSize() > 0) {
                 String path = getPath();
                 String format = part.getContentType().substring(part.getContentType().lastIndexOf('/') + 1);
-                String fileName = DigestUtils.md2Hex(event.getName()+event.getDate() + "." + format);
+                String fileName = DigestUtils.md2Hex(event.getName() + event.getDate() + "." + format);
                 if (!formats.contains(format.toLowerCase())) {
                     logger.log(Level.WARN, INVALID_TYPE_OF_FILE);
                     return failure(INVALID_TYPE_OF_FILE, request);
@@ -115,7 +116,7 @@ public class EditEventCommand implements Command {
 
         String theme = request.getParameter(THEME);
         if (theme != null && !theme.isEmpty()) {
-            event.setTheme(Theme.valueOf(theme.toUpperCase()));
+            event.setTheme(new Value(Integer.valueOf(theme)));
         }
 
         Date date;
@@ -135,7 +136,7 @@ public class EditEventCommand implements Command {
                 city != null && !city.isEmpty() &&
                 street != null && !street.isEmpty() &&
                 building != null && !building.isEmpty()) {
-            event.setAddress(new Address(country, city, street, Integer.valueOf(building)));
+            event.setAddress(new Address(country, city, street, building));
         }
 
         String capacity = request.getParameter(CAPACITY);
@@ -158,14 +159,13 @@ public class EditEventCommand implements Command {
         }
 
         request.getSession().setAttribute(DONE, EVENT_EDIT_SUCCESS);
-        //request.setAttribute("event_id", event.getId());
         return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
     }
 
     private boolean valid(Event event) throws ValidatorException {
         Validator validator = new EventValidator();
-        String error =  validator.isValid(event);
-        if (error != null){
+        String error = validator.isValid(event);
+        if (error != null) {
             throw new ValidatorException(error);
         } else {
             return true;

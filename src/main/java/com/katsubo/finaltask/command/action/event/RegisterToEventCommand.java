@@ -6,7 +6,7 @@ import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.Registration;
 import com.katsubo.finaltask.entity.UserDto;
-import com.katsubo.finaltask.entity.enums.Role;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.RegistrationService;
 import com.katsubo.finaltask.service.ServiceException;
@@ -63,7 +63,8 @@ public class RegisterToEventCommand implements Command {
 
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         Integer userId = user.getUserId();
-        Registration registration = new Registration(userId, eventId, Role.LISTENER);
+        //todo create role
+        Registration registration = new Registration(userId, eventId, new Value(1));
         try {
             if (!registrationExist(eventId, userId)) {
                 register(registration);

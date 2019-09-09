@@ -11,14 +11,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ThemeDaoImpl extends BaseDaoImpl implements ThemeDao {
 
+    private static final String READ_ALL = "SELECT `id`, `value` FROM `theme` ORDER BY `id`";
     private static final String CREATE = "INSERT INTO `theme` (`value`) VALUE (?)";
     private static final String READ = "SELECT `value` FROM `theme` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `theme` SET `value` = ? WHERE `id` = ?";
     private static final String DELETE = "DELETE FROM `theme` WHERE `id` = ?";
     private static final Logger logger = LogManager.getLogger(ThemeDaoImpl.class);
+
     /**
      * Create integer.
      *
@@ -33,7 +37,7 @@ public class ThemeDaoImpl extends BaseDaoImpl implements ThemeDao {
             statement.setString(1, entity.getValue());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
                 throw new SQLException();
@@ -67,8 +71,7 @@ public class ThemeDaoImpl extends BaseDaoImpl implements ThemeDao {
             resultSet = statement.executeQuery();
             Value theme = null;
             if (resultSet.next()) {
-                theme = new Value();
-                theme.setId(id);
+                theme = new Value(id);
                 theme.setValue(resultSet.getString("value"));
             }
             return theme;
@@ -118,6 +121,33 @@ public class ThemeDaoImpl extends BaseDaoImpl implements ThemeDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't delete theme with id = " + id);
             throw new DaoException(e + "Can't delete theme with id = " + id);
+        }
+    }
+
+    @Override
+    public List<Value> read() throws DaoException {
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(READ_ALL)) {
+            resultSet = statement.executeQuery();
+            List<Value> themes = new ArrayList<>();
+            Value theme = null;
+            while (resultSet.next()) {
+                theme = new Value(resultSet.getInt("id"));
+                theme.setValue(resultSet.getString("value"));
+                themes.add(theme);
+            }
+            return themes;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't read all themes");
+            throw new DaoException(e + "Can't read all themes");
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
         }
     }
 }
