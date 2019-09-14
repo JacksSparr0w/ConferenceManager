@@ -3,6 +3,7 @@ package com.katsubo.finaltask.service.impl;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.PermissionDao;
 import com.katsubo.finaltask.dao.UserDao;
+import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.ServiceException;
@@ -11,7 +12,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.java2d.pipe.ValidatePipe;
 
 import java.util.List;
 
@@ -36,12 +36,6 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
         UserDao dao = transaction.getUserDao();
         try {
             users = dao.read();
-            PermissionDao permissionDao = transaction.getPermissionDao();
-            Value permission;
-            for (User user : users){
-                permission = permissionDao.read(user.getPermission().getId());
-                user.setPermission(permission);
-            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -56,7 +50,6 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
             UserDao dao = transaction.getUserDao();
             try {
                 user = dao.read(id);
-                readPermission(user);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
@@ -94,7 +87,6 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
                 UserDao dao = transaction.getUserDao();
                 try {
                     user = dao.read(login, DigestUtils.md5Hex(password));
-                    readPermission(user);
                 } catch (DaoException e) {
                     throw new ServiceException(e);
                 }
@@ -163,11 +155,5 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
             logger.log(Level.ERROR, "Parameter - ID is inalid");
             throw new ServiceException("Parameter - ID is invalid");
         }
-    }
-
-    private void readPermission(User user) throws DaoException {
-        PermissionDao permissionDao = transaction.getPermissionDao();
-        Value permission = permissionDao.read(user.getPermission().getId());
-        user.setPermission(permission);
     }
 }

@@ -1,7 +1,7 @@
 package com.katsubo.finaltask.dao;
 
-import com.katsubo.finaltask.entity.Value;
+import com.katsubo.finaltask.entity.Permission;
 
-public interface PermissionDao extends Dao<Value> {
+public interface PermissionDao extends Dao<Permission> {
 
 }

@@ -4,10 +4,12 @@ import com.katsubo.finaltask.dao.AddressDao;
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.EventDao;
 import com.katsubo.finaltask.dao.ThemeDao;
+import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
+import com.katsubo.finaltask.service.ThemeService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +38,7 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
             events = dao.read();
             for (Event event : events) {
                 setTheme(event);
+                setDate(event);
             }
 
         } catch (DaoException e) {
@@ -52,7 +55,10 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
             EventDao dao = transaction.getEventDao();
             try {
                 event = dao.read(id);
+                if (event == null)
+                    return event;
                 setTheme(event);
+                setDate(event);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
@@ -100,7 +106,10 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
         if (id != null && id > 0) {
             EventDao dao = transaction.getEventDao();
             try {
+                Event event = dao.read(id);
+                AddressDao addressDao = transaction.getAddressDao();
                 dao.delete(id);
+                addressDao.delete(event.getAddress().getId());
                 transaction.commit();
             } catch (DaoException e) {
                 try {
@@ -116,9 +125,15 @@ public class EventServiceImpl extends ServiceImpl implements EventService {
         }
     }
 
-    private void setTheme(Event event) throws DaoException {
-        ThemeDao themeDao = transaction.getThemeDao();
-        Value theme = themeDao.read(event.getTheme().getId());
+    private void setTheme(Event event) throws ServiceException {
+        ThemeService service = new ThemeServiceImpl();
+        Value theme = service.findById(event.getTheme().getId());
         event.setTheme(theme);
+    }
+
+    private void setDate(Event event) throws DaoException {
+        AddressDao addressDao = transaction.getAddressDao();
+        Address address = addressDao.read(event.getAddress().getId());
+        event.setAddress(address);
     }
 }

@@ -3,10 +3,11 @@ package com.katsubo.finaltask.command.action.event;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.entity.BasePermission;
+import com.katsubo.finaltask.command.factory.CommandType;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.Value;
+import com.katsubo.finaltask.filter.AccessSystem;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.ThemeService;
@@ -31,7 +32,7 @@ public class EditEventPageCommand implements Command {
     private static final String ERROR_FIND_EVENT = "error_find_event";
     private static final String EVENT = "event";
     private static final String ERROR = "error";
-    public static final String THEMES = "themes";
+    private static final String THEMES = "themes";
     private Event event;
 
     @Override
@@ -44,7 +45,7 @@ public class EditEventPageCommand implements Command {
         try {
             UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
             Integer eventId = Integer.valueOf(request.getParameter(EVENT_ID));
-            if (!checkRules(user, eventId)) {
+            if (!checkRules(eventId, user)) {
                 throw new ServiceException("Not access");
 
             }
@@ -67,20 +68,12 @@ public class EditEventPageCommand implements Command {
 
     }
 
-    private boolean checkRules(UserDto user, Integer eventId) throws ServiceException {
-        if (user == null) {
-            return false;
-        }
+    private boolean checkRules(Integer eventId, UserDto user) throws ServiceException {
         EventService service = new EventServiceImpl();
-        event = service.findById(eventId);
-        if (user.getPermission().getId() == BasePermission.ADMINISTRATOR) {
-            return true;
-        }
-
-        if (event == null) {
-            throw new ServiceException(ERROR_FIND_EVENT);
-        }
-        return event.getAuthor_id().equals(user.getUserId());
+        Event event = service.findById(eventId);
+        if (user == null) return false;
+        if (user.getUserId().equals(event.getAuthor_id())) return true;
+        return AccessSystem.checkAccess(CommandType.DELETE_ANY_EVENT);
     }
 
     private List<Value> getThemes() throws ServiceException {

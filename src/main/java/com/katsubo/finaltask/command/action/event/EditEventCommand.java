@@ -3,12 +3,16 @@ package com.katsubo.finaltask.command.action.event;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
+import com.katsubo.finaltask.command.factory.CommandType;
 import com.katsubo.finaltask.entity.Address;
 import com.katsubo.finaltask.entity.Event;
+import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.entity.Value;
+import com.katsubo.finaltask.filter.AccessSystem;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
+import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.validate.EventValidator;
 import com.katsubo.finaltask.validate.Validator;
@@ -55,6 +59,7 @@ public class EditEventCommand implements Command {
     private static final String EVENT_EDIT_SUCCESS = "event.edit.success";
     private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
     private static final List<String> formats = new ArrayList<>();
+    public static final String ACCESS_CLOSED = "access_closed";
 
     static {
         formats.add("jpg");
@@ -81,7 +86,10 @@ public class EditEventCommand implements Command {
             return failure(e.getMessage(), request);
         }
 
-
+        if (!checkRules(event.getAuthor_id(), (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName()))) {
+            logger.log(Level.WARN, "Access closed");
+            return failure(ACCESS_CLOSED, request);
+        }
         String name = request.getParameter(NAME);
         if (name != null && !name.isEmpty()) {
             event.setName(name);
@@ -160,6 +168,12 @@ public class EditEventCommand implements Command {
 
         request.getSession().setAttribute(DONE, EVENT_EDIT_SUCCESS);
         return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);
+    }
+
+    private boolean checkRules(Integer eventAuthor_id, UserDto userDto) {
+        if (userDto == null) return false;
+        if (userDto.getUserId().equals(eventAuthor_id)) return true;
+        return AccessSystem.checkAccess(CommandType.MODIFY_ANY_EVENT);
     }
 
     private boolean valid(Event event) throws ValidatorException {

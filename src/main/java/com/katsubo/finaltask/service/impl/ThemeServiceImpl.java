@@ -25,6 +25,22 @@ public class ThemeServiceImpl extends ServiceImpl implements ThemeService {
 
     }
 
+    @Override
+    public Value findById(Integer id) throws ServiceException {
+        Value value;
+        if (id != null) {
+            try {
+                value = transaction.getThemeDao().read(id);
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+            return value;
+        } else {
+            logger.log(Level.ERROR, "Argument - ID is invalid");
+            throw new ServiceException("Argument - ID is invalid");
+        }
+    }
+
     /**
      * Find all list.
      *
@@ -53,12 +69,16 @@ public class ThemeServiceImpl extends ServiceImpl implements ThemeService {
     @Override
     public Integer save(Value theme) throws ServiceException {
         if (theme != null) {
-            Integer id;
+            Integer id = null;
             try {
                 id = transaction.getThemeDao().create(theme);
                 transaction.commit();
             } catch (DaoException e) {
-                throw new ServiceException(e);
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
             }
             return id;
         } else {
@@ -80,7 +100,11 @@ public class ThemeServiceImpl extends ServiceImpl implements ThemeService {
                 transaction.getThemeDao().delete(id);
                 transaction.commit();
             } catch (DaoException e) {
-                throw new ServiceException(e);
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
             }
         } else {
             logger.log(Level.ERROR, "Argument - ID is invalid");

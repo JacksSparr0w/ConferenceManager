@@ -1,0 +1,2 @@
+2019-09-12 23:51:01,793 [main] ERROR com.katsubo.finaltask.service.impl.EventServiceImpl - Parameter - EVENT is invalid
+2019-09-12 23:51:01,883 [main] ERROR com.katsubo.finaltask.service.impl.EventServiceImpl - Parameter - ID is inalid

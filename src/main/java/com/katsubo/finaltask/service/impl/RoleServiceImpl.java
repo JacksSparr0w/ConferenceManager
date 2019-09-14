@@ -44,6 +44,29 @@ public class RoleServiceImpl extends ServiceImpl implements RoleService {
     }
 
     /**
+     * Find by id value.
+     *
+     * @param id the id
+     * @return the value
+     * @throws ServiceException the service exception
+     */
+    @Override
+    public Value findById(Integer id) throws ServiceException {
+        Value value;
+        if (id != null) {
+            try {
+                value = transaction.getRoleDao().read(id);
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+            return value;
+        } else {
+            logger.log(Level.ERROR, "Argument - ID is invalid");
+            throw new ServiceException("Argument - ID is invalid");
+        }
+    }
+
+    /**
      * Save integer.
      *
      * @param role the theme
@@ -53,12 +76,16 @@ public class RoleServiceImpl extends ServiceImpl implements RoleService {
     @Override
     public Integer save(Value role) throws ServiceException {
         if (role != null) {
-            Integer id;
+            Integer id = null;
             try {
                 id = transaction.getRoleDao().create(role);
                 transaction.commit();
             } catch (DaoException e) {
-                throw new ServiceException(e);
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
             }
             return id;
         } else {
@@ -80,7 +107,11 @@ public class RoleServiceImpl extends ServiceImpl implements RoleService {
                 transaction.getRoleDao().delete(id);
                 transaction.commit();
             } catch (DaoException e) {
-                throw new ServiceException(e);
+                try {
+                    transaction.rollback();
+                } catch (DaoException e1) {
+                    throw new ServiceException(e1);
+                }
             }
         } else {
             logger.log(Level.ERROR, "Argument - ID is invalid");

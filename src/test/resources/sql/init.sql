@@ -1,7 +1,7 @@
 USE `test`;
 
-INSERT INTO permission (id, value) VALUES (2, 'administrator');
-INSERT INTO permission (id, value) VALUES (1, 'user');
+INSERT INTO permission (id, name) VALUES (2, 'administrator');
+INSERT INTO permission (id, name) VALUES (1, 'user');
 
 INSERT INTO theme (id, value) VALUES (4, 'advertising');
 INSERT INTO theme (id, value) VALUES (1, 'business');

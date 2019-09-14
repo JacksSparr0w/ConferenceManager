@@ -1,10 +1,7 @@
 package com.katsubo.finaltask.service.impl;
 
 import com.katsubo.finaltask.entity.*;
-import com.katsubo.finaltask.service.EventService;
-import com.katsubo.finaltask.service.RegistrationService;
-import com.katsubo.finaltask.service.ServiceException;
-import com.katsubo.finaltask.service.UserService;
+import com.katsubo.finaltask.service.*;
 import org.junit.*;
 
 import java.util.ArrayList;
@@ -14,13 +11,13 @@ import java.util.List;
 public class RegistrationServiceImplTest {
     private static final String LOGIN_1 = "test1";
     private static final String DESCRIPTION_1 = "description";
-    private static final Value PERMISSION_1 = new Value(1);
+    private static final Integer PERMISSION_1 = new Integer(1);
     private static final String PASSWORD_1 = "pass";
     private static final String EVENT_NAME_1 = "event1";
     private static final Value THEME_1 = new Value(1);
     private static final String DESCRIPTION_2 = "description";
     private static final String LOGIN_2 = "test2";
-    private static final Value PERMISSION_2 = new Value(1);
+    private static final Integer PERMISSION_2 = new Integer(1);
     private static final String PASSWORD_2 = "pass";
     private static final String EVENT_NAME_2 = "event1";
     private static final Value THEME_2 = new Value(1);
@@ -46,6 +43,8 @@ public class RegistrationServiceImplTest {
             userService.delete(user.getId());
         }
 
+        ThemeService themeService = new ThemeServiceImpl();
+
         user1 = new User();
         user1.setLogin(LOGIN_1);
         user1.setPassword(PASSWORD_1);
@@ -63,7 +62,7 @@ public class RegistrationServiceImplTest {
         event1 = new Event();
         event1.setName(EVENT_NAME_1);
         event1.setDescription(DESCRIPTION_1);
-        event1.setTheme(THEME_1);
+        event1.setTheme(themeService.findById(THEME_1.getId()));
         event1.setPictureLink("");
         event1.setAddress(new Address("country", "city", "street", "100a"));
         event1.setDate(new Date(1565625305000L));
@@ -75,12 +74,12 @@ public class RegistrationServiceImplTest {
         event2 = new Event();
         event2.setName(EVENT_NAME_2);
         event2.setDescription(DESCRIPTION_2);
-        event2.setTheme(THEME_2);
+        event2.setTheme(themeService.findById(THEME_2.getId()));
         event2.setPictureLink("");
         event2.setAddress(new Address("country", "city", "street", "200"));
         event2.setDate(new Date(1565625305000L));
         event2.setCapacity(200);
-        event1.setDuration(new Date(3600000));
+        event2.setDuration(new Date(3600000));
         event2.setAuthor_id(user2.getId());
         event2.setId(eventService.save(event2));
     }

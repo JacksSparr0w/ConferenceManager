@@ -3,21 +3,23 @@ package com.katsubo.finaltask.command.action.authorization;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
+import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
+import com.katsubo.finaltask.filter.AccessSystem;
+import com.katsubo.finaltask.service.PermissionService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
+import com.katsubo.finaltask.service.impl.PermissionServiceImpl;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
-import com.katsubo.finaltask.util.menu.Menu;
-import com.katsubo.finaltask.util.menu.MenuFactory;
+import com.katsubo.finaltask.util.menu.MenuCreator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import static com.katsubo.finaltask.util.Constances.USER;
 
@@ -67,19 +69,27 @@ public class LoginCommand implements Command {
         UserService service = new UserServiceImpl();
         User user = service.findByLoginAndPassword(login, password);
         if (user != null && user.getId() != null) {
-            UserDto userDto = new UserDto(user);
-            HttpSession session = request.getSession();
-            session.setAttribute(USER.getFieldName(), userDto);
-            setMenuForUser(userDto, request);
+            setAttributesToSession(request, user);
             return true;
         } else {
             return false;
         }
     }
 
-    private void setMenuForUser(UserDto user, HttpServletRequest request) {
-        Menu menu = MenuFactory.getMenu(user.getPermission());
-        request.getSession().setAttribute("menu", menu.getMenuItems());
+    private void setAttributesToSession(HttpServletRequest request, User user) {
+        UserDto userDto = new UserDto(user);
+        request.getSession().setAttribute(USER.getFieldName(), userDto);
+        Permission permission = null;
+        try {
+            PermissionService service = new PermissionServiceImpl();
+            permission = service.read(user.getPermissionId());
+            request.getSession().setAttribute("permission", permission);
+        } catch (ServiceException e) {
+            logger.log(Level.WARN, "cant read permission, set default");
+            //todo
+        }
+        request.getSession().setAttribute("menu", MenuCreator.getMenuItems(permission));
+        AccessSystem.updateRules(userDto);
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {

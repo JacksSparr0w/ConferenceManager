@@ -1,16 +1,18 @@
 package com.katsubo.finaltask.filter;
 
-import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.command.factory.CommandType;
 import com.katsubo.finaltask.entity.UserDto;
-import com.katsubo.finaltask.entity.enums.Permission;
+import com.katsubo.finaltask.util.Constances;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.katsubo.finaltask.command.factory.CommandType.*;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static com.katsubo.finaltask.command.factory.CommandType.*;
 
 /**
  * The type Access.
@@ -40,8 +42,8 @@ public class Access {
         setUserRules();
         setAdminRules();
 
-        commandsAccess.put(Permission.ADMINISTRATOR.getFieldCode(), admin);
-        commandsAccess.put(Permission.USER.getFieldCode(), user);
+        //commandsAccess.put(Permission.ADMINISTRATOR.getFieldCode(), admin);
+        //commandsAccess.put(Permission.USER.getFieldCode(), user);
         commandsAccess.put(0, guest);
     }
 
@@ -94,7 +96,7 @@ public class Access {
         Integer accessLayer;
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         if (user != null) {
-            accessLayer = user.getPermission().getFieldCode();
+            accessLayer = user.getPermissionId();
         } else {
             accessLayer = 0;
         }

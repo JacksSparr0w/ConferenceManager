@@ -1,5 +1,5 @@
-INSERT INTO meetups.permission (id, value) VALUES (2, 'administrator');
-INSERT INTO meetups.permission (id, value) VALUES (1, 'user');
+INSERT INTO meetups.permission (id, name) VALUES (2, 'administrator');
+INSERT INTO meetups.permission (id, name) VALUES (1, 'user');
 
 INSERT INTO meetups.theme (id, value) VALUES (4, 'advertising');
 INSERT INTO meetups.theme (id, value) VALUES (1, 'business');

@@ -5,8 +5,7 @@ import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.Registration;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.Value;
-import com.katsubo.finaltask.service.RegistrationService;
-import com.katsubo.finaltask.service.ServiceException;
+import com.katsubo.finaltask.service.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,11 +33,11 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
             List<Registration> registrations = null;
             List<User> users = new ArrayList<>();
             RegistrationDao registrationDao = transaction.getRegistrationDao();
-            UserDao userDao = transaction.getUserDao();
+            UserService userService = new UserServiceImpl();
             try {
                 registrations = registrationDao.readUsersOnEvent(eventId);
                 for (Registration registration : registrations){
-                    User user = userDao.read(registration.getUserId());
+                    User user = userService.findById(registration.getUserId());
                     users.add(user);
                 }
             } catch (DaoException e) {
@@ -58,11 +57,11 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
             List<Registration> registrations = null;
             List<Event> events = new ArrayList<>();
             RegistrationDao registrationDao = transaction.getRegistrationDao();
-            EventDao eventDao = transaction.getEventDao();
+            EventService eventService = new EventServiceImpl();
             try {
                 registrations = registrationDao.readUserEvents(userId);
                 for (Registration registration : registrations){
-                    Event event = eventDao.read(registration.getEventId());
+                    Event event = eventService.findById(registration.getEventId());
                     events.add(event);
                 }
             } catch (DaoException e) {
@@ -164,9 +163,9 @@ public class RegistrationServiceImpl extends ServiceImpl implements Registration
         }
     }
 
-    private void setRole(Registration registration) throws DaoException {
-        RoleDao roleDao = transaction.getRoleDao();
-        Value role = roleDao.read(registration.getRole().getId());
+    private void setRole(Registration registration) throws ServiceException {
+        RoleService service = new RoleServiceImpl();
+        Value role = service.findById(registration.getRole().getId());
         registration.setRole(role);
     }
 }

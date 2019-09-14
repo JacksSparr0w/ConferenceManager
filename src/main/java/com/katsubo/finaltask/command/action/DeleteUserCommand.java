@@ -36,17 +36,15 @@ public class DeleteUserCommand implements Command {
         try {
             userId = Integer.valueOf(request.getParameter(USER_ID));
             deleteUser(userId);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             logger.log(Level.WARN, ERROR_DONT_FIND_USER);
-            return  failure(ERROR_DONT_FIND_USER, request);
+            return failure(ERROR_DONT_FIND_USER, request);
         } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(DELETE_FAIL, request);
         }
         request.getSession().setAttribute(DONE, DELETE_SUCCESS);
         return new CommandResult(ResourceManager.getProperty("command.allUsers"), true);
-
-
     }
 
     private void deleteUser(Integer userId) throws ServiceException {

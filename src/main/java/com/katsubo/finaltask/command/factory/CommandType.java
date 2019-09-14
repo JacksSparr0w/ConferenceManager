@@ -101,7 +101,34 @@ public enum CommandType {
     /**
      * All events command type.
      */
-    ALL_EVENTS("all_events");
+    ALL_EVENTS("all_events"),
+
+    /**
+     * Add role command type.
+     */
+    ADD_ROLE("add_role"),
+    /**
+     * Add theme command type.
+     */
+    ADD_THEME("add_theme"),
+    /**
+     * Add permission command type.
+     */
+    ADD_PERMISSION("add_permission"),
+    /**
+     * Change user permission command type.
+     */
+    CHANGE_USER_PERMISSION("change_user_permission"),
+
+    /**
+     * Modify all events command type.
+     */
+    MODIFY_ANY_EVENT("modify_any_event"),
+
+    /**
+     * Delete any event command type.
+     */
+    DELETE_ANY_EVENT("delete_any_event");
 
     private String fieldName;
 

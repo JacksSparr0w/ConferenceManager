@@ -51,7 +51,7 @@ public class EditUserCommand implements Command {
         } else if (!password.isEmpty()) {
             user.setPassword(password);
         }
-        user.setPermission(userDto.getPermission());
+        user.setPermission(userDto.getPermissionId());
         try {
             if (valid(user))
                 update(user);

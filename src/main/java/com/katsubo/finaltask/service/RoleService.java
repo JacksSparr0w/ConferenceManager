@@ -17,6 +17,15 @@ public interface RoleService extends Service {
     List<Value> findAll() throws ServiceException;
 
     /**
+     * Find by id value.
+     *
+     * @param id the id
+     * @return the value
+     * @throws ServiceException the service exception
+     */
+    Value findById(Integer id) throws ServiceException;
+
+    /**
      * Save integer.
      *
      * @param theme the theme

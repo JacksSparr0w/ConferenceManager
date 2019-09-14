@@ -79,7 +79,7 @@ public class AddressDaoImpl extends BaseDaoImpl implements AddressDao {
                         resultSet.getString("city"),
                         resultSet.getString("street"),
                         resultSet.getString("building"));
-                address.setId(resultSet.getInt("id"));
+                address.setId(id);
             }
             return address;
         } catch (SQLException e) {

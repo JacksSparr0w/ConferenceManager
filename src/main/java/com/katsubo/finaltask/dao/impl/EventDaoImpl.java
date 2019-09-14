@@ -47,7 +47,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
-                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
+                event.setDuration(new Date(resultSet.getInt("duration")));
                 events.add(event);
             }
             return events;
@@ -84,7 +84,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
-                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
+                event.setDuration(new Date(resultSet.getInt("duration")));
                 events.add(event);
             }
             return events;
@@ -121,7 +121,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
-                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
+                event.setDuration(new Date(resultSet.getInt("duration")));
                 events.add(event);
             }
             return events;
@@ -158,7 +158,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
-                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
+                event.setDuration(new Date(resultSet.getInt("duration")));
                 events.add(event);
             }
             return events;
@@ -185,9 +185,10 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             statement.setString(3, entity.getPictureLink());
             statement.setInt(4, entity.getTheme().getId());
             statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
-            statement.setString(6, entity.getAddress().toString());
+            statement.setInt(6, entity.getAddress().getId());
             statement.setInt(7, entity.getAuthor_id());
             statement.setInt(8, entity.getCapacity());
+            statement.setLong(9, entity.getDuration().getTime());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -227,7 +228,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
-                event.setDuration(new Date(resultSet.getTime("duration").getTime()));
+                event.setDuration(new Date(resultSet.getInt("duration")));
             }
             return event;
         } catch (SQLException e) {
@@ -252,10 +253,11 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             statement.setString(3, entity.getPictureLink());
             statement.setInt(4, entity.getTheme().getId());
             statement.setTimestamp(5, new Timestamp(entity.getDate().getTime()));
-            statement.setString(6, entity.getAddress().toString());
+            statement.setInt(6, entity.getAddress().getId());
             statement.setInt(7, entity.getAuthor_id());
             statement.setInt(8, entity.getCapacity());
-            statement.setInt(9, entity.getId());
+            statement.setLong(9, entity.getDuration().getTime());
+            statement.setInt(10, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update event");

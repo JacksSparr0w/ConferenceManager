@@ -1,6 +1,5 @@
 package com.katsubo.finaltask.entity;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 
@@ -220,11 +219,11 @@ public class Event extends Entity {
                 ", description='" + description + '\'' +
                 ", pictureLink='" + pictureLink + '\'' +
                 ", theme=" + theme +
-                ", date=" + date +
+                ", date=" + new Date(date.getTime()) +
                 ", address=" + address +
                 ", author_id=" + author_id +
                 ", capacity=" + capacity +
-                ", duration=" + duration +
+                ", duration=" + duration.getTime() +
                 '}';
     }
 }

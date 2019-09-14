@@ -41,6 +41,12 @@ public class CommandFactory {
         commands.put(CommandType.ALL_USERS, new AllUsersCommand());
         commands.put(CommandType.START_PAGE, new HomePageCommand());
         commands.put(CommandType.ALL_EVENTS, new AllEventsCommand());
+        //TODO create commands
+        commands.put(CommandType.ADD_ROLE, null);
+        commands.put(CommandType.ADD_THEME, null);
+        commands.put(CommandType.ADD_PERMISSION, null);
+        commands.put(CommandType.CHANGE_USER_PERMISSION, null);
+
     }
 
     /**

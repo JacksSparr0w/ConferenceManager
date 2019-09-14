@@ -1,0 +1,1 @@
+2019-09-13 00:06:58,730 [main] ERROR com.katsubo.finaltask.service.impl.RegistrationServiceImpl - Parameter - ID is inalid

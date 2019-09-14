@@ -4,14 +4,16 @@ import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.*;
+import com.katsubo.finaltask.filter.AccessSystem;
+import com.katsubo.finaltask.service.PermissionService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.UserService;
+import com.katsubo.finaltask.service.impl.PermissionServiceImpl;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
-import com.katsubo.finaltask.util.menu.Menu;
-import com.katsubo.finaltask.util.menu.MenuFactory;
+import com.katsubo.finaltask.util.menu.MenuCreator;
 import com.katsubo.finaltask.validate.UserInfoValidator;
 import com.katsubo.finaltask.validate.UserValidator;
 import com.katsubo.finaltask.validate.Validator;
@@ -90,7 +92,7 @@ public class RegisterCommand implements Command {
         User user = new User();
         user.setLogin(parameters.get(LOGIN));
         user.setPassword(parameters.get(PASSWORD));
-        user.setPermission(new Value(BasePermission.USER));
+        user.setPermission(BasePermission.USER);
 
         UserInfo info = new UserInfo();
         info.setUser(user);
@@ -113,10 +115,26 @@ public class RegisterCommand implements Command {
             }
         }
 
+        setAttributesToSession(request, user);
+    }
+
+    private void setAttributesToSession(HttpServletRequest request, User user) {
         UserDto userDto = new UserDto(user);
         request.getSession().setAttribute(USER.getFieldName(), userDto);
-        setMenuForUser(user, request);
+        Permission permission = null;
+        try {
+            PermissionService service = new PermissionServiceImpl();
+            permission = service.read(user.getPermissionId());
+            request.getSession().setAttribute("permission", permission);
+        } catch (ServiceException e) {
+            logger.log(Level.WARN, "cant read permission, set default");
+            //todo
+        }
+
+        request.getSession().setAttribute("menu", MenuCreator.getMenuItems(permission));
+        AccessSystem.updateRules(userDto);
     }
+
 
     private boolean userValid(User user) throws ValidatorException {
         Validator validator = new UserValidator();
@@ -136,11 +154,6 @@ public class RegisterCommand implements Command {
         } else {
             return true;
         }
-    }
-
-    private void setMenuForUser(User user, HttpServletRequest request) {
-        Menu menu = MenuFactory.getMenu(user.getPermission());
-        request.getSession().setAttribute("menu", menu.getMenuItems());
     }
 
     private CommandResult failure(HttpServletRequest request, String error) {

@@ -15,11 +15,14 @@ import java.util.List;
 
 public class EventServiceImplTest {
     private static final String DESCRIPTION = "description";
-    private static final Value PERMISSION = new Value(1);
+    private static final Integer PERMISSION = new Integer(1);
     private static final String PASSWORD = "pass";
     private static final String LOGIN = "test";
     private static final String EVENT_NAME = "event1";
     private static final Value THEME = new Value(1);
+    {
+        THEME.setValue("business");
+    }
     private static User user;
     private static Event event1;
     private static Event event2;
