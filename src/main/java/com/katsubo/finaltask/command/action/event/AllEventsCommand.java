@@ -5,11 +5,14 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.Event;
 import com.katsubo.finaltask.entity.UserDto;
+import com.katsubo.finaltask.entity.Value;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.RegistrationService;
+import com.katsubo.finaltask.service.RoleService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.EventServiceImpl;
 import com.katsubo.finaltask.service.impl.RegistrationServiceImpl;
+import com.katsubo.finaltask.service.impl.RoleServiceImpl;
 import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.util.page.EventPagination;
@@ -37,6 +40,7 @@ public class AllEventsCommand implements Command {
     private static final String ERROR = "error";
     private static final String SHOW_PAGES = "showPages";
     private static final String ZERO_EVENTS = "zero_events";
+    private static final String ROLES = "roles";
 
     private Pagination pagination;
 
@@ -46,6 +50,7 @@ public class AllEventsCommand implements Command {
         List<Event> events = null;
         try {
             events = readAllEvents();
+            request.setAttribute(ROLES, getRoles());
         } catch (ServiceException e) {
             logger.log(Level.INFO, e.getMessage());
             return failure(CANT_READ_EVENTS, request);
@@ -134,6 +139,11 @@ public class AllEventsCommand implements Command {
 
     private List<Event> readAllEvents() throws ServiceException {
         EventService service = new EventServiceImpl();
+        return service.findAll();
+    }
+
+    private List<Value> getRoles() throws ServiceException {
+        RoleService service = new RoleServiceImpl();
         return service.findAll();
     }
 }

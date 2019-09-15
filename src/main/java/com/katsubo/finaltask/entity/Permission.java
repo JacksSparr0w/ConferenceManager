@@ -3,31 +3,65 @@ package com.katsubo.finaltask.entity;
 import java.util.EnumSet;
 import java.util.Objects;
 
+/**
+ * The type Permission.
+ */
 public class Permission extends Entity {
     private String name;
     private EnumSet<Rule> rules;
 
+    /**
+     * Instantiates a new Permission.
+     *
+     * @param name the name
+     */
     public Permission(String name) {
         this.name = name;
         rules = EnumSet.noneOf(Rule.class);
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Add rule.
+     *
+     * @param rule the rule
+     */
     public void addRule(Rule rule) {
         rules.add(rule);
     }
 
+    /**
+     * Gets rules.
+     *
+     * @return the rules
+     */
     public EnumSet<Rule> getRules() {
         return rules;
     }
 
+    /**
+     * Check rule boolean.
+     *
+     * @param rule the rule
+     * @return the boolean
+     */
     public Boolean checkRule(Rule rule){
         return rules.contains(rule);
     }
 
+    /**
+     * Sets rules.
+     *
+     * @param rules the rules
+     */
     public void setRules(EnumSet<Rule> rules) {
         this.rules = rules;
     }

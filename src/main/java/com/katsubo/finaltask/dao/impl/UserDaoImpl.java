@@ -45,8 +45,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
             return user;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't read user by this login = " + login + "and password = " + password);
-            throw new DaoException(e + "Can't read user by this login = " + login + "and password = " + password);
+            logger.log(Level.ERROR, "Can't findAll user by this login = " + login + "and password = " + password);
+            throw new DaoException(e + "Can't findAll user by this login = " + login + "and password = " + password);
         } finally {
             try {
                 if (resultSet == null) {
@@ -70,8 +70,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
             return id;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't read user by this login = " + login);
-            throw new DaoException(e + "Can't read user by this login = " + login);
+            logger.log(Level.ERROR, "Can't findAll user by this login = " + login);
+            throw new DaoException(e + "Can't findAll user by this login = " + login);
         } finally {
             try {
                 if (resultSet == null) {
@@ -100,8 +100,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
             return users;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can'r read all users");
-            throw new DaoException(e + "Can'r read all users");
+            logger.log(Level.ERROR, "Can'r findAll all users");
+            throw new DaoException(e + "Can'r findAll all users");
         } finally {
             try {
                 if (resultSet == null) {
@@ -158,8 +158,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
             return user;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't read user by id" + id);
-            throw new DaoException(e + "Can't read user by id = " + id);
+            logger.log(Level.ERROR, "Can't findAll user by id" + id);
+            throw new DaoException(e + "Can't findAll user by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {

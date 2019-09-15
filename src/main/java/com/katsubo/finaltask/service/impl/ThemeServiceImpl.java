@@ -71,8 +71,13 @@ public class ThemeServiceImpl extends ServiceImpl implements ThemeService {
         if (theme != null) {
             Integer id = null;
             try {
-                id = transaction.getThemeDao().create(theme);
-                transaction.commit();
+                if (!isExist(theme)){
+                    id = transaction.getThemeDao().create(theme);
+                    transaction.commit();
+                } else {
+                    logger.log(Level.ERROR, "such theme already exist");
+                    throw new ServiceException("error.theme.exist");
+                }
             } catch (DaoException e) {
                 try {
                     transaction.rollback();
@@ -110,5 +115,9 @@ public class ThemeServiceImpl extends ServiceImpl implements ThemeService {
             logger.log(Level.ERROR, "Argument - ID is invalid");
             throw new ServiceException("Argument - ID is invalid");
         }
+    }
+
+    private boolean isExist(Value theme) throws ServiceException{
+        return findAll().contains(theme);
     }
 }

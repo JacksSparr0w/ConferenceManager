@@ -28,11 +28,11 @@ public interface RoleService extends Service {
     /**
      * Save integer.
      *
-     * @param theme the theme
+     * @param role the role
      * @return the integer
      * @throws ServiceException the service exception
      */
-    Integer save(Value theme) throws ServiceException;
+    Integer save(Value role) throws ServiceException;
 
     /**
      * Delete.

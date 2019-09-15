@@ -100,9 +100,9 @@ public class PoolConnection implements Connection, AutoCloseable {
     }
 
     /**
-     * Checks if is read only.
+     * Checks if is findAll only.
      *
-     * @return true, if is read only
+     * @return true, if is findAll only
      * @throws SQLException the SQL exception
      */
     @Override

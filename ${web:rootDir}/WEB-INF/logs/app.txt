@@ -1,7 +1,0 @@
-2019-09-14 21:17:51,749 [main] ERROR com.katsubo.finaltask.service.impl.EventServiceImpl - Parameter - EVENT is invalid
-2019-09-14 21:17:51,817 [main] ERROR com.katsubo.finaltask.service.impl.EventServiceImpl - Parameter - ID is inalid
-2019-09-14 21:17:52,079 [main] ERROR com.katsubo.finaltask.service.impl.RegistrationServiceImpl - Parameter - ID is inalid
-2019-09-14 21:17:52,134 [main] ERROR com.katsubo.finaltask.service.impl.UserInfoServiceImpl - Parameter - USER_INFO is invalid
-2019-09-14 21:17:52,137 [main] ERROR com.katsubo.finaltask.service.impl.UserInfoServiceImpl - Parameter - ID is inalid
-2019-09-14 21:17:52,190 [main] ERROR com.katsubo.finaltask.dao.impl.UserDaoImpl - Can't create new user!
-2019-09-14 21:17:52,239 [main] ERROR com.katsubo.finaltask.service.impl.UserServiceImpl - Parameter - ID is inalid

@@ -38,16 +38,31 @@ public class RegisterToEventCommand implements Command {
     private static final String DONE = "done";
     private static final String SUCH_REGISTRATION_ALREADY_EXIST = "such_registration_already_exist";
     private static final String EVENT_REGISTER_SUCCESS = "event.register.success";
+    public static final String ROLE = "role";
+    public static final String CANT_FIND_ROLE_ID = "cant_find_role_id";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         clearNotification(request);
         Integer eventId;
+        Integer roleId;
 
         if (request.getParameter(EVENT_ID) == null) {
             logger.log(Level.WARN, "can't find eventId");
             return failure(CANT_FIND_EVENT_ID, request);
         }
+
+        if (request.getParameter(ROLE) == null) {
+            logger.log(Level.WARN, "can't find roleId");
+            return failure(CANT_FIND_ROLE_ID, request);
+        }
+        try {
+            roleId = Integer.valueOf(request.getParameter(ROLE));
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARN, "can't find roleId");
+            return failure(CANT_FIND_ROLE_ID, request);
+        }
+
         try {
             eventId = Integer.valueOf(request.getParameter(EVENT_ID));
             if (isBusy(eventId)) {
@@ -64,7 +79,7 @@ public class RegisterToEventCommand implements Command {
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         Integer userId = user.getUserId();
         //todo create role
-        Registration registration = new Registration(userId, eventId, new Value(1));
+        Registration registration = new Registration(userId, eventId, new Value(roleId));
         try {
             if (!registrationExist(eventId, userId)) {
                 register(registration);

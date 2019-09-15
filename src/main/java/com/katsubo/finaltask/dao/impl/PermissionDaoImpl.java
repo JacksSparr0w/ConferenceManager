@@ -12,11 +12,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.katsubo.finaltask.entity.Rule.*;
 
 public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
 
+    private static final String READ_ALL = "SELECT `name`, modify_any_event, change_user_permission, all_users, delete_user, add_theme, add_role, add_permission FROM `permission` ORDER BY `id`";
     private static final String CREATE = "INSERT INTO `permission` (name, modify_any_event, change_user_permission, all_users, delete_user, add_theme, add_role, add_permission) VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String READ = "SELECT `name`, modify_any_event, change_user_permission, all_users, delete_user, add_theme, add_role, add_permission FROM `permission` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `permission` SET `name` = ?, modify_any_event = ?, change_user_permission = ?, all_users = ?, delete_user = ?, add_theme = ?, add_role = ?, add_permission = ? WHERE `id` = ?";
@@ -38,9 +41,10 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             statement.setBoolean(2, entity.checkRule(MODIFY_ANY_EVENT));
             statement.setBoolean(3, entity.checkRule(CHANGE_USER_PERMISSION));
             statement.setBoolean(4, entity.checkRule(ALL_USERS));
-            statement.setBoolean(5, entity.checkRule(ADD_THEME));
-            statement.setBoolean(6, entity.checkRule(ADD_ROLE));
-            statement.setBoolean(7, entity.checkRule(ADD_PERMISSION));
+            statement.setBoolean(5, entity.checkRule(DELETE_USER));
+            statement.setBoolean(6, entity.checkRule(ADD_THEME));
+            statement.setBoolean(7, entity.checkRule(ADD_ROLE));
+            statement.setBoolean(8, entity.checkRule(ADD_PERMISSION));
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -86,8 +90,8 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             }
             return permission;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't read permission by id" + id);
-            throw new DaoException(e + "Can't read permission by id = " + id);
+            logger.log(Level.ERROR, "Can't findAll permission by id" + id);
+            throw new DaoException(e + "Can't findAll permission by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {
@@ -97,10 +101,6 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             } catch (SQLException e) {
             }
         }
-    }
-
-    private void filterRule(Permission permission, Rule rule) {
-
     }
 
     /**
@@ -116,9 +116,10 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             statement.setBoolean(2, entity.checkRule(MODIFY_ANY_EVENT));
             statement.setBoolean(3, entity.checkRule(CHANGE_USER_PERMISSION));
             statement.setBoolean(4, entity.checkRule(ALL_USERS));
-            statement.setBoolean(5, entity.checkRule(ADD_THEME));
-            statement.setBoolean(6, entity.checkRule(ADD_ROLE));
-            statement.setBoolean(7, entity.checkRule(ADD_PERMISSION));
+            statement.setBoolean(5, entity.checkRule(DELETE_USER));
+            statement.setBoolean(6, entity.checkRule(ADD_THEME));
+            statement.setBoolean(7, entity.checkRule(ADD_ROLE));
+            statement.setBoolean(8, entity.checkRule(ADD_PERMISSION));
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't update permission");
@@ -140,6 +141,43 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Can't delete permission with id = " + id);
             throw new DaoException(e + "Can't delete permission with id = " + id);
+        }
+    }
+
+    /**
+     * Read list.
+     *
+     * @return the list
+     * @throws DaoException the dao exception
+     */
+    @Override
+    public List<Permission> read() throws DaoException {
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(READ_ALL)) {
+            resultSet = statement.executeQuery();
+            List<Permission> permissions = new ArrayList<>();
+            Permission permission = null;
+            while (resultSet.next()) {
+                permission = new Permission(resultSet.getString("name"));
+                for (Rule rule : Rule.values()) {
+                    if (resultSet.getBoolean(rule.getValue())) {
+                        permission.addRule(rule);
+                    }
+                }
+                permissions.add(permission);
+            }
+            return permissions;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Can't findAll permissions");
+            throw new DaoException(e + "Can't findAll permissions");
+        } finally {
+            try {
+                if (resultSet == null) {
+                    throw new DaoException();
+                }
+                resultSet.close();
+            } catch (SQLException e) {
+            }
         }
     }
 }

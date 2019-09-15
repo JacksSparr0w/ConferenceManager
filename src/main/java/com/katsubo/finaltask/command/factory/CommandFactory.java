@@ -1,12 +1,9 @@
 package com.katsubo.finaltask.command.factory;
 
-import com.katsubo.finaltask.command.action.event.RemoveEventCommand;
-import com.katsubo.finaltask.command.action.event.EditEventCommand;
-import com.katsubo.finaltask.command.action.DeleteUserCommand;
-import com.katsubo.finaltask.command.action.HomePageCommand;
 import com.katsubo.finaltask.command.action.*;
 import com.katsubo.finaltask.command.action.authorization.*;
 import com.katsubo.finaltask.command.action.event.*;
+import com.katsubo.finaltask.command.action.special.*;
 import com.katsubo.finaltask.command.action.useraction.*;
 
 import java.util.EnumMap;
@@ -17,6 +14,7 @@ import java.util.Map;
  */
 public class CommandFactory {
     private static Map<CommandType, Command> commands = new EnumMap<>(CommandType.class);
+
     static {
         commands.put(CommandType.LOGIN, new LoginCommand());
         commands.put(CommandType.LOGOUT, new LogoutCommand());
@@ -42,9 +40,12 @@ public class CommandFactory {
         commands.put(CommandType.START_PAGE, new HomePageCommand());
         commands.put(CommandType.ALL_EVENTS, new AllEventsCommand());
         //TODO create commands
-        commands.put(CommandType.ADD_ROLE, null);
-        commands.put(CommandType.ADD_THEME, null);
-        commands.put(CommandType.ADD_PERMISSION, null);
+        commands.put(CommandType.ADD_ROLE, new AddRoleCommand());
+        commands.put(CommandType.ADD_ROLE_PAGE, new AddRolePageCommand());
+        commands.put(CommandType.ADD_THEME, new AddThemeCommand());
+        commands.put(CommandType.ADD_THEME_PAGE, new AddThemePageCommand());
+        commands.put(CommandType.ADD_PERMISSION, new AddPermissionCommand());
+        commands.put(CommandType.ADD_PERMISSION_PAGE, new AddPermissionPageCommand());
         commands.put(CommandType.CHANGE_USER_PERMISSION, null);
 
     }
@@ -55,7 +56,7 @@ public class CommandFactory {
      * @param command the command
      * @return the command
      */
-    public static Command create(String command){
+    public static Command create(String command) {
         return commands.get(CommandType.of(command));
     }
 }

@@ -23,17 +23,21 @@ public enum Rule {
      */
     ALL_USERS("all_users", EnumSet.of(CommandType.ALL_USERS)),
     /**
+     * Delete user rule.
+     */
+    DELETE_USER("delete_user", EnumSet.of(CommandType.DELETE_USER)),
+    /**
      * Add theme rules.
      */
-    ADD_THEME("add_theme", EnumSet.of(CommandType.ADD_THEME)),
+    ADD_THEME("add_theme", EnumSet.of(CommandType.ADD_THEME, CommandType.ADD_THEME_PAGE)),
     /**
      * Add role rules.
      */
-    ADD_ROLE("add_role", EnumSet.of(CommandType.ADD_ROLE)),
+    ADD_ROLE("add_role", EnumSet.of(CommandType.ADD_ROLE, CommandType.ADD_ROLE_PAGE)),
     /**
      * Add permission rules.
      */
-    ADD_PERMISSION("add_permission", EnumSet.of(CommandType.ADD_PERMISSION));
+    ADD_PERMISSION("add_permission", EnumSet.of(CommandType.ADD_PERMISSION, CommandType.ADD_PERMISSION_PAGE));
 
     private final String value;
     private final EnumSet<CommandType> commands;

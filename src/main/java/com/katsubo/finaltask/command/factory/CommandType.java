@@ -116,6 +116,18 @@ public enum CommandType {
      */
     ADD_PERMISSION("add_permission"),
     /**
+     * Add role command type.
+     */
+    ADD_ROLE_PAGE("add_role_page"),
+    /**
+     * Add theme command type.
+     */
+    ADD_THEME_PAGE("add_theme_page"),
+    /**
+     * Add permission command type.
+     */
+    ADD_PERMISSION_PAGE("add_permission_page"),
+    /**
      * Change user permission command type.
      */
     CHANGE_USER_PERMISSION("change_user_permission"),

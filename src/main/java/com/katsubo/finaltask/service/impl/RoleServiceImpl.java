@@ -78,8 +78,13 @@ public class RoleServiceImpl extends ServiceImpl implements RoleService {
         if (role != null) {
             Integer id = null;
             try {
-                id = transaction.getRoleDao().create(role);
-                transaction.commit();
+                if (!isExist(role)){
+                    id = transaction.getRoleDao().create(role);
+                    transaction.commit();
+                } else {
+                    logger.log(Level.ERROR, "such role already exist");
+                    throw new ServiceException("error.role.exist");
+                }
             } catch (DaoException e) {
                 try {
                     transaction.rollback();
@@ -117,5 +122,9 @@ public class RoleServiceImpl extends ServiceImpl implements RoleService {
             logger.log(Level.ERROR, "Argument - ID is invalid");
             throw new ServiceException("Argument - ID is invalid");
         }
+    }
+
+    private boolean isExist(Value role) throws ServiceException{
+        return findAll().contains(role);
     }
 }

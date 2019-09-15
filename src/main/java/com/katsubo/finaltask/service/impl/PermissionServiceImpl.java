@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 /**
  * The type Permission service.
  */
@@ -20,6 +22,24 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
      * @throws ServiceException the service exception
      */
     public PermissionServiceImpl() throws ServiceException {
+    }
+
+    /**
+     * Read list.
+     *
+     * @return the list
+     * @throws ServiceException the service exception
+     */
+    @Override
+    public List<Permission> findAll() throws ServiceException {
+        List<Permission> permissions;
+        try {
+            permissions = transaction.getPermissionDao().read();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+        return permissions;
     }
 
     /**
@@ -35,13 +55,19 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
         if (permission != null) {
             PermissionDao dao = transaction.getPermissionDao();
             try {
-                if (permission.getId() != null) {
-                    id = permission.getId();
-                    dao.update(permission);
+                if (!isExist(permission)){
+                    if (permission.getId() != null) {
+                        id = permission.getId();
+                        dao.update(permission);
+                    } else {
+                        id = dao.create(permission);
+                    }
+                    transaction.commit();
                 } else {
-                    id = dao.create(permission);
+                    logger.log(Level.ERROR, "such permission already exist");
+                    throw new ServiceException("error.permission.exist");
                 }
-                transaction.commit();
+
             } catch (DaoException e) {
                 try {
                     transaction.rollback();
@@ -58,6 +84,8 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
         }
     }
 
+
+
     /**
      * Read permission.
      *
@@ -66,7 +94,7 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
      * @throws ServiceException the service exception
      */
     @Override
-    public Permission read(Integer id) throws ServiceException {
+    public Permission findAll(Integer id) throws ServiceException {
         Permission permission;
         if (id != null) {
             try {
@@ -104,5 +132,9 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
             logger.log(Level.ERROR, "Argument - ID is invalid");
             throw new ServiceException("Argument - ID is invalid");
         }
+    }
+
+    private boolean isExist(Permission permission) throws ServiceException{
+        return findAll().contains(permission);
     }
 }

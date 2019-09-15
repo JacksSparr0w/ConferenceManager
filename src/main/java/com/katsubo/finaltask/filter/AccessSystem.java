@@ -11,14 +11,13 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 
 import static com.katsubo.finaltask.command.factory.CommandType.*;
 
 public class AccessSystem {
     private static final Logger logger = LogManager.getLogger(AccessSystem.class);
-    private static EnumSet<CommandType> commands;
+    private static EnumSet<CommandType> commands = EnumSet.noneOf(CommandType.class);
 
     public static void updateRules(UserDto userDto) {
         commands.clear();
@@ -28,28 +27,28 @@ public class AccessSystem {
         } else {
             addMinimalRules();
         }
+
+        Permission specialRules;
         try {
             PermissionService service = new PermissionServiceImpl();
-            Permission permission = service.read(userDto.getPermissionId());
+            specialRules = service.findAll(userDto.getPermissionId());
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, e.getMessage());
-            makeRulesForGuest();
+            logger.log(Level.ERROR, e.getMessage(), " Make minimal rules");
             return;
         }
 
-        //TODO modify all events
-
-        Arrays.stream(Rule.values())
-                .forEach(n -> commands.addAll(n.getCommands()));
+        specialRules.getRules().stream()
+                .map(Rule::getCommands)
+                .forEach(commands::addAll);
 
     }
 
     public static boolean checkAccess(CommandType commandType) {
-        return checkAccess(commandType.name());
+        return commands.contains(commandType);
     }
 
     public static boolean checkAccess(String command) {
-        return commands.contains(CommandType.of(command));
+        return checkAccess(CommandType.of(command));
     }
 
 

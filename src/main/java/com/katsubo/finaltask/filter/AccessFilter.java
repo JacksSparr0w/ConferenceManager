@@ -1,5 +1,7 @@
 package com.katsubo.finaltask.filter;
 
+import com.katsubo.finaltask.entity.UserDto;
+import com.katsubo.finaltask.util.Constances;
 import com.katsubo.finaltask.util.ResourceManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -25,9 +27,9 @@ public class AccessFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String command = request.getParameter(COMMAND);
-        Access access = Access.getInstance();
+        AccessSystem.updateRules((UserDto) request.getSession().getAttribute(Constances.USER.getFieldName()));
         try {
-            if (command != null && access.can(command, request)) {
+            if (command != null && AccessSystem.checkAccess(command)) {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
                 logger.log(Level.WARN, "no access for this user");

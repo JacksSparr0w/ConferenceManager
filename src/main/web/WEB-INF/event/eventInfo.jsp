@@ -67,6 +67,14 @@
                 <p class="text-black">${join_now}</p>
                 <div class="container pt-2 pl-2 pr-2 d-inline-flex">
                     <form>
+                        <div class="d-inline-block">
+                            <label for="selectRole">Register as: </label>
+                            <select class="form-control" id="selectRole" name="role">
+                                <c:forEach var="role" items="${roles}">
+                                    <option value="${role.id}">${role.value}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                         <c:url value="controller" var="registerToEvent">
                             <c:param name="command" value="register_to_event"/>
                             <c:param name="eventId" value="${event.id}"/>
@@ -74,6 +82,9 @@
                         <input type="button" class="btn btn-outline-success" value="${join}"
                                onclick="window.location.href='${registerToEvent}'"/>
                     </form>
+                    <!--
+                        //todo permission
+                    -->
                     <c:if test="${user.permission == 'ADMINISTRATOR' or user.userId == event.author_id}">
                         <form method="post">
                             <c:url value="edit_event_page" var="editEvent">

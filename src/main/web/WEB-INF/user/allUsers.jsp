@@ -40,6 +40,9 @@
         <div class="container">
             <div class="card flex-md-row mb-4 box-shadow h-md-250">
                 <div class="card-body d-flex flex-column align-items-start">
+                    <!--
+                        //TODO repair permission
+                    -->
                     <strong class="d-inline-block mb-2 text-primary">${user.permission}</strong>
                     <div class="d-inline-block">
                         <strong class="d-inline-block mb-2 text-secondary">${user.login}</strong>

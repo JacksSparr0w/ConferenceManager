@@ -124,10 +124,10 @@ public class RegisterCommand implements Command {
         Permission permission = null;
         try {
             PermissionService service = new PermissionServiceImpl();
-            permission = service.read(user.getPermissionId());
+            permission = service.findAll(user.getPermissionId());
             request.getSession().setAttribute("permission", permission);
         } catch (ServiceException e) {
-            logger.log(Level.WARN, "cant read permission, set default");
+            logger.log(Level.WARN, "cant findAll permission, set default");
             //todo
         }
 

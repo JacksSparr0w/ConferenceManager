@@ -63,16 +63,12 @@ public class AddEventCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        String[] parametersNames = {NAME, DESCRIPTION, THEME, DATE, COUNTRY, CITY, STREET, BUILDING, CAPACITY};
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(NAME, request.getParameter(NAME));
-        parameters.put(DESCRIPTION, request.getParameter(DESCRIPTION));
-        parameters.put(THEME, request.getParameter(THEME));
-        parameters.put(DATE, request.getParameter(DATE));
-        parameters.put(COUNTRY, request.getParameter(COUNTRY));
-        parameters.put(CITY, request.getParameter(CITY));
-        parameters.put(STREET, request.getParameter(STREET));
-        parameters.put(BUILDING, request.getParameter(BUILDING));
-        parameters.put(CAPACITY, request.getParameter(CAPACITY));
+        for (String parametersName : parametersNames) {
+            String parameter = request.getParameter(parametersName);
+            parameters.put(parametersName, parameter);
+        }
 
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
