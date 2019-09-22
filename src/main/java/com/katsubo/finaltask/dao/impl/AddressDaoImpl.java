@@ -83,8 +83,8 @@ public class AddressDaoImpl extends BaseDaoImpl implements AddressDao {
             }
             return address;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll address by id" + id);
-            throw new DaoException(e + "Can't findAll address  by id = " + id);
+            logger.log(Level.ERROR, "Can't readByID address by id" + id);
+            throw new DaoException(e + "Can't readByID address  by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {
@@ -151,8 +151,8 @@ public class AddressDaoImpl extends BaseDaoImpl implements AddressDao {
             }
             return addresses;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can'r findAll all users");
-            throw new DaoException(e + "Can'r findAll all users");
+            logger.log(Level.ERROR, "Can'r readByID all users");
+            throw new DaoException(e + "Can'r readByID all users");
         } finally {
             try {
                 if (resultSet == null) {

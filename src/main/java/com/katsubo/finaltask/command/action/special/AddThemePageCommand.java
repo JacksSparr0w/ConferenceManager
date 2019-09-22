@@ -36,7 +36,7 @@ public class AddThemePageCommand implements Command {
         try {
             existThemes = readExistThemes();
         } catch (ServiceException e){
-            logger.log(Level.WARN, "Cant findAll existing themes");
+            logger.log(Level.WARN, "Cant readByID existing themes");
         }
         request.setAttribute(EXIST_THEMES, existThemes);
         request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addTheme"));

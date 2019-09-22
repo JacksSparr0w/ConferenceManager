@@ -52,8 +52,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             }
             return events;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll all events");
-            throw new DaoException(e + "Can't findAll all events");
+            logger.log(Level.ERROR, "Can't readByID all events");
+            throw new DaoException(e + "Can't readByID all events");
         } finally {
             try {
                 if (resultSet == null) {
@@ -89,8 +89,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             }
             return events;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll event with name = " + search);
-            throw new DaoException(e + "Can't findAll event with name = " + search);
+            logger.log(Level.ERROR, "Can't readByID event with name = " + search);
+            throw new DaoException(e + "Can't readByID event with name = " + search);
         } finally {
             try {
                 if (resultSet == null) {
@@ -126,8 +126,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             }
             return events;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll event with date = " + search);
-            throw new DaoException(e + "Can't findAll event with date = " + search);
+            logger.log(Level.ERROR, "Can't readByID event with date = " + search);
+            throw new DaoException(e + "Can't readByID event with date = " + search);
         } finally {
             try {
                 if (resultSet == null) {
@@ -163,8 +163,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             }
             return events;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll event with theme = " + search);
-            throw new DaoException(e + "Can't findAll event with theme = " + search);
+            logger.log(Level.ERROR, "Can't readByID event with theme = " + search);
+            throw new DaoException(e + "Can't readByID event with theme = " + search);
         } finally {
             try {
                 if (resultSet == null) {
@@ -232,8 +232,8 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
             }
             return event;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll event with id = " + id);
-            throw new DaoException(e + "Can't findAll event with id = " + id);
+            logger.log(Level.ERROR, "Can't readByID event with id = " + id);
+            throw new DaoException(e + "Can't readByID event with id = " + id);
         } finally {
             try {
                 if (resultSet == null) {

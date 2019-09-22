@@ -4,10 +4,6 @@ import com.katsubo.finaltask.command.factory.CommandType;
 import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.Rule;
 import com.katsubo.finaltask.entity.UserDto;
-import com.katsubo.finaltask.service.PermissionService;
-import com.katsubo.finaltask.service.ServiceException;
-import com.katsubo.finaltask.service.impl.PermissionServiceImpl;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,14 +24,7 @@ public class AccessSystem {
             addMinimalRules();
         }
 
-        Permission specialRules;
-        try {
-            PermissionService service = new PermissionServiceImpl();
-            specialRules = service.findAll(userDto.getPermissionId());
-        } catch (ServiceException e) {
-            logger.log(Level.ERROR, e.getMessage(), " Make minimal rules");
-            return;
-        }
+        Permission specialRules = userDto.getPermission();
 
         specialRules.getRules().stream()
                 .map(Rule::getCommands)
@@ -50,7 +39,6 @@ public class AccessSystem {
     public static boolean checkAccess(String command) {
         return checkAccess(CommandType.of(command));
     }
-
 
 
     private static void addMinimalRules() {

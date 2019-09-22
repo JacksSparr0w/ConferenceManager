@@ -53,7 +53,6 @@
     </c:when>
 </c:choose>
 
-<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"/>

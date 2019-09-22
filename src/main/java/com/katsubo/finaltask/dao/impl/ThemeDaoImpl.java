@@ -76,8 +76,8 @@ public class ThemeDaoImpl extends BaseDaoImpl implements ThemeDao {
             }
             return theme;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll theme by id" + id);
-            throw new DaoException(e + "Can't findAll theme by id = " + id);
+            logger.log(Level.ERROR, "Can't readByID theme by id" + id);
+            throw new DaoException(e + "Can't readByID theme by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {
@@ -138,8 +138,8 @@ public class ThemeDaoImpl extends BaseDaoImpl implements ThemeDao {
             }
             return themes;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll all themes");
-            throw new DaoException(e + "Can't findAll all themes");
+            logger.log(Level.ERROR, "Can't readByID all themes");
+            throw new DaoException(e + "Can't readByID all themes");
         } finally {
             try {
                 if (resultSet == null) {

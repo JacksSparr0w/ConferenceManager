@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.service.impl;
 
+import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
@@ -11,15 +12,19 @@ import java.util.List;
 public class UserServiceImplTest {
     private static final String LOGIN_1 = "test1";
     private static final String PASSWORD_1 = "pass1";
-    private static final Integer PERMISSION_1 = new Integer(1);
-
+    private static final Permission PERMISSION_1 = new Permission();
     private static final String LOGIN_2 = "test2";
     private static final String PASSWORD_2 = "pass2";
-    private static final Integer PERMISSION_2 = new Integer(1);
-
+    private static final Permission PERMISSION_2 = new Permission();
     private static User user1;
     private static User user2;
     private static UserService service;
+
+    static {
+        PERMISSION_1.setId(1);
+        PERMISSION_2.setId(1);
+
+    }
 
     @BeforeClass
     public static void prepareService() throws ServiceException {

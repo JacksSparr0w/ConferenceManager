@@ -1,5 +1,6 @@
 package com.katsubo.finaltask.service.impl;
 
+import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserInfo;
 import com.katsubo.finaltask.service.ServiceException;
@@ -14,7 +15,7 @@ public class UserInfoServiceImplTest {
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
     private static final String SOME_MAIL_COM = "some@mail.com";
-    private static final Integer PERMISSION = new Integer(1);
+    private static final Permission PERMISSION = new Permission();
     private static final String PASSWORD = "pass";
     private static final String LOGIN = "test";
     private static User user;
@@ -23,6 +24,10 @@ public class UserInfoServiceImplTest {
 
     private static UserInfoService service;
     private static UserService userService;
+
+    static {
+        PERMISSION.setId(1);
+    }
 
     @BeforeClass
     public static void prepareService() throws ServiceException {

@@ -43,7 +43,7 @@
                     <!--
                         //TODO repair permission
                     -->
-                    <strong class="d-inline-block mb-2 text-primary">${user.permission}</strong>
+                    <strong class="d-inline-block mb-2 text-primary">${user.permission.name}</strong>
                     <div class="d-inline-block">
                         <strong class="d-inline-block mb-2 text-secondary">${user.login}</strong>
                         <c:if test="${user.id == sessionScope.user.userId}">

@@ -32,7 +32,7 @@ public class AddEventPageCommand implements Command {
         try {
             themes = getThemes();
         } catch (ServiceException e) {
-            logger.log(Level.WARN, "Can't findAll themes");
+            logger.log(Level.WARN, "Can't read themes");
             failure(request, SOME_WENT_WRONG);
         }
         request.setAttribute(THEMES, themes);

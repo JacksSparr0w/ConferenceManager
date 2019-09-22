@@ -42,8 +42,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             }
             return info;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll userInfo");
-            throw new DaoException(e + "Can't findAll userInfo");
+            logger.log(Level.ERROR, "Can't readByID userInfo");
+            throw new DaoException(e + "Can't readByID userInfo");
         } finally {
             try {
                 if (resultSet == null) {
@@ -109,8 +109,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl implements UserInfoDao {
             }
             return info;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll userInfo with id = " + id);
-            throw new DaoException(e + "Can't findAll userInfo with id = " + id);
+            logger.log(Level.ERROR, "Can't readByID userInfo with id = " + id);
+            throw new DaoException(e + "Can't readByID userInfo with id = " + id);
         } finally {
             try {
                 if (resultSet == null) {

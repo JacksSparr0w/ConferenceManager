@@ -10,14 +10,20 @@ public class Permission extends Entity {
     private String name;
     private EnumSet<Rule> rules;
 
+    public Permission() {
+        rules = EnumSet.noneOf(Rule.class);
+
+    }
+
     /**
      * Instantiates a new Permission.
      *
      * @param name the name
      */
+
     public Permission(String name) {
+        this();
         this.name = name;
-        rules = EnumSet.noneOf(Rule.class);
     }
 
     /**

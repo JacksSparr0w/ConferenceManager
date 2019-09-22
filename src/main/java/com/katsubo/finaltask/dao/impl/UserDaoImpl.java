@@ -2,6 +2,7 @@ package com.katsubo.finaltask.dao.impl;
 
 import com.katsubo.finaltask.dao.DaoException;
 import com.katsubo.finaltask.dao.UserDao;
+import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -41,12 +42,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(resultSet.getInt("permission"));
+                user.setPermission(new Permission());
+                user.getPermission().setId(resultSet.getInt("permission"));
             }
             return user;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll user by this login = " + login + "and password = " + password);
-            throw new DaoException(e + "Can't findAll user by this login = " + login + "and password = " + password);
+            logger.log(Level.ERROR, "Can't readByID user by this login = " + login + "and password = " + password);
+            throw new DaoException(e + "Can't readByID user by this login = " + login + "and password = " + password);
         } finally {
             try {
                 if (resultSet == null) {
@@ -70,8 +72,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
             return id;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll user by this login = " + login);
-            throw new DaoException(e + "Can't findAll user by this login = " + login);
+            logger.log(Level.ERROR, "Can't readByID user by this login = " + login);
+            throw new DaoException(e + "Can't readByID user by this login = " + login);
         } finally {
             try {
                 if (resultSet == null) {
@@ -95,13 +97,14 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(resultSet.getInt("permission"));
+                user.setPermission(new Permission());
+                user.getPermission().setId(resultSet.getInt("permission"));
                 users.add(user);
             }
             return users;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can'r findAll all users");
-            throw new DaoException(e + "Can'r findAll all users");
+            logger.log(Level.ERROR, "Can'r readByID all users");
+            throw new DaoException(e + "Can'r readByID all users");
         } finally {
             try {
                 if (resultSet == null) {
@@ -119,7 +122,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
-            statement.setInt(3, entity.getPermissionId());
+            statement.setInt(3, entity.getPermission().getId());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -154,12 +157,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setId(id);
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
-                user.setPermission(resultSet.getInt("permission"));
-            }
+                user.setPermission(new Permission());
+                user.getPermission().setId(resultSet.getInt("permission"));            }
             return user;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll user by id" + id);
-            throw new DaoException(e + "Can't findAll user by id = " + id);
+            logger.log(Level.ERROR, "Can't readByID user by id" + id);
+            throw new DaoException(e + "Can't readByID user by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {
@@ -176,7 +179,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPassword());
-            statement.setInt(3, entity.getPermissionId());
+            statement.setInt(3, entity.getPermission().getId());
             statement.setInt(4, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {

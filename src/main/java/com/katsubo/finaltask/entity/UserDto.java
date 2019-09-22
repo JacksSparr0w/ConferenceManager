@@ -8,7 +8,7 @@ import java.util.Objects;
 public class UserDto {
     private Integer userId;
     private String login;
-    private Integer permissionId;
+    private Permission permission;
 
     /**
      * Instantiates a new User dto.
@@ -25,7 +25,7 @@ public class UserDto {
     public UserDto(User user) {
         this.userId = user.getId();
         this.login = user.getLogin();
-        this.permissionId = user.getPermissionId();
+        this.permission = user.getPermission();
     }
 
     /**
@@ -65,21 +65,21 @@ public class UserDto {
     }
 
     /**
-     * Gets permissionId.
+     * Gets permission.
      *
-     * @return the permissionId
+     * @return the permission
      */
-    public Integer getPermissionId() {
-        return permissionId;
+    public Permission getPermission() {
+        return permission;
     }
 
     /**
-     * Sets permissionId.
+     * Sets permission.
      *
-     * @param permissionId the permissionId
+     * @param permissionId the permission
      */
-    public void setPermission(Integer permissionId) {
-        this.permissionId = permissionId;
+    public void setPermission(Permission permissionId) {
+        this.permission = permissionId;
     }
 
     @Override
@@ -88,11 +88,11 @@ public class UserDto {
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
         return Objects.equals(login, userDto.login) &&
-                permissionId.equals(userDto.permissionId);
+                permission.equals(userDto.permission);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, permissionId);
+        return Objects.hash(login, permission);
     }
 }

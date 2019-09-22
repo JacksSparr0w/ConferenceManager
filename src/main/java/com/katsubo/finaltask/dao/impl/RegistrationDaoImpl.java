@@ -45,8 +45,8 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             }
             return registrations;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll users on event");
-            throw new DaoException(e + "Can't findAll users on event");
+            logger.log(Level.ERROR, "Can't readByID users on event");
+            throw new DaoException(e + "Can't readByID users on event");
         } finally {
             try {
                 if (resultSet == null) {
@@ -75,8 +75,8 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             }
             return registrations;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll all user events");
-            throw new DaoException(e + "Can't findAll all user events");
+            logger.log(Level.ERROR, "Can't readByID all user events");
+            throw new DaoException(e + "Can't readByID all user events");
         } finally {
             try {
                 if (resultSet == null) {
@@ -103,8 +103,8 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             }
             return registration;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll registration by user_id and event_id");
-            throw new DaoException(e + "Can't findAll registration by user_id and event_id");
+            logger.log(Level.ERROR, "Can't readByID registration by user_id and event_id");
+            throw new DaoException(e + "Can't readByID registration by user_id and event_id");
         } finally {
             try {
                 if (resultSet == null) {
@@ -162,8 +162,8 @@ public class RegistrationDaoImpl extends BaseDaoImpl implements RegistrationDao 
             }
             return registration;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll registration by id" + id);
-            throw new DaoException(e + "Can't findAll registration by id = " + id);
+            logger.log(Level.ERROR, "Can't readByID registration by id" + id);
+            throw new DaoException(e + "Can't readByID registration by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {

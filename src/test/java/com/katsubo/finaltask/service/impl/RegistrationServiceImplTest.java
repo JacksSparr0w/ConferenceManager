@@ -11,26 +11,28 @@ import java.util.List;
 public class RegistrationServiceImplTest {
     private static final String LOGIN_1 = "test1";
     private static final String DESCRIPTION_1 = "description";
-    private static final Integer PERMISSION_1 = new Integer(1);
+    private static final Permission PERMISSION_1 = new Permission();
     private static final String PASSWORD_1 = "pass";
     private static final String EVENT_NAME_1 = "event1";
     private static final Value THEME_1 = new Value(1);
     private static final String DESCRIPTION_2 = "description";
     private static final String LOGIN_2 = "test2";
-    private static final Integer PERMISSION_2 = new Integer(1);
+    private static final Permission PERMISSION_2 = new Permission();
     private static final String PASSWORD_2 = "pass";
     private static final String EVENT_NAME_2 = "event1";
     private static final Value THEME_2 = new Value(1);
-
-
     private static User user1;
     private static User user2;
     private static Event event1;
     private static Event event2;
-
     private static EventService eventService;
     private static UserService userService;
     private static RegistrationService service;
+
+    static {
+        PERMISSION_1.setId(1);
+        PERMISSION_2.setId(1);
+    }
 
     @BeforeClass
     public static void prepareService() throws ServiceException {

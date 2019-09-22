@@ -77,8 +77,8 @@ public class RoleDaoImpl extends BaseDaoImpl implements RoleDao {
             }
             return role;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll role by id" + id);
-            throw new DaoException(e + "Can't findAll role by id = " + id);
+            logger.log(Level.ERROR, "Can't readByID role by id" + id);
+            throw new DaoException(e + "Can't readByID role by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {
@@ -139,8 +139,8 @@ public class RoleDaoImpl extends BaseDaoImpl implements RoleDao {
             }
             return roles;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll all roles");
-            throw new DaoException(e + "Can't findAll all roles");
+            logger.log(Level.ERROR, "Can't readByID all roles");
+            throw new DaoException(e + "Can't readByID all roles");
         } finally {
             try {
                 if (resultSet == null) {

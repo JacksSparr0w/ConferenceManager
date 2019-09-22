@@ -7,10 +7,8 @@ import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.filter.AccessSystem;
-import com.katsubo.finaltask.service.PermissionService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
-import com.katsubo.finaltask.service.impl.PermissionServiceImpl;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.util.menu.MenuCreator;
@@ -79,15 +77,8 @@ public class LoginCommand implements Command {
     private void setAttributesToSession(HttpServletRequest request, User user) {
         UserDto userDto = new UserDto(user);
         request.getSession().setAttribute(USER.getFieldName(), userDto);
-        Permission permission = null;
-        try {
-            PermissionService service = new PermissionServiceImpl();
-            permission = service.findAll(user.getPermissionId());
-            request.getSession().setAttribute("permission", permission);
-        } catch (ServiceException e) {
-            logger.log(Level.WARN, "cant findAll permission, set default");
-            //todo
-        }
+        Permission permission = user.getPermission();
+        request.getSession().setAttribute("permission", permission);
         request.getSession().setAttribute("menu", MenuCreator.getMenuItems(permission));
         AccessSystem.updateRules(userDto);
     }

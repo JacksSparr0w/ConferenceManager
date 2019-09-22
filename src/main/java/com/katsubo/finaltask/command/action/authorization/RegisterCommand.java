@@ -5,11 +5,9 @@ import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
 import com.katsubo.finaltask.entity.*;
 import com.katsubo.finaltask.filter.AccessSystem;
-import com.katsubo.finaltask.service.PermissionService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserInfoService;
 import com.katsubo.finaltask.service.UserService;
-import com.katsubo.finaltask.service.impl.PermissionServiceImpl;
 import com.katsubo.finaltask.service.impl.UserInfoServiceImpl;
 import com.katsubo.finaltask.service.impl.UserServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
@@ -92,7 +90,9 @@ public class RegisterCommand implements Command {
         User user = new User();
         user.setLogin(parameters.get(LOGIN));
         user.setPassword(parameters.get(PASSWORD));
-        user.setPermission(BasePermission.USER);
+        Permission permission = new Permission();
+        permission.setId(BasePermission.USER);
+        user.setPermission(permission);
 
         UserInfo info = new UserInfo();
         info.setUser(user);
@@ -121,16 +121,8 @@ public class RegisterCommand implements Command {
     private void setAttributesToSession(HttpServletRequest request, User user) {
         UserDto userDto = new UserDto(user);
         request.getSession().setAttribute(USER.getFieldName(), userDto);
-        Permission permission = null;
-        try {
-            PermissionService service = new PermissionServiceImpl();
-            permission = service.findAll(user.getPermissionId());
-            request.getSession().setAttribute("permission", permission);
-        } catch (ServiceException e) {
-            logger.log(Level.WARN, "cant findAll permission, set default");
-            //todo
-        }
-
+        Permission permission = user.getPermission();
+        request.getSession().setAttribute("permission", permission);
         request.getSession().setAttribute("menu", MenuCreator.getMenuItems(permission));
         AccessSystem.updateRules(userDto);
     }

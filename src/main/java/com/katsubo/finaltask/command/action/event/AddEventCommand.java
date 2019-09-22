@@ -38,7 +38,8 @@ public class AddEventCommand implements Command {
     private static final String ERROR = "error";
     private static final String ADD_EVENT_SUCCESS = "event.add.success";
     private static final Logger logger = LogManager.getLogger(AddEventCommand.class);
-    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
     private static final String DESCRIPTION = "description";
     private static final String THEME = "theme";
     private static final String CAPACITY = "capacity";
@@ -54,6 +55,7 @@ public class AddEventCommand implements Command {
     private static final String PICTURE = "picture";
     private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
     private static final List<String> formats = new ArrayList<>();
+    public static final String DURATION = "duration";
 
     static {
         formats.add("jpg");
@@ -63,7 +65,7 @@ public class AddEventCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String[] parametersNames = {NAME, DESCRIPTION, THEME, DATE, COUNTRY, CITY, STREET, BUILDING, CAPACITY};
+        String[] parametersNames = {NAME, DESCRIPTION, THEME, DATE, COUNTRY, CITY, STREET, BUILDING, CAPACITY, DURATION};
         Map<String, String> parameters = new HashMap<>();
         for (String parametersName : parametersNames) {
             String parameter = request.getParameter(parametersName);
@@ -104,16 +106,18 @@ public class AddEventCommand implements Command {
             return failure(ERROR_ADD_EVENT, request);
         }
 
-        event.setTheme(new Value(Integer.valueOf(THEME)));
+        event.setTheme(new Value(Integer.valueOf(parameters.get(THEME))));
         Date date;
+        Date duration;
         try {
-            date = format.parse(parameters.get(DATE));
+            date = dateFormat.parse(parameters.get(DATE));
+            duration = timeFormat.parse(parameters.get(DURATION));
         } catch (ParseException pe) {
             logger.log(Level.WARN, ERROR_ADD_EVENT);
             return failure(ERROR_ADD_EVENT, request);
         }
         event.setDate(date);
-
+        event.setDuration(duration);
         event.setAddress(new Address(
                 parameters.get(COUNTRY),
                 parameters.get(CITY),

@@ -1,0 +1,24 @@
+/*!
+ * Duration Picker jQuery Plugin v.1.0.0 to set duration in days, hours and minutes
+ * https://github.com/InkWired/duration-picker-jquery
+ *
+ * Copyright (c) 2019 InkWired
+ *
+ * Licensed under the MIT license
+ */
+
+.duration-picker-container{
+    font-size: 14px;
+}
+.duration-picker-container select{
+    width: 45px;
+    display: inline-block;
+    height: 26px;
+    padding: 0;
+    box-sizing: content-box;
+    border-radius: 3px;
+    margin-left: 10px;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    font-size: 13px;
+}

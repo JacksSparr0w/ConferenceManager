@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class PermissionServiceImpl extends ServiceImpl implements PermissionService {
     private static final Logger logger = LogManager.getLogger(PermissionServiceImpl.class);
+
     /**
      * Instantiates a new Permission service.
      *
@@ -31,7 +32,7 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
      * @throws ServiceException the service exception
      */
     @Override
-    public List<Permission> findAll() throws ServiceException {
+    public List<Permission> readByID() throws ServiceException {
         List<Permission> permissions;
         try {
             permissions = transaction.getPermissionDao().read();
@@ -55,7 +56,7 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
         if (permission != null) {
             PermissionDao dao = transaction.getPermissionDao();
             try {
-                if (!isExist(permission)){
+                if (!isExist(permission)) {
                     if (permission.getId() != null) {
                         id = permission.getId();
                         dao.update(permission);
@@ -85,7 +86,6 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
     }
 
 
-
     /**
      * Read permission.
      *
@@ -94,7 +94,7 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
      * @throws ServiceException the service exception
      */
     @Override
-    public Permission findAll(Integer id) throws ServiceException {
+    public Permission readById(Integer id) throws ServiceException {
         Permission permission;
         if (id != null) {
             try {
@@ -134,7 +134,7 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
         }
     }
 
-    private boolean isExist(Permission permission) throws ServiceException{
-        return findAll().contains(permission);
+    private boolean isExist(Permission permission) throws ServiceException {
+        return readByID().contains(permission);
     }
 }

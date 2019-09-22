@@ -1,9 +1,6 @@
 package com.katsubo.finaltask.service.impl;
 
-import com.katsubo.finaltask.entity.Address;
-import com.katsubo.finaltask.entity.Event;
-import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.Value;
+import com.katsubo.finaltask.entity.*;
 import com.katsubo.finaltask.service.EventService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
@@ -15,20 +12,21 @@ import java.util.List;
 
 public class EventServiceImplTest {
     private static final String DESCRIPTION = "description";
-    private static final Integer PERMISSION = new Integer(1);
+    private static final Permission PERMISSION = new Permission();
     private static final String PASSWORD = "pass";
     private static final String LOGIN = "test";
     private static final String EVENT_NAME = "event1";
     private static final Value THEME = new Value(1);
-    {
-        THEME.setValue("business");
-    }
     private static User user;
     private static Event event1;
     private static Event event2;
-
     private static EventService service;
     private static UserService userService;
+
+    {
+        THEME.setValue("business");
+        PERMISSION.setId(1);
+    }
 
     @BeforeClass
     public static void prepareService() throws ServiceException {

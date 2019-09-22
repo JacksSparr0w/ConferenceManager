@@ -8,7 +8,7 @@ import java.util.Objects;
 public class User extends Entity {
     private String login;
     private String password;
-    private Integer permissionId;
+    private Permission permission;
 
     /**
      * Gets login.
@@ -51,8 +51,8 @@ public class User extends Entity {
      *
      * @return the permission
      */
-    public Integer getPermissionId() {
-        return permissionId;
+    public Permission getPermission() {
+        return permission;
     }
 
     /**
@@ -60,8 +60,8 @@ public class User extends Entity {
      *
      * @param permissionId the permission
      */
-    public void setPermission(Integer permissionId) {
-        this.permissionId = permissionId;
+    public void setPermission(Permission permissionId) {
+        this.permission = permissionId;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class User extends Entity {
         User user = (User) o;
         return Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(permissionId, user.permissionId);
+                Objects.equals(permission, user.permission);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class User extends Entity {
         return "User{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", permission=" + permissionId +
+                ", permission=" + permission +
                 '}';
     }
 }

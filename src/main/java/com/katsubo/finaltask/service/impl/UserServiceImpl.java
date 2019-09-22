@@ -1,11 +1,10 @@
 package com.katsubo.finaltask.service.impl;
 
 import com.katsubo.finaltask.dao.DaoException;
-import com.katsubo.finaltask.dao.PermissionDao;
 import com.katsubo.finaltask.dao.UserDao;
 import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
-import com.katsubo.finaltask.entity.Value;
+import com.katsubo.finaltask.service.PermissionService;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -36,12 +35,14 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
         UserDao dao = transaction.getUserDao();
         try {
             users = dao.read();
+            readPermission(users);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
 
         return users;
     }
+
 
     @Override
     public User findById(Integer id) throws ServiceException {
@@ -50,6 +51,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
             UserDao dao = transaction.getUserDao();
             try {
                 user = dao.read(id);
+                readPermission(user);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
@@ -59,6 +61,19 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
             logger.log(Level.ERROR, "Parameter - ID is inalid");
             throw new ServiceException("Parameter - ID is invalid");
         }
+    }
+
+    private void readPermission(List<User> users) throws ServiceException {
+        for (User user : users) {
+            readPermission(user);
+        }
+    }
+
+    private void readPermission(User user) throws ServiceException {
+        PermissionService service = new PermissionServiceImpl();
+        Permission permission = service.readById(user.getPermission().getId());
+        user.setPermission(permission);
+
     }
 
     @Override

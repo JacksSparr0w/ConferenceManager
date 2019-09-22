@@ -85,7 +85,7 @@
                     <!--
                         //todo permission
                     -->
-                    <c:if test="${user.permission == 'ADMINISTRATOR' or user.userId == event.author_id}">
+                    <c:if test="${user.permission.checkRule('MODIFY_ANY_EVENT') == true or user.userId == event.author_id}">
                         <form method="post">
                             <c:url value="edit_event_page" var="editEvent">
                                 <c:param name="eventId" value="${event.id}"/>

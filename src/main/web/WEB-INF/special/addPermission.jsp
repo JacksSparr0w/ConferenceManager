@@ -100,7 +100,7 @@
         <div class="m-2">
             <strong class="d-inline-block mb-2 text-black">Existing permissions</strong>
             <c:forEach items="${existPermissions}" var="_permission">
-                <div class="mb-3 border border-secondary rounded p-2">
+                <div class="mb-3 rounded p-2" style="background-color: #c8c8c8">
                     <p class="p-1 h5">${_permission.name}</p>
                     <hr>
                     <c:set var="rules" value="${_permission.rules}"/>

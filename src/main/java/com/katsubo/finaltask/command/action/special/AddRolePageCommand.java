@@ -36,7 +36,7 @@ public class AddRolePageCommand implements Command {
         try {
             existRoles = readExistRoles();
         } catch (ServiceException e){
-            logger.log(Level.WARN, "Cant findAll existing roles");
+            logger.log(Level.WARN, "Cant readByID existing roles");
         }
         request.setAttribute(EXIST_ROLES, existRoles);
         request.setAttribute(Constances.INCLUDE.getFieldName(), ResourceManager.getProperty("page.addRole"));

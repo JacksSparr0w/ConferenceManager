@@ -90,8 +90,8 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             }
             return permission;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll permission by id" + id);
-            throw new DaoException(e + "Can't findAll permission by id = " + id);
+            logger.log(Level.ERROR, "Can't readByID permission by id" + id);
+            throw new DaoException(e + "Can't readByID permission by id = " + id);
         } finally {
             try {
                 if (resultSet == null) {
@@ -168,8 +168,8 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             }
             return permissions;
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Can't findAll permissions");
-            throw new DaoException(e + "Can't findAll permissions");
+            logger.log(Level.ERROR, "Can't readByID permissions");
+            throw new DaoException(e + "Can't readByID permissions");
         } finally {
             try {
                 if (resultSet == null) {
