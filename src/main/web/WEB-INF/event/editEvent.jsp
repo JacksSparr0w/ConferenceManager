@@ -163,16 +163,8 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="building">${building}</label>
-                    <input type="number" class="form-control" name="building" id="building"
+                    <input type="text" maxlength="4" class="form-control" name="building" id="building"
                            placeholder="${building}" title="Enter building">
-                    <script>
-                        $("#building").on("keypress", function (evt) {
-                            var keycode = evt.charCode || evt.keyCode;
-                            if (keycode == 46 || this.value.length == 3) {
-                                return false;
-                            }
-                        });
-                    </script>
                 </div>
             </div>
 
@@ -187,6 +179,23 @@
                         if (keycode == 46 || this.value.length == 5) {
                             return false;
                         }
+                    });
+                </script>
+            </div>
+            <div class="row mb-3">
+                <label for="duration">Duration</label>
+                <br>
+                <input type="hidden" name="durationInput" id="duration"/>
+                <input type="hidden" name="duration"/>
+                <script>
+                    $(document).ready(function() {
+                        $('input[name=durationInput]').on("change", function(){
+                            $('#duration').text("Duration (secs): " + $(this).val());
+                        });
+                        $('input[name=duration]').durationpicker({
+                            allowZeroTime: false,
+                            minsJump: 15
+                        })
                     });
                 </script>
             </div>

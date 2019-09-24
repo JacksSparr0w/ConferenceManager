@@ -35,6 +35,7 @@ import java.util.*;
  * The type Add event command.
  */
 public class AddEventCommand implements Command {
+    public static final String DURATION = "duration";
     private static final String ERROR = "error";
     private static final String ADD_EVENT_SUCCESS = "event.add.success";
     private static final Logger logger = LogManager.getLogger(AddEventCommand.class);
@@ -55,7 +56,6 @@ public class AddEventCommand implements Command {
     private static final String PICTURE = "picture";
     private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
     private static final List<String> formats = new ArrayList<>();
-    public static final String DURATION = "duration";
 
     static {
         formats.add("jpg");
@@ -108,16 +108,13 @@ public class AddEventCommand implements Command {
 
         event.setTheme(new Value(Integer.valueOf(parameters.get(THEME))));
         Date date;
-        Date duration;
         try {
             date = dateFormat.parse(parameters.get(DATE));
-            duration = timeFormat.parse(parameters.get(DURATION));
         } catch (ParseException pe) {
             logger.log(Level.WARN, ERROR_ADD_EVENT);
             return failure(ERROR_ADD_EVENT, request);
         }
         event.setDate(date);
-        event.setDuration(duration);
         event.setAddress(new Address(
                 parameters.get(COUNTRY),
                 parameters.get(CITY),
@@ -133,10 +130,11 @@ public class AddEventCommand implements Command {
             return failure(ERROR_ADD_EVENT, request);
         }
 
-
         try {
             Integer capacity = Integer.valueOf(parameters.get(CAPACITY));
+            int duration = Integer.valueOf(parameters.get(DURATION));
             event.setCapacity(capacity);
+            event.setDuration(new Date(duration));
             if (valid(event)) {
                 add(event);
             }
@@ -147,6 +145,7 @@ public class AddEventCommand implements Command {
             logger.log(Level.WARN, ERROR_ADD_EVENT);
             return failure(ERROR_ADD_EVENT, request);
         }
+
 
         request.getSession().setAttribute(DONE, ADD_EVENT_SUCCESS);
         return new CommandResult(ResourceManager.getProperty("command.allEvents"), true);

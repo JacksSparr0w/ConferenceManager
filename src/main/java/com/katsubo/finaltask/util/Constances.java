@@ -7,6 +7,8 @@ public enum Constances {
     INCLUDE("includeView"),
     USER_INFO("userInfo"),
     EVENT("event"),
+    PERMISSION("permission"),
+    MENU("menu"),
     ERROR("error");
 
     private final String fieldName;

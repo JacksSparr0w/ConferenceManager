@@ -13,6 +13,7 @@ import com.katsubo.finaltask.util.ResourceManager;
 import com.katsubo.finaltask.validate.UserValidator;
 import com.katsubo.finaltask.validate.Validator;
 import com.katsubo.finaltask.validate.ValidatorException;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,10 +52,12 @@ public class EditUserCommand implements Command {
         } else if (!password.isEmpty()) {
             user.setPassword(password);
         }
+
         user.setPermission(userDto.getPermission());
         try {
             if (valid(user))
-                update(user);
+                user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+            update(user);
         } catch (ValidatorException | ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_UPDATE_USER, request);

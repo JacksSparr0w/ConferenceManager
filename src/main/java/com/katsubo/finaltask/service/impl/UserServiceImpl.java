@@ -63,19 +63,6 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
         }
     }
 
-    private void readPermission(List<User> users) throws ServiceException {
-        for (User user : users) {
-            readPermission(user);
-        }
-    }
-
-    private void readPermission(User user) throws ServiceException {
-        PermissionService service = new PermissionServiceImpl();
-        Permission permission = service.readById(user.getPermission().getId());
-        user.setPermission(permission);
-
-    }
-
     @Override
     public boolean isExist(String login) throws ServiceException {
         Integer id;
@@ -102,6 +89,11 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
                 UserDao dao = transaction.getUserDao();
                 try {
                     user = dao.read(login, DigestUtils.md5Hex(password));
+                    if (user != null) {
+                        readPermission(user);
+                    } else {
+                        throw new ServiceException("can't find user");
+                    }
                 } catch (DaoException e) {
                     throw new ServiceException(e);
                 }
@@ -126,12 +118,9 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
                     id = user.getId();
                     if (user.getPassword() == null) {
                         user.setPassword(dao.read(user.getId()).getPassword());
-                    } else {
-                        user.setPassword(DigestUtils.md5Hex(user.getPassword()));
                     }
                     dao.update(user);
                 } else {
-                    user.setPassword(DigestUtils.md5Hex(user.getPassword()));
                     id = dao.create(user);
                 }
                 transaction.commit();
@@ -170,5 +159,18 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
             logger.log(Level.ERROR, "Parameter - ID is inalid");
             throw new ServiceException("Parameter - ID is invalid");
         }
+    }
+
+    private void readPermission(List<User> users) throws ServiceException {
+        for (User user : users) {
+            readPermission(user);
+        }
+    }
+
+    private void readPermission(User user) throws ServiceException {
+        PermissionService service = new PermissionServiceImpl();
+        Permission permission = service.readById(user.getPermission().getId());
+        user.setPermission(permission);
+
     }
 }

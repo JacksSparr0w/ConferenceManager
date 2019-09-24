@@ -34,15 +34,12 @@
     </c:when>
 </c:choose>
 
-<div class="container-fluid pb-5 pl-5 pr-5">
+<div class="container-fluid pb-1 pl-2 pr-1">
     <c:forEach var="user" items="${users}">
         <c:set var="info" value="${users_info.get(user.id)}"/>
         <div class="container">
             <div class="card flex-md-row mb-4 box-shadow h-md-250">
                 <div class="card-body d-flex flex-column align-items-start">
-                    <!--
-                        //TODO repair permission
-                    -->
                     <strong class="d-inline-block mb-2 text-primary">${user.permission.name}</strong>
                     <div class="d-inline-block">
                         <strong class="d-inline-block mb-2 text-secondary">${user.login}</strong>
@@ -65,19 +62,43 @@
                         <fmt:formatDate value="${info.dateOfRegistration}" pattern="yyyy-MM-dd"/>
                     </div>
                     <p class="card-text mb-auto mb-2">${info.about}</p>
-                    <div class="text-muted">
-                        <form>
-                            <c:url value="controller" var="deleteUrl">
-                                <c:param name="command" value="delete_user"/>
-                                <c:param name="userId" value="${user.id}"/>
-                            </c:url>
-                            <button type="button" class="btn btn-outline-dark"
-                                    onclick="window.location.href='${deleteUrl}'"
-                            >${delete}</button>
-                        </form>
-                    </div>
-                </div>
+                    <c:if test="${user.id != sessionScope.user.userId}">
+                        <div class="text-muted d-inline-flex">
+                            <form>
+                                <c:url value="controller" var="deleteUrl">
+                                    <c:param name="command" value="delete_user"/>
+                                    <c:param name="userId" value="${user.id}"/>
+                                </c:url>
+                                <button type="button" class="btn btn-outline-dark"
+                                        onclick="window.location.href='${deleteUrl}'"
+                                >${delete}</button>
+                            </form>
 
+                        </div>
+                    </c:if>
+                </div>
+                <c:if test="${sessionScope.user.userId != pageScope.user.id && sessionScope.permission.checkRule('CHANGE_USER_PERMISSION') == true}">
+                    <div class="col-4">
+                        <div class="container mt-2 mr-1">
+                            <form action="controller?command=change_user_permission" method="post">
+                                <input type="hidden" value="${user.id}" name="userId">
+                                <label class="text-dark" for="selectPermission"><h6>Change permission to</h6></label>
+                                <select class="form-control" id="selectPermission" name="permissionId" onchange="this.form.submit()">
+                                    <c:forEach var="_permission" items="${permissions}">
+                                        <c:choose>
+                                            <c:when test="${user.permission.id == _permission.id}">
+                                                <option value="${_permission.id}" selected>${_permission.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${_permission.id}">${_permission.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </div>
     </c:forEach>

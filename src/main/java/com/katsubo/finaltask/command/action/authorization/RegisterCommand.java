@@ -16,6 +16,7 @@ import com.katsubo.finaltask.validate.UserInfoValidator;
 import com.katsubo.finaltask.validate.UserValidator;
 import com.katsubo.finaltask.validate.Validator;
 import com.katsubo.finaltask.validate.ValidatorException;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.katsubo.finaltask.util.Constances.USER;
+import static com.katsubo.finaltask.util.Constances.*;
+
 
 /**
  * The type Register command.
@@ -58,7 +60,7 @@ public class RegisterCommand implements Command {
             }
         }
 
-        boolean userExist = false;
+        boolean userExist;
         try {
             userExist = checkIfUserExist(parameters.get(LOGIN));
         } catch (ServiceException e) {
@@ -103,6 +105,7 @@ public class RegisterCommand implements Command {
         info.setDateOfBirth(new Date());
 
         if (userValid(user) && infoValid(info)) {
+            user.setPassword(DigestUtils.md5Hex(user.getPassword()));
             UserService userService = new UserServiceImpl();
             Integer id = userService.save(user);
             if (id != null) {
@@ -121,9 +124,8 @@ public class RegisterCommand implements Command {
     private void setAttributesToSession(HttpServletRequest request, User user) {
         UserDto userDto = new UserDto(user);
         request.getSession().setAttribute(USER.getFieldName(), userDto);
-        Permission permission = user.getPermission();
-        request.getSession().setAttribute("permission", permission);
-        request.getSession().setAttribute("menu", MenuCreator.getMenuItems(permission));
+        request.getSession().setAttribute(PERMISSION.getFieldName(), user.getPermission());
+        request.getSession().setAttribute(MENU.getFieldName(), MenuCreator.getMenuItems(user.getPermission()));
         AccessSystem.updateRules(userDto);
     }
 

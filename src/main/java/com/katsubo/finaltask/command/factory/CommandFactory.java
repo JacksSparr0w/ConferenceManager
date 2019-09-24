@@ -9,6 +9,8 @@ import com.katsubo.finaltask.command.action.useraction.*;
 import java.util.EnumMap;
 import java.util.Map;
 
+import static com.katsubo.finaltask.command.factory.CommandType.*;
+
 /**
  * The type Command factory.
  */
@@ -16,37 +18,36 @@ public class CommandFactory {
     private static Map<CommandType, Command> commands = new EnumMap<>(CommandType.class);
 
     static {
-        commands.put(CommandType.LOGIN, new LoginCommand());
-        commands.put(CommandType.LOGOUT, new LogoutCommand());
-        commands.put(CommandType.REGISTER, new RegisterCommand());
-        commands.put(CommandType.ADD_EVENT, new AddEventCommand());
-        commands.put(CommandType.REMOVE_EVENT, new RemoveEventCommand());
-        commands.put(CommandType.EDIT_EVENT, new EditEventCommand());
-        commands.put(CommandType.EDIT_EVENT_PAGE, new EditEventPageCommand());
-        commands.put(CommandType.PROFILE, new ProfileCommand());
-        commands.put(CommandType.EDIT_USER, new EditUserCommand());
-        commands.put(CommandType.EDIT_USER_INFO, new EditUserInfoCommand());
-        commands.put(CommandType.EDIT_USER_PHOTO, new EditUserPhotoCommand());
-        commands.put(CommandType.DELETE_USER, new DeleteUserCommand());
-        commands.put(CommandType.REGISTER_TO_EVENT, new RegisterToEventCommand());
-        commands.put(CommandType.LEAVE_EVENT, new LeaveEventCommand());
-        commands.put(CommandType.USER_EVENTS, new UserEventsCommand());
-        commands.put(CommandType.HOME_PAGE, new HomePageCommand());
-        commands.put(CommandType.CHANGE_LANGUAGE, new ChangeLanguageCommand());
-        commands.put(CommandType.LOGIN_PAGE, new LoginPageCommand());
-        commands.put(CommandType.REGISTER_PAGE, new RegisterPageCommand());
-        commands.put(CommandType.ADD_EVENT_PAGE, new AddEventPageCommand());
-        commands.put(CommandType.ALL_USERS, new AllUsersCommand());
-        commands.put(CommandType.START_PAGE, new HomePageCommand());
-        commands.put(CommandType.ALL_EVENTS, new AllEventsCommand());
-        //TODO create commands
-        commands.put(CommandType.ADD_ROLE, new AddRoleCommand());
-        commands.put(CommandType.ADD_ROLE_PAGE, new AddRolePageCommand());
-        commands.put(CommandType.ADD_THEME, new AddThemeCommand());
-        commands.put(CommandType.ADD_THEME_PAGE, new AddThemePageCommand());
-        commands.put(CommandType.ADD_PERMISSION, new AddPermissionCommand());
-        commands.put(CommandType.ADD_PERMISSION_PAGE, new AddPermissionPageCommand());
-        commands.put(CommandType.CHANGE_USER_PERMISSION, null);
+        commands.put(LOGIN, new LoginCommand());
+        commands.put(LOGOUT, new LogoutCommand());
+        commands.put(REGISTER, new RegisterCommand());
+        commands.put(ADD_EVENT, new AddEventCommand());
+        commands.put(REMOVE_EVENT, new RemoveEventCommand());
+        commands.put(EDIT_EVENT, new EditEventCommand());
+        commands.put(EDIT_EVENT_PAGE, new EditEventPageCommand());
+        commands.put(PROFILE, new ProfileCommand());
+        commands.put(EDIT_USER, new EditUserCommand());
+        commands.put(EDIT_USER_INFO, new EditUserInfoCommand());
+        commands.put(EDIT_USER_PHOTO, new EditUserPhotoCommand());
+        commands.put(DELETE_USER, new DeleteUserCommand());
+        commands.put(REGISTER_TO_EVENT, new RegisterToEventCommand());
+        commands.put(LEAVE_EVENT, new LeaveEventCommand());
+        commands.put(USER_EVENTS, new UserEventsCommand());
+        commands.put(HOME_PAGE, new HomePageCommand());
+        commands.put(CHANGE_LANGUAGE, new ChangeLanguageCommand());
+        commands.put(LOGIN_PAGE, new LoginPageCommand());
+        commands.put(REGISTER_PAGE, new RegisterPageCommand());
+        commands.put(ADD_EVENT_PAGE, new AddEventPageCommand());
+        commands.put(ALL_USERS, new AllUsersCommand());
+        commands.put(START_PAGE, new HomePageCommand());
+        commands.put(ALL_EVENTS, new AllEventsCommand());
+        commands.put(ADD_ROLE, new AddRoleCommand());
+        commands.put(ADD_ROLE_PAGE, new AddRolePageCommand());
+        commands.put(ADD_THEME, new AddThemeCommand());
+        commands.put(ADD_THEME_PAGE, new AddThemePageCommand());
+        commands.put(ADD_PERMISSION, new AddPermissionCommand());
+        commands.put(ADD_PERMISSION_PAGE, new AddPermissionPageCommand());
+        commands.put(CHANGE_USER_PERMISSION, new ChangeUserPermissionCommand());
 
     }
 

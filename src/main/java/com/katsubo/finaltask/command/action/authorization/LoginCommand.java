@@ -3,7 +3,6 @@ package com.katsubo.finaltask.command.action.authorization;
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
 import com.katsubo.finaltask.command.action.Command;
-import com.katsubo.finaltask.entity.Permission;
 import com.katsubo.finaltask.entity.User;
 import com.katsubo.finaltask.entity.UserDto;
 import com.katsubo.finaltask.filter.AccessSystem;
@@ -19,7 +18,8 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.katsubo.finaltask.util.Constances.USER;
+import static com.katsubo.finaltask.util.Constances.*;
+
 
 /**
  * The type Login command.
@@ -77,9 +77,8 @@ public class LoginCommand implements Command {
     private void setAttributesToSession(HttpServletRequest request, User user) {
         UserDto userDto = new UserDto(user);
         request.getSession().setAttribute(USER.getFieldName(), userDto);
-        Permission permission = user.getPermission();
-        request.getSession().setAttribute("permission", permission);
-        request.getSession().setAttribute("menu", MenuCreator.getMenuItems(permission));
+        request.getSession().setAttribute(PERMISSION.getFieldName(), user.getPermission());
+        request.getSession().setAttribute(MENU.getFieldName(), MenuCreator.getMenuItems(user.getPermission()));
         AccessSystem.updateRules(userDto);
     }
 

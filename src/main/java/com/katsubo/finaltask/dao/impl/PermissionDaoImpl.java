@@ -19,7 +19,7 @@ import static com.katsubo.finaltask.entity.Rule.*;
 
 public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
 
-    private static final String READ_ALL = "SELECT `name`, modify_any_event, change_user_permission, all_users, delete_user, add_theme, add_role, add_permission FROM `permission` ORDER BY `id`";
+    private static final String READ_ALL = "SELECT `id`, `name`, modify_any_event, change_user_permission, all_users, delete_user, add_theme, add_role, add_permission FROM `permission` ORDER BY `id`";
     private static final String CREATE = "INSERT INTO `permission` (name, modify_any_event, change_user_permission, all_users, delete_user, add_theme, add_role, add_permission) VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String READ = "SELECT `name`, modify_any_event, change_user_permission, all_users, delete_user, add_theme, add_role, add_permission FROM `permission` WHERE `id` = ?";
     private static final String UPDATE = "UPDATE `permission` SET `name` = ?, modify_any_event = ?, change_user_permission = ?, all_users = ?, delete_user = ?, add_theme = ?, add_role = ?, add_permission = ? WHERE `id` = ?";
@@ -82,6 +82,7 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             Permission permission = null;
             if (resultSet.next()) {
                 permission = new Permission(resultSet.getString("name"));
+                permission.setId(id);
                 for (Rule rule : Rule.values()) {
                     if (resultSet.getBoolean(rule.getValue())) {
                         permission.addRule(rule);
@@ -159,6 +160,7 @@ public class PermissionDaoImpl extends BaseDaoImpl implements PermissionDao {
             Permission permission = null;
             while (resultSet.next()) {
                 permission = new Permission(resultSet.getString("name"));
+                permission.setId(resultSet.getInt("id"));
                 for (Rule rule : Rule.values()) {
                     if (resultSet.getBoolean(rule.getValue())) {
                         permission.addRule(rule);

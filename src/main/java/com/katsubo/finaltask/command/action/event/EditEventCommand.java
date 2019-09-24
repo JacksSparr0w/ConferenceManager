@@ -39,6 +39,7 @@ import java.util.List;
  * The type Edit event command.
  */
 public class EditEventCommand implements Command {
+    private static final String DURATION = "duration";
     private static final Logger logger = LogManager.getLogger(EditEventCommand.class);
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private static final String DESCRIPTION = "description";
@@ -59,7 +60,7 @@ public class EditEventCommand implements Command {
     private static final String EVENT_EDIT_SUCCESS = "event.edit.success";
     private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
     private static final List<String> formats = new ArrayList<>();
-    public static final String ACCESS_CLOSED = "access_closed";
+    private static final String ACCESS_CLOSED = "access_closed";
 
     static {
         formats.add("jpg");
@@ -151,6 +152,16 @@ public class EditEventCommand implements Command {
         if (capacity != null && !capacity.isEmpty()) {
             try {
                 event.setCapacity(Integer.valueOf(capacity));
+            } catch (NumberFormatException e) {
+                logger.log(Level.WARN, e.getMessage());
+                return failure(EVENT_EDIT_FAIL, request);
+            }
+        }
+
+        String duration = request.getParameter(DURATION);
+        if (duration != null && !duration.isEmpty()) {
+            try {
+                event.setDuration(new Date(Integer.valueOf(duration)));
             } catch (NumberFormatException e) {
                 logger.log(Level.WARN, e.getMessage());
                 return failure(EVENT_EDIT_FAIL, request);
