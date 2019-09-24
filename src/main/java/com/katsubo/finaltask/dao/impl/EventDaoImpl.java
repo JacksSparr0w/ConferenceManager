@@ -47,7 +47,7 @@ public class EventDaoImpl extends BaseDaoImpl implements EventDao {
                 event.setAddress(new Address(resultSet.getInt("address")));
                 event.setAuthor_id(resultSet.getInt("author_id"));
                 event.setCapacity(resultSet.getInt("capacity"));
-                event.setDuration(new Date(resultSet.getInt("duration")));
+                event.setDuration(new Date(resultSet.getLong("duration")));
                 events.add(event);
             }
             return events;
