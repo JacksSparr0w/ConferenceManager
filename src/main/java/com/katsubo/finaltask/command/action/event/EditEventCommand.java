@@ -61,6 +61,7 @@ public class EditEventCommand implements Command {
     private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
     private static final List<String> formats = new ArrayList<>();
     private static final String ACCESS_CLOSED = "access_closed";
+    public static final int MILLIS = 1000;
 
     static {
         formats.add("jpg");
@@ -161,7 +162,7 @@ public class EditEventCommand implements Command {
         String duration = request.getParameter(DURATION);
         if (duration != null && !duration.isEmpty()) {
             try {
-                event.setDuration(new Date(Integer.valueOf(duration)));
+                event.setDuration(new Date(Integer.valueOf(duration) * MILLIS));
             } catch (NumberFormatException e) {
                 logger.log(Level.WARN, e.getMessage());
                 return failure(EVENT_EDIT_FAIL, request);

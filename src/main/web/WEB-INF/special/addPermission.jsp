@@ -5,12 +5,18 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<fmt:message bundle="${textResources}" key="user.date.birth" var="date_of_bitrh"/>
-<fmt:message bundle="${textResources}" key="user.date.registration" var="date_of_registration"/>
-<fmt:message bundle="${textResources}" key="user.delete" var="delete"/>
-<fmt:message bundle="${textResources}" key="user.delete.sure" var="sure"/>
-<fmt:message bundle="${textResources}" key="yes" var="yes"/>
-<fmt:message bundle="${textResources}" key="no" var="no"/>
+<fmt:message bundle="${textResources}" key="exist" var="existing"/>
+<fmt:message bundle="${textResources}" key="new.permission" var="new.permission"/>
+<fmt:message bundle="${textResources}" key="add" var="add"/>
+<fmt:message bundle="${textResources}" key="add_permission" var="add_permission"/>
+<fmt:message bundle="${textResources}" key="name" var="name"/>
+<fmt:message bundle="${textResources}" key="modify_any_event" var="modify"/>
+<fmt:message bundle="${textResources}" key="change_user_permission" var="change"/>
+<fmt:message bundle="${textResources}" key="all_users" var="all_users"/>
+<fmt:message bundle="${textResources}" key="delete_user" var="delete_user"/>
+<fmt:message bundle="${textResources}" key="add_theme" var="add_theme"/>
+<fmt:message bundle="${textResources}" key="add_role" var="add_role"/>
+<fmt:message bundle="${textResources}" key="add_permission" var="add_permission"/>
 
 
 <div class="container-fluid pb-5 pl-2 pr-2">
@@ -39,73 +45,73 @@
                 </c:choose>
 
             </div>
-            <strong class="d-inline-block mb-2 text-black">Add new permission</strong>
+            <strong class="d-inline-block mb-2 text-black">${add_permission}</strong>
             <form action="add_permission" method="post">
                 <div>
-                    <label for="name">Name of new permission</label>
+                    <label for="name">${name}</label>
                     <input type="text" class="form-control" name="name" id="name" placeholder="New permission">
                 </div>
                 <div class="container m-2">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="modify_any_event" id="modifyEvent">
                         <label class="form-check-label" for="modifyEvent">
-                            modifyEvent
+                            ${modify}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="change_user_permission"
                                id="changePermission">
                         <label class="form-check-label" for="changePermission">
-                            changePermission
+                            ${change}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="all_users" id="allUsers">
                         <label class="form-check-label" for="allUsers">
-                            allUsers
+                            ${all_users}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="delete_user" id="deleteUser">
                         <label class="form-check-label" for="deleteUser">
-                            deleteUser
+                            ${delete_user}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="add_theme" id="addTheme">
                         <label class="form-check-label" for="addTheme">
-                            addTheme
+                            ${add_theme}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="add_role" id="addRole">
                         <label class="form-check-label" for="addRole">
-                            addRole
+                            ${add_role}
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="add_permission" id="addPermission">
                         <label class="form-check-label" for="addPermission">
-                            addPermission
+                            ${add_permission}
                         </label>
                     </div>
                     <div class="justify-content-end">
                         <button type="submit" class="btn btn-outline-success mt-2"
-                        >Add
+                        >${add}
                         </button>
                     </div>
                 </div>
             </form>
         </div>
         <div class="m-2">
-            <strong class="d-inline-block mb-2 text-black">Existing permissions</strong>
+            <strong class="d-inline-block mb-2 text-black">${existing}</strong>
             <c:forEach items="${existPermissions}" var="_permission">
                 <div class="mb-3 rounded p-2" style="background-color: #f1f1f1">
-                    <p class="p-1 h5">${_permission.name}</p>
+                    <p class="p-1 h5"><fmt:message bundle="${textResources}" key="${_permission.name}"/></p>
                     <hr>
                     <c:set var="rules" value="${_permission.rules}"/>
                     <c:forEach items="${rules}" var="rule">
-                        <p>${rule.value}</p>
+                        <p><fmt:message bundle="${textResources}" key="${rule.value}"/></p>
                     </c:forEach>
                 </div>
             </c:forEach>

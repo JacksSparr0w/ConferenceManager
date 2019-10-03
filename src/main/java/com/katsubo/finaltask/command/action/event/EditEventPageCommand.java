@@ -37,7 +37,7 @@ public class EditEventPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String eventIdString = request.getParameter(EVENT_ID);
+            String eventIdString = request.getParameter(EVENT_ID);
         if (eventIdString == null) {
             logger.log(Level.WARN, ERROR_FIND_EVENT);
             return failure(ERROR_FIND_EVENT, request);
@@ -70,7 +70,7 @@ public class EditEventPageCommand implements Command {
 
     private boolean checkRules(Integer eventId, UserDto user) throws ServiceException {
         EventService service = new EventServiceImpl();
-        Event event = service.findById(eventId);
+        event = service.findById(eventId);
         if (user == null) return false;
         if (user.getUserId().equals(event.getAuthor_id())) return true;
         return AccessSystem.checkAccess(CommandType.DELETE_ANY_EVENT);

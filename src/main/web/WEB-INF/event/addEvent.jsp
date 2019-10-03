@@ -22,6 +22,11 @@
 <fmt:message bundle="${textResources}" key="theme.design" var="design"/>
 <fmt:message bundle="${textResources}" key="theme.science" var="science"/>
 
+<fmt:message bundle="${textResources}" key="duration" var="duration"/>
+<fmt:message bundle="${textResources}" key="days" var="days"/>
+<fmt:message bundle="${textResources}" key="hours" var="hours"/>
+<fmt:message bundle="${textResources}" key="minutes" var="minutes"/>
+
 
 <link rel="stylesheet" type="text/css" href="css/image.css">
 <script src="js/image.js"></script>
@@ -179,18 +184,25 @@
                 </script>
             </div>
             <div class="row mb-3">
-                <label for="duration">Duration</label>
+                <label for="duration">${duration}</label>
                 <br>
                 <input type="hidden" name="durationInput" id="duration"/>
                 <input type="hidden" name="duration"/>
                 <script>
-                    $(document).ready(function() {
-                        $('input[name=durationInput]').on("change", function(){
+                    $(document).ready(function () {
+                        $('input[name=durationInput]').on("change", function () {
                             $('#duration').text("Duration (secs): " + $(this).val());
                         });
                         $('input[name=duration]').durationpicker({
                             allowZeroTime: false,
-                            minsJump: 15
+                            minsJump: 15,
+                            showDays: false,
+                            showHours: true,
+                            showMins: true,
+                            hoursLabel: '${hours}',
+                            minsLabel: '${minutes}'
+
+
                         })
                     });
                 </script>

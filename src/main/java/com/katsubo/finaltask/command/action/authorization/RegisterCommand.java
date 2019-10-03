@@ -42,7 +42,7 @@ public class RegisterCommand implements Command {
     private static final String SURNAME = "surname";
     private static final String EMAIL = "email";
     private static final String ERROR_REGISTRATION = "registration.error";
-    private static final String INVALID_FIELD = "invalid_field";
+    private static final String FIELDS_INVALID = "fields.invalid";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -56,7 +56,7 @@ public class RegisterCommand implements Command {
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
                 logger.log(Level.ERROR, "Invalid " + entry.getKey() + " was received");
-                return failure(request, INVALID_FIELD);
+                return failure(request, FIELDS_INVALID);
             }
         }
 
@@ -73,7 +73,7 @@ public class RegisterCommand implements Command {
         }
         try {
             createUser(parameters, request);
-            logger.log(Level.INFO, "user registrated and authorized with login - " + parameters.get(LOGIN));
+            logger.log(Level.INFO, "user registered and authorized with login - " + parameters.get(LOGIN));
             return new CommandResult(ResourceManager.getProperty("command.home"), true);
         } catch (ValidatorException | ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
@@ -134,7 +134,7 @@ public class RegisterCommand implements Command {
         Validator validator = new UserValidator();
         String error = validator.isValid(user);
         if (error != null) {
-            throw new ValidatorException(error);
+            throw new ValidatorException(FIELDS_INVALID);
         } else {
             return true;
         }

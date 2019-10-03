@@ -56,6 +56,7 @@ public class AddEventCommand implements Command {
     private static final String PICTURE = "picture";
     private static final String INVALID_TYPE_OF_FILE = "invalid_type_of_file";
     private static final List<String> formats = new ArrayList<>();
+    public static final int MILLIS = 1000;
 
     static {
         formats.add("jpg");
@@ -66,7 +67,7 @@ public class AddEventCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String[] parametersNames = {NAME, DESCRIPTION, THEME, DATE, COUNTRY, CITY, STREET, BUILDING, CAPACITY, DURATION};
-        Map<String, String> parameters = new HashMap<>();
+            Map<String, String> parameters = new HashMap<>();
         for (String parametersName : parametersNames) {
             String parameter = request.getParameter(parametersName);
             parameters.put(parametersName, parameter);
@@ -134,7 +135,7 @@ public class AddEventCommand implements Command {
             Integer capacity = Integer.valueOf(parameters.get(CAPACITY));
             int duration = Integer.valueOf(parameters.get(DURATION));
             event.setCapacity(capacity);
-            event.setDuration(new Date(duration));
+            event.setDuration(new Date(duration * MILLIS));
             if (valid(event)) {
                 add(event);
             }

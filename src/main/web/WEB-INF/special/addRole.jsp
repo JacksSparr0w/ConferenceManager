@@ -5,12 +5,11 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<fmt:message bundle="${textResources}" key="user.date.birth" var="date_of_bitrh"/>
-<fmt:message bundle="${textResources}" key="user.date.registration" var="date_of_registration"/>
-<fmt:message bundle="${textResources}" key="user.delete" var="delete"/>
-<fmt:message bundle="${textResources}" key="user.delete.sure" var="sure"/>
-<fmt:message bundle="${textResources}" key="yes" var="yes"/>
-<fmt:message bundle="${textResources}" key="no" var="no"/>
+<fmt:message bundle="${textResources}" key="exist" var="existing"/>
+<fmt:message bundle="${textResources}" key="new.role" var="new.role"/>
+<fmt:message bundle="${textResources}" key="add" var="add"/>
+<fmt:message bundle="${textResources}" key="add_role" var="add_role"/>
+<fmt:message bundle="${textResources}" key="name" var="name"/>
 
 
 <div class="container-fluid pb-5 pl-5 pr-5">
@@ -38,26 +37,26 @@
                     </c:when>
                 </c:choose>
             </div>
-            <strong class="d-inline-block mb-2 text-black">Add new role</strong>
+            <strong class="d-inline-block mb-2 text-black">${add_role}</strong>
             <form action="add_role" method="post">
                 <div class="row pt-3 pl-3 pr-3">
                     <div class="col-md-6">
-                        <label for="role">Name of new role</label>
+                        <label for="role">${name}</label>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="role" id="role" placeholder="New role">
+                        <input type="text" class="form-control" name="role" id="role" placeholder="${new.role}">
                     </div>
                 </div>
                 <div class="justify-content-end">
                     <button type="submit" class="btn btn-outline-success mt-2"
-                    >Add
+                    >${add}
                     </button>
                 </div>
 
             </form>
         </div>
         <div class="m-2">
-            <strong class="d-inline-block mb-2 text-black">Existing roles</strong>
+            <strong class="d-inline-block mb-2 text-black">${existing}</strong>
             <c:forEach items="${existRoles}" var="_role">
                 <p>${_role.value}</p>
             </c:forEach>

@@ -38,8 +38,8 @@ public class RegisterToEventCommand implements Command {
     private static final String DONE = "done";
     private static final String SUCH_REGISTRATION_ALREADY_EXIST = "such_registration_already_exist";
     private static final String EVENT_REGISTER_SUCCESS = "event.register.success";
-    public static final String ROLE = "role";
-    public static final String CANT_FIND_ROLE_ID = "cant_find_role_id";
+    private static final String ROLE = "role";
+    private static final String CANT_FIND_ROLE_ID = "cant_find_role_id";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -78,7 +78,6 @@ public class RegisterToEventCommand implements Command {
 
         UserDto user = (UserDto) request.getSession().getAttribute(Constances.USER.getFieldName());
         Integer userId = user.getUserId();
-        //todo create role
         Registration registration = new Registration(userId, eventId, new Value(roleId));
         try {
             if (!registrationExist(eventId, userId)) {

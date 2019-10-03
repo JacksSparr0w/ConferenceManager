@@ -28,9 +28,7 @@ public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
-    private static final String ERROR_LOGIN = "error_login";
-    private static final String ERROR_PASSWORD = "error_password";
-    private static final String ERROR_AUTHENTIFICATION = "authorization.error";
+    private static final String USER_FIND_ERROR = "user.find.error";
     private static final String ERROR = "error";
 
     @Override
@@ -39,10 +37,10 @@ public class LoginCommand implements Command {
         String password = request.getParameter(PASSWORD);
         if (login == null || login.isEmpty()) {
             logger.log(Level.WARN, "invalid login was received");
-            return failure(request, ERROR_LOGIN);
+            return failure(request, USER_FIND_ERROR);
         }
         if (password == null || password.isEmpty()) {
-            return failure(request, ERROR_PASSWORD);
+            return failure(request, USER_FIND_ERROR);
         }
         boolean userExist = false;
         try {
@@ -57,7 +55,7 @@ public class LoginCommand implements Command {
             return new CommandResult(ResourceManager.getProperty("command.home"), true);
         } else {
             logger.log(Level.WARN, "user with such login and password doesn't exist");
-            return failure(request, ERROR_AUTHENTIFICATION);
+            return failure(request, USER_FIND_ERROR);
         }
 
 

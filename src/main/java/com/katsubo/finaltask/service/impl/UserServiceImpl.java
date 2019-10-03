@@ -92,7 +92,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
                     if (user != null) {
                         readPermission(user);
                     } else {
-                        throw new ServiceException("can't find user");
+                        throw new ServiceException("user.find.error");
                     }
                 } catch (DaoException e) {
                     throw new ServiceException(e);

@@ -27,6 +27,7 @@ public class UserEventsCommand implements Command {
     private static final String ZERO_EVENTS = "zero_events";
     private static final String CANT_FIND_USER = "cant_find_user";
     private static final String ERROR_FIND_USER_EVENTS = "events.notFound";
+    //TODO add view of user role on registration
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

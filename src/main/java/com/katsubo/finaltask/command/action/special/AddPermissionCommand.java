@@ -24,7 +24,7 @@ public class AddPermissionCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddPermissionCommand.class);
     private static final String NAME = "name";
     private static final String ERROR = "error";
-    private static final String INVALID_INPUT = "invalid.input";
+    private static final String INVALID_INPUT = "save.permission.invalid.input";
     private static final String SAVE_PERMISSION_SUCCESS = "save.permission.success";
     private static final String SAVE_PERMISSION_ERROR = "save.permission.error";
     public static final String DONE = "done";

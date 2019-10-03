@@ -1,0 +1,11 @@
+2019-09-30 07:20:31,822 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,832 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,857 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,903 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,933 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,939 [main] ERROR com.katsubo.finaltask.service.impl.RegistrationServiceImpl - Parameter - ID is inalid
+2019-09-30 07:20:31,943 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,969 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,979 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:31,985 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
+2019-09-30 07:20:32,021 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1

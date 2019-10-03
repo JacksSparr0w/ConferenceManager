@@ -21,14 +21,19 @@
 <fmt:message bundle="${textResources}" key="theme.business" var="business"/>
 <fmt:message bundle="${textResources}" key="theme.design" var="design"/>
 <fmt:message bundle="${textResources}" key="theme.science" var="science"/>
+<fmt:message bundle="${textResources}" key="duration" var="duration"/>
+<fmt:message bundle="${textResources}" key="days" var="days"/>
+<fmt:message bundle="${textResources}" key="hours" var="hours"/>
+<fmt:message bundle="${textResources}" key="minutes" var="minutes"/>
 
 <link rel="stylesheet" type="text/css" href="css/image.css">
 <script src="js/image.js"></script>
-<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
 <script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"/>
 
+<link rel="stylesheet" href="vendor/duration/jquery.durationpicker.min.css">
 <c:choose>
     <c:when test="${done != null}">
         <div class="container alert alert-success fade show m-t-16" role="alert">
@@ -141,7 +146,7 @@
                     });
                 </script>
             </div>
-            <spam>${event.address}</spam>
+            <span>${event.address}</span>
             <br>
             <span>New address(skip if old address is correct)</span>
             <div class="row">
@@ -183,18 +188,24 @@
                 </script>
             </div>
             <div class="row mb-3">
-                <label for="duration">Duration</label>
+                <label for="duration">${duration}</label>
                 <br>
                 <input type="hidden" name="durationInput" id="duration"/>
-                <input type="hidden" name="duration"/>
+                <input type="hidden" name="duration" value="${event.duration.getTime()}"/>
                 <script>
-                    $(document).ready(function() {
-                        $('input[name=durationInput]').on("change", function(){
+                    $(document).ready(function () {
+                        $('input[name=durationInput]').on("change", function () {
                             $('#duration').text("Duration (secs): " + $(this).val());
                         });
                         $('input[name=duration]').durationpicker({
                             allowZeroTime: false,
-                            minsJump: 15
+                            minsJump: 15,
+                            showDays: false,
+                            showHours: true,
+                            showMins: true,
+                            hoursLabel: '${hours}',
+                            minsLabel: '${minutes}',
+                            setValue: ${event.duration.getTime()}
                         })
                     });
                 </script>
@@ -213,6 +224,8 @@
         </form>
     </div>
 </div>
+<script src="vendor/duration/jquery.durationpicker.min.js"></script>
+
 
 
 

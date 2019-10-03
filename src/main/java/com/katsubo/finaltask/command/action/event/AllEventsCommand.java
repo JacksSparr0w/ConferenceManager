@@ -47,7 +47,7 @@ public class AllEventsCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        List<Event> events = null;
+            List<Event> events = null;
         try {
             events = readAllEvents();
             request.setAttribute(ROLES, getRoles());
