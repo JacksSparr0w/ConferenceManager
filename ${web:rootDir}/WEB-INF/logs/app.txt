@@ -1,7 +1,0 @@
-2019-09-30 07:23:21,343 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
-2019-09-30 07:23:21,358 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
-2019-09-30 07:23:21,381 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
-2019-09-30 07:23:21,385 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
-2019-09-30 07:23:21,398 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
-2019-09-30 07:23:21,401 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
-2019-09-30 07:23:21,414 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't readByID permission by id1
