@@ -1,56 +1,54 @@
-
-(function ($) {
-    "use strict";
-
-    /*==================================================================
-    [ Validate ]*/
-    var input = $('.validate-input .input100');
-
-    $('.validate-form').on('submit',function(){
-        var check = true;
-
-        for(var i=0; i<input.length; i++) {
-            if(validate(input[i]) == false){
-                showValidate(input[i]);
-                check=false;
-            }
-        }
-
-        return check;
-    });
-
-
-    $('.validate-form .input100').each(function(){
-        $(this).focus(function(){
-           hideValidate(this);
-        });
-    });
-
-    function validate (input) {
-        if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
-            if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-                return false;
-            }
-        }
-        else {
-            if($(input).val().trim() == ''){
-                return false;
-            }
-        }
+function checkLogin(input) {
+    if(!/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/.test(input.value)){
+        input.style.border = "2px solid #ed1d12";
+    }else{
+        input.style.border = "none";
     }
+}
 
-    function showValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).addClass('alert-validate');
+function checkPassword(input) {
+    if(!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/.test(input.value)){
+        input.style.border = "2px solid #ed1d12";
+    }else{
+        input.style.border = "none";
     }
+}
 
-    function hideValidate(input) {
-        var thisAlert = $(input).parent();
 
-        $(thisAlert).removeClass('alert-validate');
+function checkName(input) {
+
+    if (!/^[A-ZА-Я]?[a-zа-я]{1,32}$/.test(input.value)) {
+        input.style.border = "2px solid #ed1d12";
+    } else {
+        input.style.border = "none";
     }
-    
-    
+}
 
-})(jQuery);
+function checkEmail(input) {
+
+    if (!/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/.test(input.value)) {
+        input.style.border = "2px solid #ed1d12";
+    } else {
+        input.style.border = "none";
+    }
+}
+
+function checkNumber(input) {
+
+    if (!/^\d{1,4}$/.test(input.value)) {
+        input.style.border = "2px solid #ed1d12";
+    } else {
+        input.style.border = "none";
+    }
+}
+
+function checkNotNull(input) {
+
+    if (!/^.+$/.test(input.value)) {
+        input.style.border = "2px solid #ed1d12";
+    } else {
+        input.style.border = "none";
+    }
+}
+
+

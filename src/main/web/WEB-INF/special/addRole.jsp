@@ -6,10 +6,12 @@
 <fmt:setBundle basename="textResources" var="textResources"/>
 
 <fmt:message bundle="${textResources}" key="exist" var="existing"/>
-<fmt:message bundle="${textResources}" key="new.role" var="new.role"/>
+<fmt:message bundle="${textResources}" key="new.role" var="new_role"/>
 <fmt:message bundle="${textResources}" key="add" var="add"/>
 <fmt:message bundle="${textResources}" key="add_role" var="add_role"/>
 <fmt:message bundle="${textResources}" key="name" var="name"/>
+
+<script src="js/main.js"></script>
 
 
 <div class="container-fluid pb-5 pl-5 pr-5">
@@ -44,7 +46,7 @@
                         <label for="role">${name}</label>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="role" id="role" placeholder="${new.role}">
+                        <input type="text" class="form-control" name="role" id="role" placeholder="${new_role}" onchange="checkNotNull(this)">
                     </div>
                 </div>
                 <div class="justify-content-end">

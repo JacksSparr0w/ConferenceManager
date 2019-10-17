@@ -31,6 +31,8 @@
 
 <link rel="stylesheet" type="text/css" href="css/avatar.css">
 <script src="js/image.js"></script>
+<script src="js/main.js"></script>
+
 
 <c:choose>
     <c:when test="${done != null}">
@@ -87,6 +89,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="login" class="form-control" name="login" id="login" value="${user.login}"
+                                       onchange="checkLogin(this)"
                                        title="Edit your login.">
                             </div>
                         </div>
@@ -96,7 +99,8 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="password" class="form-control" name="password" id="password"
-                                       placeholder="${password}" title="Edit your password.">
+                                       placeholder="${password}" title="Edit your password."
+                                onchange="checkPassword(this)">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -105,7 +109,8 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="password" class="form-control" name="password2" id="password2"
-                                       placeholder="${repeat_password}" title="Repeat your new password.">
+                                       placeholder="${repeat_password}" title="Repeat your new password."
+                                onchange="checkPassword(this)">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -130,7 +135,8 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="name" class="form-control" name="name" id="name" value="${userInfo.name}"
-                                       title="Edit your first name.">
+                                       title="Edit your first name."
+                                onchange="checkName(this)">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -140,7 +146,8 @@
                             <div class="col-md-6">
                                 <input type="surname" class="form-control" name="surname" id="surname"
                                        value="${userInfo.surname}"
-                                       title="Edit your second name.">
+                                       title="Edit your second name."
+                                onchange="checkName(this)">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
@@ -150,7 +157,8 @@
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" id="email"
                                        value="${userInfo.email}"
-                                       title="Edit your email.">
+                                       title="Edit your email."
+                                onchange="checkEmail(this)">
                             </div>
                         </div>
                         <div class="row pt-3 pl-3 pr-3">

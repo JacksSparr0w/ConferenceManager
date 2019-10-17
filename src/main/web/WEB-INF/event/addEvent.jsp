@@ -30,6 +30,8 @@
 
 <link rel="stylesheet" type="text/css" href="css/image.css">
 <script src="js/image.js"></script>
+<script src="js/main.js"></script>
+
 
 <script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
@@ -66,7 +68,7 @@
                          background-repeat: no-repeat;
                          background-size: cover;"></div>
             <span class="btn btn-link btn-file">${edit_image}<input type="file" id="upload-img"
-                                                                    name="picture" form="addForm"></span>
+                                                                    name="picture" form="addForm" onchange="checkNotNull(this)"></span>
         </div>
     </div>
     <div class="row">
@@ -76,12 +78,13 @@
                 <!--name-->
                 <label for="name">${name}</label>
                 <input type="text" class="form-control" name="name" id="name"
-                       placeholder="${name}" title="Enter name of conference">
+                       placeholder="${name}" title="Enter name of conference"
+                onchange="checkNotNull(this)">
             </div>
 
             <div class="row mb-3">
                 <label for="description">${description}</label>
-                <textarea rows="4" class="form-control rounded" name="description" id="description"
+                <textarea rows="4" class="form-control rounded" name="description" id="description" onchange="checkNotNull(this)"
                           placeholder="${description}" title="Enter description of the event"></textarea>
             </div>
 
@@ -149,39 +152,35 @@
                 <div class="col-md-3 mb-3">
                     <label for="country">${country}</label>
                     <input type="text" class="form-control" name="country" id="country"
-                           placeholder="${country}" title="Enter country">
+                           placeholder="${country}" title="Enter country"
+                    onchange="checkNotNull(this)">
                 </div>
                 <div class="col-md-3 mb-3">
 
                     <label for="city">${city}</label>
                     <input type="text" class="form-control" name="city" id="city"
-                           placeholder="${city}" title="Enter city">
+                           placeholder="${city}" title="Enter city"
+                    onchange="checkNotNull(this)">
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="street">${street}</label>
                     <input type="text" class="form-control" name="street" id="street"
-                           placeholder="${street}" title="Enter street">
+                           placeholder="${street}" title="Enter street"
+                    onchange="checkNotNull(this)">
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="building">${building}</label>
                     <input type="text" maxlength="4" class="form-control" name="building" id="building"
-                           placeholder="${building}" title="Enter building">
+                           placeholder="${building}" title="Enter building"
+                    onchange="checkNotNull(this)">
                 </div>
             </div>
 
             <div class="row mb-3">
                 <!--capacity-->
                 <label for="capacity">${capacity}</label>
-                <input type="number" class="form-control" name="capacity" id="capacity"
+                <input type="number" class="form-control" name="capacity" id="capacity" onchange="checkNumber(this)"
                        title="Enter capacity">
-                <script>
-                    $("#capacity").on("keypress", function (evt) {
-                        var keycode = evt.charCode || evt.keyCode;
-                        if (keycode == 46 || this.value.length == 5) {
-                            return false;
-                        }
-                    });
-                </script>
             </div>
             <div class="row mb-3">
                 <label for="duration">${duration}</label>

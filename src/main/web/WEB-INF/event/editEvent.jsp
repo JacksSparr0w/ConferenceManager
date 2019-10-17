@@ -28,6 +28,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/image.css">
 <script src="js/image.js"></script>
+<script src="js/main.js"></script>
 
 <script type="text/javascript" src="vendor/daterangepicker/moment.js"></script>
 <script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
@@ -77,13 +78,13 @@
                 <!--name-->
                 <label for="name">${name}</label>
                 <input type="text" class="form-control" name="name" id="name"
-                       value="${event.name}" title="Enter name of conference">
+                       value="${event.name}" title="Enter name of conference" onchange="checkNotNull(this)">
             </div>
 
             <div class="row mb-3">
                 <label for="description">${description}</label>
                 <textarea rows="4" class="form-control rounded" name="description" id="description"
-                          title="Enter description of the event">${event.description}</textarea>
+                          title="Enter description of the event" onchange="checkNotNull(this)">${event.description}</textarea>
             </div>
 
             <div class="row mb-3">

@@ -6,10 +6,13 @@
 <fmt:setBundle basename="textResources" var="textResources"/>
 
 <fmt:message bundle="${textResources}" key="exist" var="existing"/>
-<fmt:message bundle="${textResources}" key="new.theme" var="new.theme"/>
+<fmt:message bundle="${textResources}" key="new.theme" var="new_theme"/>
 <fmt:message bundle="${textResources}" key="add" var="add"/>
 <fmt:message bundle="${textResources}" key="add_theme" var="add_theme"/>
 <fmt:message bundle="${textResources}" key="name" var="name"/>
+
+<script src="js/main.js"></script>
+
 
 
 <div class="container-fluid pb-5 pl-5 pr-5">
@@ -18,7 +21,7 @@
             <div class="container">
                 <c:choose>
                     <c:when test="${done != null}">
-                        <div class="container alert alert-success fade show m-t-16" theme="alert">
+                        <div class="container alert alert-success fade show m-t-16" role="alert">
                             <fmt:message bundle="${textResources}" key="${done}"/>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Click to remove"
                                     onclick="<c:remove var="done" scope="session"/>">
@@ -27,7 +30,7 @@
                         </div>
                     </c:when>
                     <c:when test="${error != null}">
-                        <div class="container alert alert-warning fade show m-t-16" theme="alert">
+                        <div class="container alert alert-warning fade show m-t-16" role="alert">
                             <fmt:message bundle="${textResources}" key="${error}"/>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"
                                     onclick="<c:remove var="error" scope="session"/>">
@@ -44,7 +47,7 @@
                         <label for="theme">${name}</label>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="theme" id="theme" placeholder="${new.theme}">
+                        <input type="text" class="form-control" name="theme" id="theme" placeholder="${new_theme}" onchange="checkNotNull(this)">
                     </div>
                 </div>
                 <div class="justify-content-end">

@@ -18,10 +18,11 @@
 <fmt:message bundle="${textResources}" key="add_role" var="add_role"/>
 <fmt:message bundle="${textResources}" key="add_permission" var="add_permission"/>
 
+<script src="js/main.js"></script>
 
 <div class="container-fluid pb-5 pl-2 pr-2">
     <div class="row">
-        <div class="col-8 m-2">
+        <div class="col-7 m-2">
             <div class="container">
                 <c:choose>
                     <c:when test="${done != null}">
@@ -49,7 +50,7 @@
             <form action="add_permission" method="post">
                 <div>
                     <label for="name">${name}</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="New permission">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="New permission" onchange="checkNotNull(this)">
                 </div>
                 <div class="container m-2">
                     <div class="form-check">
@@ -107,7 +108,7 @@
             <strong class="d-inline-block mb-2 text-black">${existing}</strong>
             <c:forEach items="${existPermissions}" var="_permission">
                 <div class="mb-3 rounded p-2" style="background-color: #f1f1f1">
-                    <p class="p-1 h5"><fmt:message bundle="${textResources}" key="${_permission.name}"/></p>
+                    <p class="p-1 h5">${_permission.name}</p>
                     <hr>
                     <c:set var="rules" value="${_permission.rules}"/>
                     <c:forEach items="${rules}" var="rule">
