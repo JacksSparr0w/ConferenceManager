@@ -102,7 +102,7 @@
     <div class="row">
 
         <c:if test="${user != null}">
-            <div class="col-sm-1 col-md-2">
+            <div class="menu col-sm-1 col-md-2">
                 <jsp:include page="menu.jsp"/>
             </div>
         </c:if>

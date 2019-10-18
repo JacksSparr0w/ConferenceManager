@@ -316,6 +316,10 @@ iframe {
   background-color: #1b3815;
 }
 
+.login100-form-btn:disabled {
+  background-color: #9c9c9c;
+}
+
 
 /*------------------------------------------------------------------
 [ Alert validate ]*/

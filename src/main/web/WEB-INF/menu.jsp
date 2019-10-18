@@ -5,7 +5,7 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<ul class="nav nav-tabs flex-column">
+<ul class="menu nav nav-tabs flex-column">
     <c:forEach var="menuItem" items="${menu}" varStatus="status">
         <li class="nav-item">
             <a class="nav-link" href="${menuItem.path}">

@@ -102,7 +102,8 @@
                 <label for="date">${date}</label>
                 <input type="text" class="form-control" name="date" id="date"
                        value="<fmt:formatDate value="${event.date}" pattern="yyyy-MM-dd HH:mm"/>"
-                       title="Edit date of conference.">
+                       title="Edit date of conference."
+                        onchange="checkDateOfEvent(this)">
                 <script>
                     $('input[name="date"]').daterangepicker({
                         "singleDatePicker": true,
@@ -178,7 +179,8 @@
                 <!--capacity-->
                 <label for="capacity">${capacity}</label>
                 <input type="number" class="form-control" name="capacity" id="capacity" value="${event.capacity}"
-                       title="Enter capacity">
+                       title="Enter capacity"
+                onchange="checkNumber(this)">
                 <script>
                     $("#capacity").on("keypress", function (evt) {
                         var keycode = evt.charCode || evt.keyCode;
@@ -214,7 +216,7 @@
             <hr>
             <div class="row mb-3">
 
-                <button class="btn btn-lg btn-success" type="submit"><i
+                <button class="btn btn-lg btn-success" type="submit" name="submit"><i
                         class="glyphicon glyphicon-ok-sign"></i>${save}
                 </button>
                 <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i

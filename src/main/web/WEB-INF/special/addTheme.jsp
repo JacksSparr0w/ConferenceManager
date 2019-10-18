@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="justify-content-end">
-                    <button type="submit" class="btn btn-outline-success mt-2"
+                    <button type="submit" class="btn btn-outline-success mt-2" name="submit"
                     >${add}
                     </button>
                 </div>

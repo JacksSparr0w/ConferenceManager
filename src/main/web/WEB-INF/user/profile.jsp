@@ -116,7 +116,7 @@
                         <div class="row pt-3 pl-3 pr-3">
                             <div class="col-md-12">
                                 <hr>
-                                <button class="btn btn-lg btn-success" type="submit"><i
+                                <button class="btn btn-lg btn-success" type="submit" name="submit"><i
                                         class="glyphicon glyphicon-ok-sign"></i>${save}
                                 </button>
                                 <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i
@@ -167,7 +167,8 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="dateOfBirth" id="dateOfBirth"
-                                       value="${userInfo.dateOfBirth}" title="Edit your dateOfBirth.">
+                                       value="${userInfo.dateOfBirth}" title="Edit your dateOfBirth."
+                                onchange="checkDateOfBirth(this)">
                                 <script>
                                     $('input[name="dateOfBirth"]').daterangepicker({
                                         "singleDatePicker": true,
@@ -235,7 +236,7 @@
                         </div>
                         <div class="row pt-3 pl-3 pr-3">
                             <hr>
-                            <button class="btn btn-lg btn-success" type="submit"><i
+                            <button class="btn btn-lg btn-success" type="submit" name="submit"><i
                                     class="glyphicon glyphicon-ok-sign"></i>${save}
                             </button>
                             <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i

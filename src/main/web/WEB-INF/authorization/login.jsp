@@ -100,7 +100,7 @@
 
 
                         <div class="container-login100-form-btn">
-                            <button type="submit" class="login100-form-btn">
+                            <button type="submit" class="login100-form-btn" name="submit">
                                     ${sign_up}
                             </button>
                         </div>
@@ -150,7 +150,7 @@
 
 
                         <div class="container-login100-form-btn">
-                            <button type="submit" class="login100-form-btn">
+                            <button type="submit" class="login100-form-btn" name="submit">
                                     ${sign_in}
                             </button>
                         </div>

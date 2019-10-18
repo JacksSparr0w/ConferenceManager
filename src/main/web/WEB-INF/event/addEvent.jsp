@@ -68,7 +68,8 @@
                          background-repeat: no-repeat;
                          background-size: cover;"></div>
             <span class="btn btn-link btn-file">${edit_image}<input type="file" id="upload-img"
-                                                                    name="picture" form="addForm" onchange="checkNotNull(this)"></span>
+                                                                    name="picture" form="addForm"
+                                                                    onchange="checkNotNull(this)"></span>
         </div>
     </div>
     <div class="row">
@@ -79,12 +80,13 @@
                 <label for="name">${name}</label>
                 <input type="text" class="form-control" name="name" id="name"
                        placeholder="${name}" title="Enter name of conference"
-                onchange="checkNotNull(this)">
+                       onchange="checkNotNull(this)">
             </div>
 
             <div class="row mb-3">
                 <label for="description">${description}</label>
-                <textarea rows="4" class="form-control rounded" name="description" id="description" onchange="checkNotNull(this)"
+                <textarea rows="4" class="form-control rounded" name="description" id="description"
+                          onchange="checkNotNull(this)"
                           placeholder="${description}" title="Enter description of the event"></textarea>
             </div>
 
@@ -102,7 +104,8 @@
             <div class="row mb-3">
                 <label for="date">${date}</label>
                 <input type="text" class="form-control" name="date" id="date"
-                       title="Edit date of conference.">
+                       title="Edit date of conference."
+                       onchange="checkDateOfEvent(this)">
                 <script>
                     $('input[name="date"]').daterangepicker({
                         "singleDatePicker": true,
@@ -153,26 +156,26 @@
                     <label for="country">${country}</label>
                     <input type="text" class="form-control" name="country" id="country"
                            placeholder="${country}" title="Enter country"
-                    onchange="checkNotNull(this)">
+                           onchange="checkNotNull(this)">
                 </div>
                 <div class="col-md-3 mb-3">
 
                     <label for="city">${city}</label>
                     <input type="text" class="form-control" name="city" id="city"
                            placeholder="${city}" title="Enter city"
-                    onchange="checkNotNull(this)">
+                           onchange="checkNotNull(this)">
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="street">${street}</label>
                     <input type="text" class="form-control" name="street" id="street"
                            placeholder="${street}" title="Enter street"
-                    onchange="checkNotNull(this)">
+                           onchange="checkNotNull(this)">
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="building">${building}</label>
                     <input type="text" maxlength="4" class="form-control" name="building" id="building"
                            placeholder="${building}" title="Enter building"
-                    onchange="checkNotNull(this)">
+                           onchange="checkNotNull(this)">
                 </div>
             </div>
 
@@ -210,7 +213,7 @@
             <hr>
             <div class="row mb-3">
 
-                <button class="btn btn-lg btn-success" type="submit"><i
+                <button class="btn btn-lg btn-success" type="submit" name="submit"><i
                         class="glyphicon glyphicon-ok-sign"></i>${save}
                 </button>
                 <button class="btn btn-lg btn-outline-secondary ml-3" type="reset"><i
