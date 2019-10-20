@@ -2,6 +2,8 @@ package com.katsubo.finaltask.controller;
 
 import com.katsubo.finaltask.command.CommandException;
 import com.katsubo.finaltask.command.CommandResult;
+import com.katsubo.finaltask.command.factory.CommandType;
+import com.katsubo.finaltask.command.factory.RequestType;
 import com.katsubo.finaltask.service.ServiceException;
 import com.katsubo.finaltask.service.impl.ServiceImpl;
 import com.katsubo.finaltask.util.ResourceManager;
@@ -27,12 +29,9 @@ import java.io.IOException;
 @WebServlet("/controller")
 @MultipartConfig
 public class Controller extends HttpServlet {
-    private static final String COMMAND = "command";
     private static final Logger logger = LogManager.getLogger(Controller.class);
-    /**
-     * The constant ERROR.
-     */
-    public static final String ERROR = "error";
+    private static final String COMMAND = "command";
+    private static final String ERROR = "error";
 
     @Override
     public void destroy() {
@@ -51,24 +50,28 @@ public class Controller extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, RequestType.GET);
         }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, RequestType.POST);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response, RequestType requestType) throws ServletException, IOException {
         String command = request.getParameter(COMMAND);
-        Command action = CommandFactory.create(command);
+        CommandType commandType = CommandType.of(command);
+        Command action = CommandFactory.create(commandType);
 
         CommandResult result;
         try {
+            if (commandType.getRequestType() != requestType){
+                throw new CommandException("Invalid type of request!");
+            }
             result = action.execute(request, response);
         } catch (CommandException e) {
             logger.log(Level.ERROR, e.getMessage(), e);
             request.setAttribute(ERROR, e.getMessage());
-            result = new CommandResult(ResourceManager.getProperty("page.error404"), true);
+            result = new CommandResult(ResourceManager.getProperty("page.error404"));
         }
 
         String page = result.getPage();

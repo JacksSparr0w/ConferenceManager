@@ -51,14 +51,20 @@ public class EditUserCommand implements Command {
             return failure(VERIFY_PASSWORD_IS_INCORRECT, request);
         } else if (!password.isEmpty()) {
             user.setPassword(password);
+            try {
+                if (valid(user))
+                    user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+            } catch (ValidatorException e){
+                logger.log(Level.WARN, e.getMessage());
+                return failure(ERROR_UPDATE_USER, request);
+            }
         }
+
 
         user.setPermission(userDto.getPermission());
         try {
-            if (valid(user))
-                user.setPassword(DigestUtils.md5Hex(user.getPassword()));
             update(user);
-        } catch (ValidatorException | ServiceException e) {
+        } catch (ServiceException e) {
             logger.log(Level.WARN, e.getMessage());
             return failure(ERROR_UPDATE_USER, request);
         }

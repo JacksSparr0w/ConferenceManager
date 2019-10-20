@@ -63,15 +63,6 @@ public class CommandResult {
         return redirect;
     }
 
-    /**
-     * Sets redirect.
-     *
-     * @param redirect the redirect
-     */
-    public void setRedirect(boolean redirect) {
-        this.redirect = redirect;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

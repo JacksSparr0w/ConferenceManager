@@ -63,9 +63,8 @@
             <div class="container">
                 <img src="eventImages/${event.pictureLink}" class="rounded"
                      style="
-                    width: inherit;
-                    min-width: 15rem;
-                    max-width: 75%;"
+                        max-block-size: 350px;"
+
                      alt="Event picture">
             </div>
             <p class="text-dark text-right">${event.address}</p>

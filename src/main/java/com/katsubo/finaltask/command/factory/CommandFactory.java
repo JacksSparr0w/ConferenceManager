@@ -57,8 +57,8 @@ public class CommandFactory {
      * @param command the command
      * @return the command
      */
-    public static Command create(String command) {
-        return commands.get(CommandType.of(command));
+    public static Command create(CommandType command) {
+        return commands.get(command);
     }
 }
 
