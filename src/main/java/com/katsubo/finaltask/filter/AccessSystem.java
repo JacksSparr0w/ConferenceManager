@@ -45,7 +45,7 @@ public class AccessSystem {
         commands = EnumSet.of(LOGOUT, ADD_EVENT_PAGE, ADD_EVENT, EDIT_USER,
                 EDIT_USER_INFO, PROFILE, REGISTER_TO_EVENT, LEAVE_EVENT,
                 USER_EVENTS, EDIT_USER_PHOTO, EDIT_EVENT, EDIT_EVENT_PAGE,
-                REMOVE_EVENT);
+                REMOVE_EVENT, GET_USERS_ON_EVENT);
 
         commands.addAll(getCommonRules());
     }

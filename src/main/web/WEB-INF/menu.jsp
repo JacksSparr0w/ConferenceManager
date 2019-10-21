@@ -5,12 +5,11 @@
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="textResources" var="textResources"/>
 
-<ul class="menu nav nav-tabs flex-column">
+<div class="list-group">
     <c:forEach var="menuItem" items="${menu}" varStatus="status">
-        <li class="nav-item">
-            <a class="nav-link" href="${menuItem.path}">
-                    <fmt:message bundle="${textResources}" key="${menuItem.name}"/></a>
-        </li>
+        <a href="${menuItem.path}" class="list-group-item list-group-item-action">
+            <fmt:message bundle="${textResources}" key="${menuItem.name}"/>
+        </a>
     </c:forEach>
-</ul>
+</div>
 

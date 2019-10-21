@@ -82,7 +82,7 @@ public enum CommandType {
     /**
      * Get users on event command type.
      */
-    GET_USERS_ON_EVENT("get_users_on_event", POST),
+    GET_USERS_ON_EVENT("get_users_on_event", GET),
     /**
      * Home page command type.
      */

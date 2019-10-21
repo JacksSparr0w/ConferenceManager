@@ -48,6 +48,7 @@ public class CommandFactory {
         commands.put(ADD_PERMISSION, new AddPermissionCommand());
         commands.put(ADD_PERMISSION_PAGE, new AddPermissionPageCommand());
         commands.put(CHANGE_USER_PERMISSION, new ChangeUserPermissionCommand());
+        commands.put(GET_USERS_ON_EVENT, new UsersOnEventCommand());
 
     }
 

@@ -20,10 +20,7 @@
 <fmt:message bundle="${textResources}" key="days" var="days"/>
 <fmt:message bundle="${textResources}" key="hours" var="hours"/>
 <fmt:message bundle="${textResources}" key="minutes" var="minutes"/>
-
-
-
-
+<fmt:message bundle="${textResources}" key="who_goes" var="who_go"/>
 
 <c:choose>
     <c:when test="${done != null}">
@@ -82,36 +79,44 @@
             </div>
             <c:if test="${user != null}">
                 <div class="container pt-2 pl-2 pr-2 d-inline-flex">
-                    <form action="register_to_event" method="post">
+                    <form class="m-r-2 d-inline-flex" action="register_to_event" method="post">
                         <input type="hidden" value="${event.id}" name="eventId">
-                        <div class="d-inline-block">
-                            <select class="form-control" id="selectRole" name="role">
-                                <c:forEach var="role" items="${roles}">
-                                    <option value="${role.id}">${role.value}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
+                        <select class="form-control mr-1" id="selectRole" name="role">
+                            <c:forEach var="role" items="${roles}">
+                                <option value="${role.id}">${role.value}</option>
+                            </c:forEach>
+                        </select>
                         <button type="submit" class="btn btn-outline-success">${join}</button>
                     </form>
 
                     <c:if test="${user.permission.checkRule('MODIFY_ANY_EVENT') == true or user.userId == event.author_id}">
-                        <form>
+                        <form class="m-r-2">
                             <c:url value="edit_event_page" var="editEvent">
                                 <c:param name="eventId" value="${event.id}"/>
                             </c:url>
-                            <input type="button" class="btn btn-outline-warning ml-3" value="${edit}"
-                                   onclick="window.location.href='${editEvent}'"/>
+                            <button type="submit" class="btn btn-outline-warning ml-3"
+                                    onclick="window.location.href='${editEvent}'">${edit}</button>
                         </form>
-                        <form>
+                        <form class="m-r-2">
                             <c:url value="controller" var="deleteUrl">
                                 <c:param name="command" value="remove_event"/>
                                 <c:param name="eventId" value="${event.id}"/>
                             </c:url>
-                            <button type="button" class="btn btn-outline-dark ml-3" data-toggle="modal"
-                                    data-target="#exampleModal" onclick="window.location.href='${deleteUrl}'"
+                            <button type="button" class="btn btn-outline-dark ml-3"
+                                    onclick="window.location.href='${deleteUrl}'"
                             >${delete}</button>
                         </form>
                     </c:if>
+                    <form class="m-r-2">
+                        <c:url value="controller" var="eventUsers">
+                            <c:param name="command" value="get_users_on_event"/>
+                            <c:param name="eventId" value="${event.id}"/>
+                        </c:url>
+                        <button type="button" class="btn btn-outline-dark ml-3"
+                                onclick="window.location.href='${eventUsers}'"
+                        >${who_go}
+                        </button>
+                    </form>
                 </div>
             </c:if>
             <hr>

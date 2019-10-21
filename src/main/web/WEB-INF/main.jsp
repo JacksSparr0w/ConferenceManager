@@ -40,8 +40,7 @@
     <script src="vendor/animsition/js/animsition.min.js"></script>
     <script src="vendor/select2/select2.min.js"></script>
     <script src="vendor/countdowntime/countdowntime.js"></script>
-    <link rel="stylesheet" href="css/unicons.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
+tus    <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/tooplate-style.css">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
@@ -54,13 +53,11 @@
     <div class="container">
         <c:choose>
             <c:when test="${user != null}">
-                <a class="navbar-brand" href="profile" style="padding-bottom: 1rem"><i
-                        class='uil uil-user'></i> ${user.login}</a>
+                <a class="navbar-brand" href="profile">${user.login}</a>
 
             </c:when>
             <c:otherwise>
-                <a class="navbar-brand" href="login_page" style="padding-bottom: 1rem"><i
-                        class='uil uil-user'></i> ${signin}</a>
+                <a class="navbar-brand" href="login_page">${signin}</a>
             </c:otherwise>
         </c:choose>
 
@@ -98,7 +95,7 @@
     </div>
 </nav>
 
-<div class="container rounded mb-5" style="margin-top:30px; background-color:rgb(252,252,252);">
+<div class="container rounded mb-5" style="margin-top:30px;">
     <div class="row">
 
         <c:if test="${user != null}">
