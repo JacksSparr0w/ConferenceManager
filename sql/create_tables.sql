@@ -11,8 +11,15 @@ CREATE TABLE `user`
 
 CREATE TABLE `permission`
 (
-  `id`    INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(255) UNIQUE NOT NULL
+  id                     int auto_increment primary key,
+  name                   varchar(255) unique  not null,
+  modify_any_event       tinyint(1) default 0 null,
+  change_user_permission tinyint(1) default 0 null,
+  all_users              tinyint(1) default 0 null,
+  delete_user            tinyint(1) default 0 null,
+  add_theme              tinyint(1) default 0 null,
+  add_role               tinyint(1) default 0 null,
+  add_permission         tinyint(1) default 0 null
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
 

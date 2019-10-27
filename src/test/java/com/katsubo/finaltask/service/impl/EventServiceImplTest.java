@@ -1,9 +1,7 @@
 package com.katsubo.finaltask.service.impl;
 
 import com.katsubo.finaltask.entity.*;
-import com.katsubo.finaltask.service.EventService;
-import com.katsubo.finaltask.service.ServiceException;
-import com.katsubo.finaltask.service.UserService;
+import com.katsubo.finaltask.service.*;
 import org.junit.*;
 
 import java.util.ArrayList;
@@ -12,21 +10,19 @@ import java.util.List;
 
 public class EventServiceImplTest {
     private static final String DESCRIPTION = "description";
-    private static final Permission PERMISSION = new Permission();
+    private static final Permission PERMISSION = new Permission("user");
     private static final String PASSWORD = "pass";
     private static final String LOGIN = "test";
     private static final String EVENT_NAME = "event1";
-    private static final Value THEME = new Value(1);
+    private static final Value theme = new Value("theme");
+    private static final Address address = new Address("country", "city", "street", "100");
     private static User user;
     private static Event event1;
     private static Event event2;
     private static EventService service;
     private static UserService userService;
-
-    {
-        THEME.setValue("business");
-        PERMISSION.setId(1);
-    }
+    private static PermissionService permissionService;
+    private static ThemeService themeService;
 
     @BeforeClass
     public static void prepareService() throws ServiceException {
@@ -42,6 +38,11 @@ public class EventServiceImplTest {
         for (User user : users) {
             userService.delete(user.getId());
         }
+        permissionService = new PermissionServiceImpl();
+        PERMISSION.setId(permissionService.save(PERMISSION));
+
+        themeService = new ThemeServiceImpl();
+        theme.setId(themeService.save(theme));
 
         user = new User();
         user.setLogin(LOGIN);
@@ -54,23 +55,25 @@ public class EventServiceImplTest {
     }
 
     @AfterClass
-    public static void cleanUser() throws ServiceException {
+    public static void cleanAll() throws ServiceException {
         List<User> users = userService.findAll();
         for (User user : users) {
             userService.delete(user.getId());
         }
+
+        permissionService.delete(PERMISSION.getId());
+
+        themeService.delete(theme.getId());
     }
 
     @Before
     public void prepareBeans() throws ServiceException {
-
-
         event1 = new Event();
         event1.setName(EVENT_NAME);
         event1.setDescription(DESCRIPTION);
-        event1.setTheme(THEME);
+        event1.setTheme(theme);
         event1.setPictureLink("");
-        event1.setAddress(new Address("country", "city", "street", "100"));
+        event1.setAddress(address);
         event1.setDate(new Date(1565625305000L));
         event1.setCapacity(100);
         event1.setDuration(new Date(3600000));

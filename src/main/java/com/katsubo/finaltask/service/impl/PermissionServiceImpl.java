@@ -32,7 +32,7 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
      * @throws ServiceException the service exception
      */
     @Override
-    public List<Permission> readByID() throws ServiceException {
+    public List<Permission> readAll() throws ServiceException {
         List<Permission> permissions;
         try {
             permissions = transaction.getPermissionDao().read();
@@ -135,6 +135,6 @@ public class PermissionServiceImpl extends ServiceImpl implements PermissionServ
     }
 
     private boolean isExist(Permission permission) throws ServiceException {
-        return readByID().contains(permission);
+        return readAll().contains(permission);
     }
 }

@@ -90,12 +90,10 @@
                     </form>
 
                     <c:if test="${user.permission.checkRule('MODIFY_ANY_EVENT') == true or user.userId == event.author_id}">
-                        <form class="m-r-2">
-                            <c:url value="edit_event_page" var="editEvent">
-                                <c:param name="eventId" value="${event.id}"/>
-                            </c:url>
+                        <form action="edit_event_page" class="m-r-2">
+                            <input type="hidden" value="${event.id}" name="eventId">
                             <button type="submit" class="btn btn-outline-warning ml-3"
-                                    onclick="window.location.href='${editEvent}'">${edit}</button>
+                                    onclick="this.form.submit()">${edit}</button>
                         </form>
                         <form class="m-r-2">
                             <c:url value="controller" var="deleteUrl">

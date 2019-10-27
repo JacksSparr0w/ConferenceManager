@@ -15,7 +15,7 @@ public interface PermissionService extends Service {
      * @return the list
      * @throws ServiceException the service exception
      */
-    List<Permission> readByID() throws ServiceException;
+    List<Permission> readAll() throws ServiceException;
 
     /**
      * Save integer.

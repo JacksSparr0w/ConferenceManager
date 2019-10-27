@@ -6,9 +6,6 @@
 <fmt:message bundle="${textResources}" key="header.sign.up" var="signup"/>
 <fmt:message bundle="${textResources}" key="menu.add_conference" var="add"/>
 
-
-
-
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class=""></li>

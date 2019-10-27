@@ -46,6 +46,6 @@ public class AddPermissionPageCommand implements Command {
 
     private List<Permission> readExistPermissions() throws ServiceException {
         PermissionService service = new PermissionServiceImpl();
-        return service.readByID();
+        return service.readAll();
     }
 }

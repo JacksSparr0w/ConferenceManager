@@ -51,7 +51,9 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
             UserDao dao = transaction.getUserDao();
             try {
                 user = dao.read(id);
-                readPermission(user);
+                if (user != null){
+                    readPermission(user);
+                }
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }

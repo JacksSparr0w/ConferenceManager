@@ -40,7 +40,7 @@
     <script src="vendor/animsition/js/animsition.min.js"></script>
     <script src="vendor/select2/select2.min.js"></script>
     <script src="vendor/countdowntime/countdowntime.js"></script>
-tus    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/tooplate-style.css">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">

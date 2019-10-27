@@ -72,7 +72,7 @@ public class AllUsersCommand implements Command {
 
     private List<Permission> readPermissions() throws ServiceException {
         PermissionService service = new PermissionServiceImpl();
-        return service.readByID();
+        return service.readAll();
     }
 
     private Map<Integer, UserInfo> giveUsersInfo(List<User> users) throws ServiceException {

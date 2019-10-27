@@ -64,27 +64,27 @@
                     </span>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                            <input class="input100" type="text" name="login" placeholder="${login}" onchange="checkLogin(this)">
+                            <input class="input100" type="text" name="login" placeholder="${login}" oninput="checkLogin(this)">
                             <span class="focus-input100"></span>
                         </div>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter password">
-                            <input class="input100" type="password" name="password" placeholder="${password}" onchange="checkPassword(this)">
+                            <input class="input100" type="password" name="password" placeholder="${password}" oninput="checkPassword(this)">
                             <span class="focus-input100"></span>
                         </div>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter email">
-                            <input class="input100" type="text" name="email" placeholder="${email}" onchange="checkEmail(this)">
+                            <input class="input100" type="text" name="email" placeholder="${email}" oninput="checkEmail(this)">
                             <span class="focus-input100"></span>
                         </div>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter name">
-                            <input class="input100" type="text" name="name" placeholder="${first_name}" onchange="checkName(this)">
+                            <input class="input100" type="text" name="name" placeholder="${first_name}" oninput="checkName(this)">
                             <span class="focus-input100"></span>
                         </div>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter surname">
-                            <input class="input100" type="text" name="surname" placeholder="${second_name}" onchange="checkName(this)">
+                            <input class="input100" type="text" name="surname" placeholder="${second_name}" oninput="checkName(this)">
                             <span class="focus-input100"></span>
                         </div>
 
@@ -128,7 +128,7 @@
                     </span>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                            <input class="input100" type="text" name="login" id="login" placeholder="${login}" onchange="checkLogin(this)">
+                            <input class="input100" type="text" name="login" id="login" placeholder="${login}" oninput="checkLogin(this)">
                             <span class="focus-input100"></span>
                         </div>
 
