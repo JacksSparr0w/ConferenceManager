@@ -26,7 +26,7 @@
                                 ${add}</a></p>
                         </c:when>
                         <c:otherwise>
-                            <p><a class="m-2 btn btn-lg btn-primary" href="login" role="button">
+                            <p><a class="m-2 btn btn-lg btn-primary" href="login_page" role="button">
                                 ${signup}</a></p>
                         </c:otherwise>
                     </c:choose>

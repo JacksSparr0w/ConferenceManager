@@ -105,15 +105,10 @@
                             >${delete}</button>
                         </form>
                     </c:if>
-                    <form class="m-r-2">
-                        <c:url value="controller" var="eventUsers">
-                            <c:param name="command" value="get_users_on_event"/>
-                            <c:param name="eventId" value="${event.id}"/>
-                        </c:url>
-                        <button type="button" class="btn btn-outline-dark ml-3"
-                                onclick="window.location.href='${eventUsers}'"
-                        >${who_go}
-                        </button>
+                    <form action="get_users_on_event" class="m-r-2">
+                        <input type="hidden" value="${event.id}" name="eventId">
+                        <button type="submit" class="btn btn-outline-dark ml-3"
+                                onclick="this.form.submit()">${who_go}</button>
                     </form>
                 </div>
             </c:if>

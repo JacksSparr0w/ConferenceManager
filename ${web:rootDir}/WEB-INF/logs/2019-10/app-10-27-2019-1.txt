@@ -1,1 +1,0 @@
-2019-10-27 22:04:28,440 [main] ERROR com.katsubo.finaltask.dao.impl.PermissionDaoImpl - Can't create new permission

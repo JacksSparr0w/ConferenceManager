@@ -63,7 +63,7 @@
                         <fmt:formatDate value="${info.dateOfRegistration}" pattern="yyyy-MM-dd"/>
                     </div>
                     <p class="card-text mb-auto mb-2">${info.about}</p>
-                    <c:if test="${user.id != sessionScope.user.userId}">
+                    <c:if test="${sessionScope.user.userId != pageScope.user.id && sessionScope.permission.checkRule('DELETE_USER') == true}">
                         <div class="text-muted d-inline-flex">
                             <form>
                                 <c:url value="controller" var="deleteUrl">
